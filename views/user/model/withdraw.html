@@ -1,0 +1,33 @@
+<!--提现-->
+<h4 class="child-page-title">余额提现</h4>
+
+<form class="form-section" id="withDrawForm">
+	<div class="row-box">
+		<label>绑定银行卡：</label>
+		<div class="bank-card-box">
+			<svg class="icon">
+				<use xlink:href="" id="bankCode"></use>
+			</svg>
+			<span id="bankInfo"></span>
+		</div>
+	</div>
+	<div class="row-box">
+		<label>提现金额：</label>
+		<input class="input-normal form-control" type="number" name="amount" id="withDrawNum" autocomplete="off" placeholder="请输入提现金额" />
+	</div>
+
+	<input class="user-btn" type="button" name="" id="confirmWithDraw" value="确认提现" />
+</form>
+
+<div class="prompt-tips">
+	<p>温馨提示：</p>
+	<p>到账时效 T+1 （节假日顺延）单笔2元（100万封顶），由用户承担，直接从提现金额中扣除，第三方收取的费用。</p>
+</div>
+
+<div class="depository-row">
+	<div class="depository">
+		<img src="../../img/user/kcb-bank.png" alt="" /><span></span>
+	</div>
+</div>
+
+<script src="../../js/user/model/withdraw.js"></script>

@@ -1,0 +1,24 @@
+<!--我的债权转让：成功-->
+<h4 class="child-page-title">债权转让</h4>
+<p class="zr-success-1 ml150">
+	<i class="iconfont icon-zhengque"></i>
+	<span>债权转让发布成功</span>
+</p>
+<p class="zr-success-2">
+	<a href="#account_overview">返回我的账户</a>
+	<a href="../invest/invest.html">去投资</a>
+</p>
+<div class="row-box">
+	<input class="user-btn" type="button" name="" id="confirmGo" value="确定" />
+</div>
+<div class="zr-success-3">
+	<p>温馨提示：</p>
+	<p>1.转让申请将在平台进行公布，一旦有投资人成功购买，则转让成功。</p>
+	<p>2.转让成功后，转让资金将将直接进入您的支付账户，您可以在“我的-债权转让”里查看。</p>
+	<p>3.转让有效期内未完成转让的，平台将自动撤销转让申请。</p>
+</div>
+<script>
+	$("#confirmGo").click(function () {
+		window.location.href = $_GLOBAL.basePath() + "/views/user/user_index.html#my_transfer"
+	});
+</script>

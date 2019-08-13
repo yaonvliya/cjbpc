@@ -1,0 +1,131 @@
+<h4 class="child-page-title">
+    债权转让 - 可转让
+    <a class="right-btn" href="javascript:goBack();">返回<i class="iconfont icon-arrow-right"></i></a>
+</h4>
+<div class="invest-detail transfer-allowed">
+    <h6><span></span><b>项目信息</b></h6>
+    <table class="layui-table ta-c">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col width="150">
+            <col width="200">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>项目名称</td>
+            <td class="tradeName"></td>
+            <td>历史年化收益率</td>
+            <td class="tradeInterestRate"></td>
+        </tr>
+        <tr>
+            <td>投资金额(元)</td>
+            <td class="investAmount"></td>
+            <td>预期收益(元)</td>
+            <td class="expectedProceedsAmount"></td>
+        </tr>
+        <tr>
+            <td>投资期限</td>
+            <td class="investTerm"></td>
+            <td>回款方式</td>
+            <td class="repayMethod"></td>
+        </tr>
+        </tbody>
+    </table>
+    <h6><span></span><b>回款信息</b></h6>
+    <table class="layui-table ta-c">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col width="150">
+            <col width="200">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>起息日期</td>
+            <td class="">项目成立当日</td>
+            <td>回款日期</td>
+            <td class="nextPaybackTime"></td>
+        </tr>
+        <tr>
+            <td>已回款期数</td>
+            <td class="alreadyPaybackPeriod"></td>
+            <td>下期回款日</td>
+            <td class="nextPaybackTime"></td>
+        </tr>
+        <tr>
+            <td>已回款本金(元)</td>
+            <td class="alreadyPaybackCapitalAmount"></td>
+            <td>已累计收益(元)</td>
+            <td class="alreadyPaybackProceedsAmount"></td>
+        </tr>
+        <tr>
+            <td>待回款本金(元)</td>
+            <td class="waitPaybackCapitalAmount"></td>
+            <td>待收收益(元)</td>
+            <td class="waitPaybackProceedsAmount"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="transfer-detail-box">
+        <p>可转让总额：<label class="transferMoney"></label>&nbsp;元，剩余期限的<label class="transferTerm"></label></p>
+        <button id="toTransfer">转让</button>
+        <p class="tips">温馨提示：超过截止时间未成交将被系统撤销</p>
+    </div>
+</div>
+<script>
+	var transferAllowed = $('.transfer-allowed');
+	$(document).ready(function () {
+
+		if ('undefined' == typeof transferId) {
+			window.location.href = "user_index.html#my_transfer";
+			return false;
+		}
+		transferInvestId = transferId;
+
+		$('#toTransfer').click(function () {
+			window.history.pushState(null, null, $_GLOBAL.basePath() + "/views/user/user_index.html#my_transfer_able");
+			$(".right-content").load($_GLOBAL.basePath() + '/views/user/model/my_transfer_able.html');
+		});
+
+		AjaxUtil.ajaxPostCallBack(userAccountApiUrl.investDetail, JSON.stringify({investId: transferId}), function (result) {
+			layui.each(result.data, function (k, v) {
+				var selector = '[class="' + k + '"]';
+				var elt = transferAllowed.find(selector);
+				if(!v){
+					v = "---"
+				}
+				if('string' == typeof (v)){
+					elt.text("" + v);
+				} else if('number' == typeof (v)){
+					elt.text(v);
+				} else if('object' == typeof (v)){
+					elt.text(MoneyUtil.formatMoney(v.amount));
+				}
+			});
+			addInfo(result);
+			transferData(result.data.investId);
+		});
+	});
+
+	function addInfo(result) {
+		var data = result.data;
+		transferAllowed.find('[class="tradeInterestRate"]').text(NumberUtil.transfPercentage(data.tradeInterestRate));
+		transferAllowed.find('[class="alreadyPaybackProceedsAmount"]').text(MoneyUtil.formatMoney(data.alreadyPaybackProceedsAmount.amount));
+		transferAllowed.find('[class="alreadyPaybackCapitalAmount"]').text(MoneyUtil.formatMoney(data.alreadyPaybackCapitalAmount.amount));
+		transferAllowed.find('[class="waitPaybackCapitalAmount"]').text(MoneyUtil.formatMoney(NumberUtil.sub(data.investAmount.amount,data.alreadyPaybackCapitalAmount.amount)));
+		transferAllowed.find('[class="waitPaybackProceedsAmount"]').text(MoneyUtil.formatMoney(NumberUtil.sub(data.expectedProceedsAmount.amount,data.alreadyPaybackProceedsAmount.amount)));
+	}
+
+	function transferData(investId) {
+		var params = {investId: investId};
+		var result = AjaxUtil.ajaxPostWithLoading(userAccountApiUrl.transferAble, JSON.stringify(params));
+		if(result){
+			var data = result.data;
+			transferAllowed.find('[class="transferMoney"]').text(MoneyUtil.formatMoney(NumberUtil.add(data.transferCapitalAmt.amount, data.transferProceedsAmt.amount)));
+			transferAllowed.find('[class="transferTerm"]').text(data.transferDueTime);
+		}
+	}
+
+</script>
+

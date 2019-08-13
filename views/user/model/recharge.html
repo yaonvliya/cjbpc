@@ -1,0 +1,37 @@
+<!--充值-->
+<h4 class="child-page-title">账户充值</h4>
+
+<form class="form-section" id="rechargeForm">
+	<div class="row-box">
+		<label>绑定银行卡：</label>
+		<div class="bank-card-box">
+			<svg class="icon">
+				<use xlink:href="" id="bankCode"></use>
+			</svg>
+			<span id="bankInfo"></span>
+		</div>
+	</div>
+	
+	<div class="row-box">
+		<label>充值金额：</label>
+		<input class="input-normal form-control" type="number" name="amount" autocomplete="off" placeholder="请输入10元以上的充值金额"/>
+	</div>
+
+	<div class="row-box row-recharge">
+		<label>充值方式：</label>
+		<div class="recharge-mode">
+			<span class="active" id="quickRecharge">快捷充值</span>
+			<span class="ml15" id="netSilverRecharge">网银充值</span>
+		</div>
+	</div>
+
+	<input class="user-btn" type="button" id="confirmRecharge" value="确定"/>
+</form>
+
+<div class="depository-row">
+	<div class="depository">
+		<img src="../../img/user/kcb-bank.png" alt="" /><span></span>
+	</div>
+</div>
+
+<script src="../../js/user/model/recharge.js"></script>

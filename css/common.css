@@ -1,0 +1,258 @@
+@charset "UTF-8";
+
+/****** 公用头部  ******/
+.header-wrap {
+  width: 100%;
+  min-width: 1200px;
+  height: 80px;
+  background-color: #292d31;
+  z-index: 9999999;
+  transition: all 0.5s;
+}
+.header-container {
+  width: 1200px;
+  height: 80px;
+  margin: 0 auto;
+}
+.header-logo {
+	display: inline-block;
+  width: 140px;
+  height: 40px;
+  margin-top: 20px;
+}
+.header-logo img {
+  width: 140px;
+  height: 40px;
+}
+
+/*导航*/
+.header-nav {
+	float: right;
+}
+.header-nav li {
+  float: left;
+}
+.header-nav a {
+	display: block;
+  height: 80px;
+  line-height: 80px;
+  color: #b1b1b1;
+  font-size: 16px;
+  padding: 0 35px;
+}
+.header-nav li a:hover {
+  color: #f0f0f0;
+}
+.header-nav li a.active {
+  color: #f0f0f0;
+}
+
+/*登录、注册、我的账户*/
+.header-personal {
+	float: right;
+	width: 120px;
+  height: 80px;
+  line-height: 80px;
+  font-size: 16px;
+}
+
+/*未登录*/
+.header-personal .vertical-line {
+  display: inline-block;
+  width: 1px;
+  height: 20px;
+  background-color: #ebebeb;
+  vertical-align: middle;
+}
+.header-personal .header-not-login a{
+  color: #ebebeb;
+  font-size: 14px;
+  margin-left: 20px;
+}
+
+/*已登录*/
+.header-personal .personal-icon {
+  height: 80px;
+  line-height: 80px;
+  font-size: 35px;
+  color: #b1b1b1;
+  cursor: pointer;
+}
+.header-personal .personal-icon:hover:before {
+  color: #f0f0f0;
+}
+.header-avatar{
+	width: 120px;
+	height: 100%;
+	text-align: center;
+	position: relative;
+}
+.header-avatar:hover .header-avatar-ul{
+	display: block;
+}
+
+.header-avatar ul{
+	display: none;
+	width: 100%;
+	position: absolute;
+	top: 80px;
+	left: 0;
+	line-height: 50px;
+	padding: 10px 0;
+	background-color: #2b2b2b;
+	z-index: 999;
+}
+.header-avatar ul li a{
+	font-size: 15px;
+	color: #b1b1b1;
+}
+.header-avatar ul li a:hover{
+	color: #f0f0f0;
+}
+
+.header-hide {
+  position: fixed;
+  left: 0;
+  top: -80px;
+}
+.header-show {
+  background-color: rgba(41, 45, 49, 0.92);
+  position: fixed;
+  left: 0;
+  top: 0;
+  -webkit-transform: translateY(0px);
+  -moz-transform: translateY(0px);
+  -ms-transform: translateY(0px);
+  -o-transform: translateY(0px);
+  transform: translateY(0px);
+}
+.header-show .header-avatar ul{
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+/****** 公用底部 ******/
+.footer {
+  background-color: #292d31;
+}
+.footer-tips{
+	width: 1200px;
+	margin: 0 auto;
+	line-height: 76px;
+	text-align: center;
+	color: #eef1f6;
+	border-bottom: 1px solid #484b4d;
+}
+.footer-siteinfo {
+  width: 1200px;
+  margin: 0 auto;
+  background-color: #292d31;
+  box-sizing: border-box;
+  padding: 60px 0;
+  border-bottom: 1px solid #484b4d;
+}
+.info-item {
+  height: 200px;
+  box-sizing: border-box;
+  float: left;
+}
+.about-us {
+  width: 350px;
+  background-color: #292d31;
+  float: left;
+  padding-left: 50px;
+  border-right: 1px solid #484b4d;
+}
+.about-us dl {
+  float: left;
+  text-align: center;
+  margin-left: 40px;
+  margin-top: 18px;
+}
+.about-us dl dt {
+  color: #eef1f6;
+  font-size: 16px;
+  width: 70px;
+  margin-bottom: 10px;
+}
+.about-us dl dd {
+  width: 70px;
+  line-height: 36px;
+}
+.about-us dl dd a {
+  color: #cbced7;
+  font-size: 14px;
+}
+.about-us dl dd a:hover {
+  color: #f9f9f9;
+}
+.qr-code {
+  width: 500px;
+  padding: 20px 75px 0;
+  border-right: 1px solid #484b4d;
+}
+.qr-code p {
+  width: 145px;
+  float: left;
+}
+.qr-code p span {
+  font-size: 14px;
+  color: #d2d2d2;
+  width: 145px;
+  text-align: center;
+  display: inline-block;
+}
+.qr-code i {
+  display: inline-block;
+  width: 145px;
+  height: 145px;
+}
+.qr-code .qr-1 i {
+  background: url(../img/qr-2.png);
+}
+.qr-code .qr-2 i {
+  background: url(../img/qr-1.png);
+}
+.qr-code .qr-2 {
+  margin-left: 45px;
+}
+
+.contact-list{
+	color: #eef1f6;
+	font-size: 14px;
+	margin: 8px 0 0 65px;
+	line-height: 40px;
+}
+.contact-list .iconfont{
+	color: #cbced7;
+	font-size: 20px;
+	margin-right: 20px;
+	vertical-align: middle;
+}
+.contact-list li > span{
+	vertical-align: middle;
+}
+
+/* 版权备案 */
+.footer-copyright {
+  width: 1200px;
+  height: 100px;
+  margin: 0 auto;
+  color: #a0a0a0;
+  font-size: 14px;
+  line-height: 30px;
+  margin-top: 30px;
+}
+.footer-copyright p {
+  width: 1200px;
+  text-align: center;
+}
+.footer-copyright a {
+  color: #a0a0a0;
+}
+.none-data{
+  text-align: center;
+  padding-top: 40px;
+}
+.none-data p{
+  padding-top: 20px;
+}

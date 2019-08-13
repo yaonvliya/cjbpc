@@ -1,0 +1,74 @@
+<h4 class="child-page-title">
+    待回款列表
+    <a class="right-btn" href="javascript:goBack();">返回<i class="iconfont icon-arrow-right"></i></a>
+</h4>
+<div id="calendarBox" class="p10"></div>
+<div class="p15">
+    <table id="repayPlanCalendarBox" lay-filter="repayPlanCalendarBox"></table>
+</div>
+<script>
+    $(document).ready(function () {
+
+        layui.use(['table'], function () {
+            var investRepayReportDataTable = layui.table.render({
+                elem: '#repayPlanCalendarBox'
+                , height: '500'
+                , headers: {"X-Auth-Token": $.cookie('X-Auth-Token')}
+                , cols: [[ //表头
+                    {field: 'tradeName', title: '项目名称', width: 220}
+                    , {
+                        field: 'planRepayTime', title: '预期回款时间', totalRowText: '合计(元)：', templet: function (d) {
+                            return DateUtils.longToDateStringYMD(d.planRepayTime);
+                        }
+                    }
+                    , {
+                        field: 'repayTotalAmt', title: '应回款总额(元)', align: 'right', totalRow: true, templet: function (d) {
+                            return MoneyUtil.formatMoney(d.repayTotalAmt)
+                        }
+                    }
+                    , {
+                        field: 'capitalAmt', title: '应回款本金(元)', align: 'right', totalRow: true, templet: function (d) {
+                            return MoneyUtil.formatMoney(d.capitalAmt)
+                        }
+                    }
+                    , {
+                        field: 'tradeInterestAmt', title: '应回款利息(元)', align: 'right', totalRow: true, templet: function (d) {
+                            return MoneyUtil.formatMoney(d.tradeInterestAmt)
+                        }
+                    }
+                ]]
+                , url: userAccountApiUrl.getRepayPlanCalendar
+                , method: 'post'
+                , page: false
+                , totalRow: true
+                , loading: true
+                , contentType: 'application/json'
+                , text: {none: '未查询到相关数据'}
+                , response: {
+                    statusName: 'code'
+                    , statusCode: '20000'
+                    , msgName: 'message'
+                    , dataName: 'data'
+                }
+            });
+        });
+
+
+        /*AjaxUtil.ajaxPostCallBack(userAccountApiUrl.getRepayPlanCalendar, {}, function (result) {
+            var list = result.data;
+            console.info(list)
+            var capitalAmtTotal=0,tradeInterestAmtTotal=0;
+            $.each(list, function (index, item) {
+                console.info(item)
+                $('#calendarBox').append("预期回款时间：" + DateUtils.longToDateStringYMD(item.planRepayTime) +
+                    "，本金：" + MoneyUtil.formatMoney(item.capitalAmt.amount)+"，利息：" + MoneyUtil.formatMoney(item.tradeInterestAmt.amount));
+
+                capitalAmtTotal = NumberUtil.add(capitalAmtTotal,item.capitalAmt.amount)
+            })
+
+        });*/
+    });
+
+
+</script>
+

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no,email=no,address=no"/>
+    <link rel="shortcut icon" href="../../img/favicon.ico"/>
+    <title>收益计算器  - 车聚宝</title>
+    <script src="../../js/ismobile.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css?v=2.1.5"/>
+    <link rel="stylesheet" type="text/css" href="../../css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../../iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/invest.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/calculator.css"/>
+</head>
+<body>
+<!------公用头部------>
+<header id="header"></header>
+
+<!--content start-->
+<div class="invest-bg-wrap">
+   <!--最外层盒子-->
+    <div class="revenue-calculator">
+    	 <!--上部分-->
+    	<h3>收益计算器</h3>
+			<div class="revenue-calculator-top">
+		    	<form class="layui-form">
+				   	<div class="layui-form-item">
+					    <div class="layui-inline input-verify">
+					      <label class="layui-form-label text-size">出借金额</label>
+					      <div class="layui-input-inline">
+					        <input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" id="investAmt" placeholder="请输入出借金额" oninput="value=value.replace(/[^\d]/g,'')">
+					        <p class="error-tip" id="investAmt-empty">不能为空</p>
+					      </div>
+					      <span class="zi">元</span>
+					    </div>
+					    <div class="layui-inline input-verify">
+					      <label class="layui-form-label xg text-size">历史年化<br/><span class="sy" >收益</span></label>
+					      <div class="layui-input-inline">
+					        <input type="number" name="title" lay-verify="title2" autocomplete="off" class="layui-input" id="interestRate" placeholder="请输入年化收益"> <!--oninput="value=value.replace(/^(([^0][0-9]+|0)\.([0-9]{1,2}))$/,'')"-->
+					        <p class="error-tip" id="interestRate-empty">不能为空</p>
+					      </div>
+					      <span class="zi">%</span>
+					    </div>
+					    
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline input-verify">
+						      <label class="layui-form-label text-size">项目期限</label>
+						      <div class="layui-input-inline">
+						        <input type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input" id="investTerm" placeholder="请输入项目期限" oninput="value=value.replace(/[^\d]/g,'')" >
+						        <p class="error-tip" id="investTerm-empty">不能为空</p>
+						      </div>
+						      <span class="zi">个月</span>
+						</div>
+			  		  	<div class="layui-inline">
+					      <label class="layui-form-label text-size">还款方式</label>
+					      <div class="layui-input-inline">
+					        <select name="modules" lay-verify="required" lay-search=""  id="repayMethod">
+					          <option value="maturity_all_principal_interest">一次性还本付息</option>
+					          <option value="month_equality_principal_interest">等额本息</option>
+					          <option value="month_interest_maturity_principal">每月付息，到期还本</option>
+					        </select>
+					      </div>
+					  	</div>
+					  	<span id="calculateBtn">开始计算</span>
+					 
+					</div>
+					
+		  		</form>	
+			</div>
+		
+			<!--下部分-->
+		  <div class="revenue-calculator-bottom" style="display: none;">
+		    	<h3>收益描述</h3>
+		    	<ul>
+		    		<li>
+		    			<p>- 预期本息收益 -</p>
+		    			<p class="calculator-money"><span id="want-momey">--</span>元</p>
+		    		</li>
+		    		<li>
+		    			<p>- 本金 -</p>
+		    			<p class="calculator-money"><span id="principal-momey">--</span>元</p>
+		    		</li>
+		    		<li>
+		    			<p>- 利息 -</p>
+		    			<p class="calculator-money"><span id="interest-momey">--</span>元</p>
+		    		</li>
+		    	</ul>
+		    	
+		    	
+		    <div class="revenue-calculator-table">
+					<h3>本息回收时间表</h3>
+					<table class="layui-table" lay-even="" lay-skin="nob">
+					<colgroup>
+					    <col width="150">
+					    <col width="150">
+					    <col width="200">
+					    <col width="150">
+					    <col width="200">
+					    <col>
+					</colgroup>
+				  <thead>
+				    <tr>
+				      <th>期数</th>
+				      <th>预期回款时间</th>
+				      <th>回款金额</th>
+				      <th>本金</th>
+				      <th>利息</th>
+				    </tr> 
+				  </thead>
+					<tbody id="tbody">
+					    <!--<tr>
+					      <td>贤心</td>
+					      <td>汉族</td>
+					      <td>1989-10-14</td>
+					      <td>人生似修行</td>
+					      <td>人生似修行</td>
+					    </tr>-->
+					</tbody>
+				</table> 
+			</div>
+		</div>
+		<!--收益描述说明-->
+		<div class="revenue-calculator-explain">
+			<p><span>等额本息， </span> 即借款人每月以相等的金额偿还借款本息，也是银行房贷等采用的方法。因计算中存在四舍五入，最后一期还款金额与之前略有不同。</p>
+			<p><span>每月付息， </span> 到期还本，即借款人每月偿还固定利息，最后一期偿还全部本金。</p>
+			<p><span>注： </span> 本工具计算结果仅为参考，具体情况以账户中显示的信息为准。</p>
+			
+		</div>
+
+  </div>
+   
+
+</div>
+<!--content end-->
+
+<!------公用底部------>
+<footer class="footer" id="footer"></footer>
+
+<!--遮罩层-->
+<div class="mask"></div>
+
+
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../plugins/layui/layui.js?v=2.1.5"></script>
+<script src="../../plugins/validate/jquery.validate.min.js?v=1.14.0"></script>
+<script src="../../plugins/validate/jquery.validate.extends.js"></script>
+<script src="../../js/jquery.cookie.js"></script>
+<script src="../../properties/host-config.properties.js"></script>
+<script src="../../js/api-config.js"></script>
+<script src="../../js/base-utils.js"></script>
+<script src="../../js/base-utils.api.js"></script>
+<!--<script src="../../js/invest/invest_detail.js"></script>-->
+<script src="../../js/invest/calculator.js"></script>
+</body>
+</html>

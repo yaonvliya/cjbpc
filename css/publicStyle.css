@@ -1,0 +1,140 @@
+/*二维码弹出*/
+.scanning{
+	width:138px;
+	height:336px;
+	background: #FFFFFF;
+  position: absolute;
+  top: -238px;
+  right: 57px;
+	border-radius:5px;
+	display: none;
+	
+}
+.scanning>div{
+	width: 128px;
+	height: 150px;
+	text-align: center;
+}
+.scanning img{
+	width: 116px;
+	margin: 20px 0 5px 10px;
+}
+.scanning .xj{
+	display: block;
+	font-size: 14px;
+	color: #666666;
+	margin-left: 10px;
+}
+/*右侧悬浮框*/
+body{
+	position: relative;
+}
+.suspended-frame{
+	position:fixed;
+	top:57%;
+	right: 10px;
+	z-index: 99;
+	width: 50px;
+	height: 280px;
+	
+}
+.suspended-con li{
+    padding: 0 10px;
+   	border: 1px solid #EEEEEE;
+   	height: 46px;
+	
+}
+.suspended-con li:last-child{
+	/*margin-top: 32px;*/
+	border: 1px solid #EEEEEE;
+	color: #0F7EBC;
+}
+.suspended{
+		font-size: 30px;
+    color: #0F7EBC;
+    display: block;
+    margin-top: 7px;
+
+}
+.suspended-con li:hover span{
+	  display: block;
+    background: #0F7EBC;
+    text-align: center;
+    /*position: fixed;
+    top:478px;
+   	top: 50.5%;
+    right: 10px;
+    z-index: 99;*/
+    width: 50px;
+    height: 46px;
+    line-height: 20px;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding-top: 6px;
+	
+}
+.suspended-con li:nth-of-type(1){
+	background: #FFFFFF;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+}
+.suspended-con li:nth-of-type(2){
+	background: #FFFFFF;
+}
+.suspended-con li:nth-of-type(3){
+	background: #FFFFFF;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px ;
+
+}
+.suspended-con li:nth-of-type(4){
+	border: none;
+}
+.suspended-con li:nth-of-type(5){
+	background: #FFFFFF;
+	border-radius:5px;
+	height: 48px;
+  /*overflow: hidden;*/
+}
+.suspended-con li span:nth-of-type(5){
+	display: none;
+}
+.suspended-con li:nth-of-type(1):hover span{
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	 margin-top: -43px;
+    margin-left: -11px;
+
+}
+.suspended-con li:nth-of-type(2):hover span{
+	/*top:530px;*/
+	  margin-top: -42px;
+    margin-left: -11px;
+	
+}
+.suspended-con li:nth-of-type(2):hover .scanning{
+	display: block;
+	border-radius:5px;
+}
+.suspended-con li:nth-of-type(3):hover span{
+	/*top:583px;*/
+	margin-top: -42px;
+  margin-left: -11px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+}
+.suspended-con li:nth-of-type(5):hover span{
+	/*top:685px;*/
+  margin-top: -41px;
+  margin-left: -11px;
+	border-radius:5px;
+
+}
+
+.suspended-con .hg{
+	display: none;
+}
+.layui-btn-primary:hover {
+    border-color: #078EEE;
+    color: #333;
+}

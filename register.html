@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html class="full-screen">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no,email=no,address=no"/>
+    <meta name="renderer" content="webkit">
+    <title>注册 - 车聚宝</title>
+    <link rel="shortcut icon" href="img/favicon.ico"/>
+    <script src="js/ismobile.js"></script>
+    <link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css?v=2.1.5"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+
+</head>
+<body class="full-body">
+	
+<header class="simple-header">
+    <div class="simple-header-container">
+        <a href="index.html"><img src="img/logo.png"/></a>
+        <ul class="simple-header-right clearfix">
+            <li>
+                <a href="index.html">返回首页</a>
+            </li>
+            <li class="vline"></li>
+            <li>
+                <a href="login.html">登录</a>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<div class="cjb-container">
+	<section class="content-box reg">
+		<h3 class="reg">用户注册</h3>
+	    <nav class="tab-nav">
+	        <ul class="clearfix">
+	            <li class="active" data-name="GR">个人注册</li>
+	            <li class="v-line"></li>
+	            <li data-name="JG">企业注册</li>
+	        </ul>
+	    </nav>
+	
+	    <div class="tab-content">
+	        <form id="registerForm">
+	            <input type="hidden" name="userType" value="GR">
+	            <input type="hidden" name="userRole" value="investor">
+	            <!-- 邀请码 -->
+	            <input type="hidden" name="inviteCode" value="">
+	            <input type="hidden" name="registerFrom" value="cjb">
+	            
+	            <div class="input-row">
+	                <input class="beauty-input" type="number" id="mobile" name="mobile" placeholder="请输入手机号码"/>
+	            </div>
+	            <div class="input-row">
+	                <input class="beauty-input" type="password" id="password" name="password" placeholder="请输入登录密码"/>
+	            </div>
+	            
+	            <div class="input-row">
+	                <input class="beauty-input" type="text" id="smsCode" name="smsCaptcha" placeholder="短信验证码" maxlength="6"/>
+	                <button type="button" id="getSmsCodeBtn">获取验证码</button>
+	            </div>
+	            
+	            <div class="input-row agr-row">
+	                <div>
+	                    <label class="fs-14">
+	                        <input class="va-m cr-pr" type="checkbox" name="agree"/>
+	                        <span class="va-m cr-pr">我已阅读并同意</span>
+	                    </label>
+	                    <a class="va-m c-main-blue fs-14" href="https://oss.chejubao.cn/agreement/PC/html/platform_service.html" target="_blank">《车聚宝平台服务条款》</a>
+	                </div>
+	            </div>
+	            
+	            <button type="button" class="btn-row mt10" id="registerFormBtn">注册</button>
+	        </form>
+	    </div>
+	
+	    <p class="link-row">已有账号
+	        <a href="login.html" class="c-main-blue">登录</a>
+	    </p>
+	</section>
+</div>
+
+<div class="cjb-foot">
+	<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" class="c-999" target="_blank">沪公网安备  31011802001554号</a>
+	<span>ICP备案号：沪ICP备15034281号</span>
+	<span>Copyright © 上海开颜金融信息服务有限公司(2014-2019)</span>
+	<span>网贷有风险，出借需谨慎</span>
+</div>
+
+
+<!--蒙版：可点击-->
+<div class="mask"></div>
+
+<!--蒙版：不可点击-->
+<div class="not-hide-mask"></div>
+
+<!--图片验证码-->
+<div class="popup-captcha-box">
+    <i class="iconfont icon-quxiao suc-close"></i>
+    <div class="input-row">
+        <input class="beauty-input" type="text" id="captchaCode" maxlength="6" placeholder="输入图片验证码"/>
+        <a href="javascript:getCaptchaImg();" title="看不清？点击换一张">
+            <img class="captcha-img" src=""/>
+        </a>
+    </div>
+    <button class="btn-row" type="button" id="confirmBtn">确定</button>
+</div>
+
+<!--注册成功-->
+<div class="popup-gift">
+	<p class="p1">注册获得<span class="cashMoney">*</span>元投资红包</p>
+	<img src="img/guide_1.png"/>
+	<div class="reward-card">
+		<p><span class="fs-26 mr10 cashMoney">*</span><span>元投资红包</span></p>
+	</div>
+	<p class="p2">(投资单笔满<span class="leastActivateAmount">*</span>元可用)</p>
+	<a class="popup-btn" href="views/user/user_index.html">我知道了</a>
+	<a class="popup-close" href="views/user/user_index.html"><i class="iconfont icon-quxiao"></i></a>
+</div>
+
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="plugins/layui/layui.js?v=2.1.5"></script>
+<script src="plugins/validate/jquery.validate.min.js?v=1.14.0"></script>
+<script src="plugins/validate/jquery.validate.extends.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="properties/host-config.properties.js"></script>
+<script src="js/api-config.js"></script>
+<script src="js/base-utils.js"></script>
+<script src="js/base-utils.api.js"></script>
+
+<script src="js/register/register.js"></script>
+
+</body>
+</html>

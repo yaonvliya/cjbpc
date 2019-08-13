@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="format-detection" content="telephone=no,email=no,address=no"/>
+	<title>我要投资 - 车聚宝</title>
+	<link rel="shortcut icon" href="../../img/favicon.ico"/>
+
+	<script src="../../js/ismobile.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../plugins/layui/css/layui.css?v=2.1.5"/>
+	<link rel="stylesheet" type="text/css" href="../../css/base.css"/>
+	<link rel="stylesheet" type="text/css" href="../../iconfont/iconfont.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/invest.css"/>
+	<link rel="stylesheet" type="text/css" href="../../css/publicStyle.css"/>
+</head>
+<body>
+<!------公用头部------>
+<header id="header"></header>
+
+<div class="invest-bg-wrap">
+	
+	<!--投资标、转让标nav-->
+	<div class="invest-transfer-nav">
+		<a class="active" id="invest-list-btn" href="javascript:void(0);">投资标</a>
+		<a id="transfer-list-btn" href="javascript:void(0);">转让标</a>
+	</div>
+
+	<!--投资标筛选-->
+	<div class="filter-box clearfix investFitter">
+		<div class="filter-row ">
+			<span>项目类别 ：</span>
+			<span class="filter-row invest-filter">
+				<a class="active" href="javascript:void(0);">全部</a>
+				<a href="javascript:void(0);" name="保守型">保守型</a>
+				<a href="javascript:void(0);" name="稳健型">稳健型</a>
+				<a href="javascript:void(0);" name="成长型">成长型</a>
+				<a href="javascript:void(0);" name="进取型">进取型</a>
+			</span>
+		</div>
+		<div class="filter-row fl">
+			<span>投资期限 ：</span>
+			<span class="filter-row investTerm">
+				<a class="active" href="javascript:void(0);" data-min="" data-max="">全部</a>
+				<a href="javascript:void(0);" data-min="" data-max="90">3个月以内</a>
+				<a href="javascript:void(0);" data-min="90" data-max="180">3~6个月</a>
+				<a href="javascript:void(0);" data-min="180" data-max="360">6~12个月</a>
+				<a href="javascript:void(0);" data-min="360" data-max="">12个月以上</a>
+			</span>
+
+		</div>
+		<div class="filter-up-down ">
+			<a class="expectedInterestRate triangle-arrow-up triangle-arrow-down" href="javascript:void(0);">历史年化收益率</a>
+		</div>
+	</div>
+
+	<!--转让标筛选-->
+	<div class="filter-box clearfix transferFitter hide">
+		<div class="filter-row">
+			<span>转让金额 ：</span>
+			<span class="filter-row investMoney">
+				<a class="active" href="javascript:void(0);" data-min="" data-max="">全部</a>
+				<a href="javascript:void(0);" data-min="" data-max="50000000">5万以内</a>
+				<a href="javascript:void(0);" data-min="50000000" data-max="100000000">5~10万</a>
+				<a href="javascript:void(0);" data-min="100000000" data-max="300000000">10~30万</a>
+				<a href="javascript:void(0);" data-min="300000000" data-max="">30万以上</a>
+			</span>
+		</div>
+		<div class="filter-row fl ">
+			<span>投资期限 ：</span>
+			<span class="filter-row transferInvestTerm">
+				<a class="active" href="javascript:void(0);" data-min="" data-max="">全部</a>
+				<a href="javascript:void(0);" data-min="" data-max="90">3个月以内</a>
+				<a href="javascript:void(0);" data-min="90" data-max="180">3~6个月</a>
+				<a href="javascript:void(0);" data-min="180" data-max="360">6~12个月</a>
+				<a href="javascript:void(0);" data-min="360" data-max="">12个月以上</a>
+			</span>
+		</div>
+		<div class="filter-up-down ">
+			<a class="transferExpectedInterestRate triangle-arrow-up triangle-arrow-down" href="javascript:void(0);">历史年化收益率</a>
+		</div>
+	</div>
+
+
+	<!--投资标列表-->
+	<div id="investList" class="list-box invest-list-box"></div>
+	
+	<!--转让标列表-->
+	<div id="transferList" class="list-box transfer-list-box"></div>
+
+	<!--分页容器-->
+	<div class="ta-c mt15" id="investListLaypageBox"></div>
+	
+</div>
+
+<!--遮罩层-->
+<div class="mask"></div>
+
+<!--定向投资密码弹框-->
+<div class="content-box direct-box">
+	<i class="iconfont icon-quxiao suc-close"></i>
+	<h3>请输入定向投资密码！</h3>
+	<form id="directInvest" onsubmit="return false">
+		<input type="hidden" name="tradeId">
+		<input type="password" id="directPass" name="directPass" />
+		<button class="confirm-btn" type="button" id="confirmBtn">确定</button>
+	</form>
+</div>
+
+<!--右侧悬浮框-->
+<div class="suspended-frame">
+	<ul class="suspended-con">
+		<li>
+			<a href="../invest/calculator.html">
+				<i class="iconfont icon-calculator suspended"></i>
+				<span class="hg">收益<br/>计算</span>
+			</a>	
+		</li>
+		<li>
+			<a style="cursor: pointer;">
+				<i class="iconfont icon-about suspended"></i>
+				<span class="hg">关于<br/>我们</span>
+				<div class="scanning">
+					<div>
+						<img src="../../img/qr-1.png"/>
+						<div class="xj">车聚宝APP下载</div>
+					</div>
+					<div>
+						<img src="../../img/qr-2.png"/>
+						<div class="xj">车聚宝公众号</div>
+					</div>
+				</div>
+			</a>
+			
+		</li>
+		
+		<li>
+			<a href="../about/help.html">
+				<i class="iconfont icon-faq suspended"></i>
+				<span class="hg">常见<br/>问题</span>
+			</a>	
+		</li>
+		<li></li>
+		<li style="display: none;">
+			<a href="#top" id="toTop">
+				<i class="iconfont icon-backtop suspended"></i>
+				<span class="hg" style="color: #FFFFFF;">回到<br/>顶部</span>
+			</a>	
+		</li>	
+	</ul>
+	
+</div>
+
+<!------公用底部------>
+<footer class="footer" id="footer"></footer>
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../plugins/layui/layui.js?v=2.1.5"></script>
+<script src="../../js/jquery.cookie.js"></script>
+<script src="../../properties/host-config.properties.js"></script>
+<script src="../../js/api-config.js"></script>
+<script src="../../js/base-utils.js"></script>
+<script src="../../js/base-utils.api.js"></script>
+<script src="../../js/invest/invest.js"></script>
+<script src="../../js/wipeUp.js"></script>
+<script src="../../js/top.js" type="text/javascript"></script>
+</body>
+</html>

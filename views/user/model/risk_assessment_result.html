@@ -1,0 +1,26 @@
+<!--风险评测-->
+<h4 class="child-page-title">测评结果</h4>
+
+<div class="assessment-result">
+	<p class="p1">您的风险承受力：<span id="riskLevel"></span></p>
+	<p class="p2">评测结果并不具备全面性及承诺性</p>
+	
+	<a class="reassessment" id="evaluation" href="javascript:void(0);">重新测评</a>
+	
+	<div class="assessment-type">
+	    <p>保守型：累计在投资金额不超过50万元</p>
+	    <p>稳健型：累计在投资金额不超过300万元</p>
+	    <p>成长型：累计在投资金额不超过800万元</p>
+	    <p>进取型：累计在投资金额无限制</p>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		$('#riskLevel').text(userInfo.riskLevel);
+		$('#evaluation').click(function () {
+			window.history.pushState(null, null, $_GLOBAL.basePath() + "/views/user/user_index.html#risk_assessment");
+			$(".right-content").load($_GLOBAL.basePath() + "/views/user/model/risk_assessment.html");
+			$(document).scrollTop(80);
+		});
+	});
+</script>

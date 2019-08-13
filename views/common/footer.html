@@ -1,0 +1,83 @@
+<!------------公共底部 ---------------->
+<div class="footer-tips">风险提示：网贷有风险，出借需谨慎</div>
+
+<!--网站指南-->
+<div class="footer-siteinfo clearfix">
+	<div class="info-item about-us clearfix">
+		<dl>
+			<dt>关于我们</dt>
+			<dd><a href="javascript:void(0);" onclick="footerHref('companyIntroduce')">公司介绍</a></dd>
+			<dd><a href="javascript:void(0);" onclick="footerHref('projectInfo')">产品信息</a></dd>
+			<dd><a href="javascript:void(0);" onclick="footerHref('report')">运营报告</a></dd>
+			<dd><a href="javascript:void(0);" onclick="footerHref('shenji')">审计信息</a></dd>
+		</dl>
+		<dl>
+			<dt>服务大厅</dt>
+			<dd><a href="javascript:void(0);" onclick="footerHref('news')">平台公告</a></dd>
+			<dd><a href="javascript:void(0);" onclick="footerHref('safety')">安全保障</a></dd>
+			<dd><a href="javascript:void(0);" onclick="footerHref('faq')">常见问题</a></dd>
+			<dd><a href="javascript:$_GLOBAL.jumpToMerchant();">商户后台</a></dd>
+		</dl>
+	</div>
+	<div class="info-item qr-code">
+		<p class="qr-1">
+			<i></i>
+			<span>车聚宝微信公众号</span>
+		</p>
+		<p class="qr-2">
+			<i></i>
+			<span>车聚宝APP</span>
+		</p>
+	</div>
+	<div class="info-item">
+		<ul class="contact-list">
+			<li><i class="iconfont icon-dianhua1"></i><span>客服电话：<span class="fs-20">400-684-8856</span></span></li>
+			<li><i class="iconfont icon-youxiang"></i><span>电子邮箱：chejubao@chejubao.cn</span></li>
+			<li><i class="iconfont icon-shijian-"></i><span>服务时间：0:00~24:00</span></li>
+			<li><i class="iconfont icon-tousu-"></i><span>投诉电话：021-59886366</span></li>
+		</ul>
+		
+	</div>
+</div>
+
+<!--版权备案-->
+<div class="footer-copyright">
+	<p>
+		<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" target="_blank">沪公网安备  31011802001554号&nbsp;&nbsp;&nbsp;</a>
+		<span>ICP备案号：沪ICP备15034281号</span>
+	</p>
+	<p>Copyright © 上海开颜金融信息服务有限公司(2014-2019)</p>
+</div>
+
+<script>
+	function footerHref(paramHref) {
+		switch(paramHref) {
+			case "companyIntroduce":
+				location.href = $_GLOBAL.basePath() + "/views/about/info_disclosure.html#0";
+				break;
+			case "projectInfo":
+				location.href = $_GLOBAL.basePath() + "/views/about/info_disclosure.html#1";
+				break;
+			case "safety":
+				location.href = $_GLOBAL.basePath() + "/views/about/info_disclosure.html#2";
+				break;
+			case "report":
+				location.href = $_GLOBAL.basePath() + "/views/about/info_disclosure.html#3";
+				break;
+			case "shenji":
+				location.href = $_GLOBAL.basePath() + "/views/about/info_disclosure.html#5";
+				break;
+			case "news":
+				location.href = $_GLOBAL.basePath() + "/views/about/news.html";
+				break;
+			case "faq":
+				location.href = $_GLOBAL.basePath() + "/views/about/help.html";
+				break;
+			default:
+				break;
+		}
+	}
+
+</script>
+
+

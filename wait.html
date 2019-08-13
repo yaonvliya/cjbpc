@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no,email=no,address=no"/>
+    <title>跳转页面加载中 - 车聚宝</title>
+    <script src="js/ismobile.js"></script>
+    <link rel="shortcut icon" href="img/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css?v=2.1.5"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+
+</head>
+<body class="bg-white ta-c">
+	
+<form class="item-name" id="personalInfo" method="post">
+</form>
+
+<div>
+	<img class="w190 mt180" src="img/jump_loading.gif"/>
+	<p>正在加载中...</p>
+</div>
+
+
+<script src="js/jquery.min.js"></script>
+<script src="plugins/layui/layui.js?v=2.1.5"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="properties/host-config.properties.js"></script>
+<script src="js/api-config.js"></script>
+<script src="js/base-utils.js"></script>
+<script src="js/base-utils.api.js"></script>
+<script>
+    var form = $("#personalInfo");
+    $(document).ready(function () {
+		// 初始化layer
+		layui.use(['layer'], function () {
+			layer = layui.layer;
+            //判断是否登录，未登录则跳转到登录页面
+            commonAPIUtil.isLogin();
+        });
+
+    	var token = location.search;
+    	if(token){
+			token = token.substring(1 , token.length);
+			var data = {"token": token};
+			AjaxUtil.ajaxPostCallBack(userProfileApiUrl.baoFuApiContext, JSON.stringify(data), function (result) {
+				if(result.data.params){
+					for(var i in result.data.params){
+						var value = result.data.params[i];
+						var con = '<input type="hidden" name=' + i + ' value=' + value + '>';
+						form.append(con);
+					}
+				}
+				form.prop("action", result.data.url);
+			});
+			form.submit();
+        }
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telephone=no,email=no,address=no"/>
+    <link rel="shortcut icon" href="img/favicon.ico"/>
+    <title>404</title>
+    <script src="js/ismobile.js"></script>
+    <link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css?v=2.1.5"/>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/invest.css"/>
+    <link rel="stylesheet" type="text/css" href="css/404.css"/>
+</head>
+<body>
+<!------首页头部------>
+<header class="header" id="header">
+	<div class="hbar">
+		<div class="hbar-container">
+			<span>客服电话：400-684-8856 （0:00~24:00）</span>
+			<div class="hbar-right">
+				<div class="qr-item">
+					<i class="iconfont icon-shouji"></i>
+					<span class="va-m">车聚宝APP</span>
+					<div class="pic-box">
+						<img src="img/qr-1.png"/>
+					</div>
+				</div>
+				<div class="qr-item">
+					<i class="iconfont icon-icon1460188541813"></i>
+					<span class="va-m">微信公众号</span>
+					<div class="pic-box">
+						<img src="img/qr-2.png"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="c-nav">
+		<div class="box-nav">
+			<a class="logo" href="index.html"><img src="img/logo.png"/></a>
+			<div class="myself">
+				<!--竖线-->
+				<span class="vl"></span>
+				
+				<!--未登录-->
+				<div class="not-avatar logged-out">
+					<a class="lr" href="login.html">登录</a>
+					<a class="lr" href="register.html">注册</a>
+				</div>
+				
+				<!--已登录-->
+				<div class="avatar logged-in">
+					<i class="iconfont icon-gerenzhongxin1"></i>
+					<ul class="avatar-ul">
+						<li><a href="views/user/user_index.html">我的账户</a></li>
+						<li><a href="javascript:$_GLOBAL.jumpToRecharge(userInfo);">充值</a></li>
+						<li><a href="javascript:$_GLOBAL.jumpToWithdraw(userInfo);">提现</a></li>
+						<li><a href="javascript:$_GLOBAL.doLogout();">退出</a></li>
+					</ul>
+				</div>
+			</div>
+			<ul class="index-nav clearfix">
+				<li><a class="active" href="index.html">首页</a></li>
+				<li><a href="views/invest/invest.html">我要投资</a></li>
+				<!--<li><a href="views/about/new_guide.html">新手引导</a></li>-->
+				<li><a href="javascript:$_GLOBAL.jumpToLoan();">我要借款</a></li>
+				<li><a href="views/about/info_disclosure.html">信息披露</a></li>
+			</ul>
+			
+		</div>
+	</div>
+</header>
+
+<!--content start-->
+<div class="invest-bg-wrap">
+   <!--最外层盒子-->
+  <div class="can-t-find">
+		<img src="img/404.png"/>
+		<p>404:页面找不到了</p>
+		<p>页面竟然走丢了，请检查您输入的网址是否正确</p>
+		<a href="index.html">返回首页</a>
+ 	</div>
+   
+
+</div>
+<!--content end-->
+
+<!------公用底部------>
+<footer class="footer" id="footer"></footer>
+
+<!--遮罩层-->
+<div class="mask"></div>
+
+
+
+<script src="js/jquery.min.js"></script>
+<script src="plugins/layui/layui.js?v=2.1.5"></script>
+<script src="plugins/validate/jquery.validate.min.js?v=1.14.0"></script>
+<script src="plugins/validate/jquery.validate.extends.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="properties/host-config.properties.js"></script>
+<script src="js/api-config.js"></script>
+<script src="js/base-utils.js"></script>
+<script src="js/base-utils.api.js"></script>
+<!--<script src="js/invest/transfer_detail.js"></script>-->
+<!--<script src="js/invest/invest_detail.js"></script>-->
+<!--<script src="js/invest/calculator.js"></script>-->
+<script type="text/javascript">
+	//$("#header").load("views/common/header1.html");
+		$("#footer").load("views/common/footer.html");
+
+</script>
+</body>
+</html>

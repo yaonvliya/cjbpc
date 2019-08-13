@@ -1,0 +1,182 @@
+<h4 class="child-page-title">
+    投资详情
+    <a class="right-btn" href="javascript:goBack();">返回<i class="iconfont icon-arrow-right"></i></a>
+</h4>
+<div class="invest-detail">
+    <h6><span></span><b>项目信息</b></h6>
+    <table class="layui-table ta-c">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col width="150">
+            <col width="200">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>项目名称</td>
+            <td class="tradeName"></td>
+            <td>历史年化收益率</td>
+            <td class="tradeInterestRate"></td>
+        </tr>
+        <tr>
+            <td>投资金额(元)</td>
+            <td class="investAmount"></td>
+            <td>投资期限</td>
+            <td class="investTerm"></td>
+        </tr>
+        <tr>
+            <td>预期收益(元)</td>
+            <td class="expectedProceedsAmount"></td>
+            <td>投资状态</td>
+            <td class="investStatus"></td>
+        </tr>
+        <tr>
+            <td>投资时间</td>
+            <td class="investTime"></td>
+            <td>起息时间</td>
+            <td class="interestEffectiveTime"></td>
+        </tr>
+        <tr>
+            <td>回款方式</td>
+            <td class="repayMethod"></td>
+            <td>投资合同</td>
+            <td id="investContract"><a id="previewContractBtn" class="modify-btn preview" href="javascript:;" target="_blank">合同预览</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <h6><span></span><b>使用优惠券</b></h6>
+    <table class="layui-table ta-c">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col width="150">
+            <col width="200">
+        </colgroup>
+        <tbody>
+        <tr>
+            <td>红包</td>
+            <td class="couponCashAmount"></td>
+            <td>加息券</td>
+            <td class="couponInterestRate"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="payBackInfo">
+        <h6><span></span><b>回款信息</b></h6>
+        <table class="layui-table ta-c">
+            <colgroup>
+                <col width="150">
+                <col width="200">
+                <col width="150">
+                <col width="200">
+            </colgroup>
+            <tbody>
+            <tr>
+                <td>已回款期数</td>
+                <td class="alreadyPaybackPeriod"></td>
+                <td>已回款本金(元)</td>
+                <td class="alreadyPaybackCapitalAmount"></td>
+            </tr>
+            <tr>
+                <td>已回款收益(元)</td>
+                <td class="alreadyPaybackProceedsAmount"></td>
+                <td>下期回款日</td>
+                <td class="nextPaybackTime"></td>
+            </tr>
+            <tr>
+                <td class="xianshi-cot">应收罚息(元)
+                	<i class="iconfont icon-xinxi hova"></i>
+                	<!--<div class="xianshi">
+                		项目超过应回款日期，借款人应付的逾期罚息金额
+                	</div>-->
+                	<div class="xianshi">
+										<div class="test_triangle_border">
+									    <div class="popup">
+									        <i></i>项目超过应回款日期，借款人应付的逾期罚息金额
+									    </div>
+										</div>
+									</div>
+                </td>
+                <td class="overdueInterestAmount"></td>
+               
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+	
+    var investDetail = $('.invest-detail');
+    $(document).ready(function () {
+        $('.left-menu').find('.nav-item').eq(1).addClass("active");
+
+        if('undefined' == typeof investId){
+            window.location.href = "user_index.html#my_invest";
+            return false;
+        }
+
+        AjaxUtil.ajaxPostCallBack(userAccountApiUrl.investDetail, JSON.stringify({investId: investId}), function (result) {
+            layui.each(result.data, function (k, v) {
+                var selector = '[class="' + k + '"]';
+                var elt = investDetail.find(selector);
+                if(!v){
+                    v = "---"
+                }
+                if('string' == typeof (v)){
+                    elt.text("" + v);
+                } else if('number' == typeof (v)){
+                    elt.text(v);
+                } else if('object' == typeof (v)){
+                    elt.text(MoneyUtil.formatMoney(v.amount));
+                }
+            });
+            addInfo(result);
+        });
+    });
+
+    function addInfo(result) {
+        var data = result.data;
+        investDetail.find('[class="tradeInterestRate"]').text(NumberUtil.transfPercentage(data.tradeInterestRate));
+        investDetail.find('[class="couponInterestRate"]').text(NumberUtil.transfPercentage(data.couponInterestRate) + "加息券");
+        if(!data.couponInterestId){
+            investDetail.find('[class="couponInterestRate"]').text("---");
+        }
+        investDetail.find('[class="investTime"]').text(DateUtils.longToDateString(data.investTime));
+        investDetail.find('[class="overdueInterestAmount"]').text(MoneyUtil.formatMoney(data.overdueInterestAmount.amount));
+        
+        investDetail.find('[class="interestEffectiveTime"]').text(DateUtils.longToDateString(data.interestEffectiveTime));
+        if(!data.interestEffectiveTime) {
+            investDetail.find('[class="interestEffectiveTime"]').text("---");
+        }
+        investDetail.find('[class="couponCashAmount"]').text("返现" + data.couponCashAmount.amount + "元");
+        if(!data.couponCashId){
+            investDetail.find('[class="couponCashAmount"]').text("---");
+        }
+        if("未成立" == data.displayStatus){
+            $("#investContract").html("---");
+            $("#payBackInfo").empty();
+        } else if("持有中" == data.displayStatus){
+//			investDetail.find('[class="alreadyPaybackPeriod"]').text('-/-');
+//			investDetail.find('[class="nextPaybackTime"]').text('- - -');
+        }
+
+        //合同地址
+        if(data.contractStatus){
+            $('#previewContractBtn').click(function () {
+                var param = {
+                    "contractId": data.contractId
+                };
+                var res = AjaxUtil.ajaxPost(userAccountApiUrl.getContract, JSON.stringify(param));
+                if(res){
+                    window.open(res.data, "_blank")
+                }
+            });
+        } else {
+            $("#previewContractBtn").text("待生成");
+        }
+
+    }
+		
+
+</script>
+
