@@ -1,6 +1,7 @@
 !function (a) {
 	"function" == typeof define && define.amd ? define(["jquery", "./additional-methods.min.js"], a) : a(jQuery)
 }(function (a) {
+
 	// 手机号码验证
 	jQuery.validator.addMethod("mobile", function (value, element) {
 		var length = value.length;
@@ -55,6 +56,14 @@
 
 		return this.optional(element) || (regex);
 	}, "身份证号格式错误");
+
+    // 验证营业执照号是否正确
+    jQuery.validator.addMethod("businessLicenseNo", function (value, element) {
+        var rel = /(^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$)|(^\d{15}$)/;
+        var regex = rel.test(value);
+
+        return this.optional(element) || (regex);
+    }, "营业执照号格式错误");
 
 	// IP地址验证
 	jQuery.validator.addMethod("ip", function (value, element) {

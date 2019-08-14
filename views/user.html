@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="format-detection" content="telephone=no,email=no,address=no"/>
+	<title>个人中心-车聚宝借款</title>
+	<link rel="shortcut icon" href="../img/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css"/>
+	<link rel="stylesheet" type="text/css" href="../iconfont/iconfont.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/base.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+</head>
+<body>
+	
+<header class="header">
+	<div class="hbar">
+		<div class="hbar-container">
+			<span>客服电话：400-684-8856（0:00~24:00 )</span>
+			<div class="hbar-right">
+				<a href="javascript:;" onclick="$_GLOBAL.doLogout()">退出</a>
+				<a href="javascript:;"><span id="userName"></span></a>
+				<span class="vl"></span>
+				<!--<div class="qr-item">
+					<i class="iconfont icon-phone"></i>
+					<span class="va-m">车聚宝APP</span>
+					<div class="pic-box">
+						<img src="../img/qr-1.png"/>
+					</div>
+				</div>-->
+				<div class="qr-item">
+					<i class="iconfont icon-wechat"></i>
+					<span class="va-m">微信公众号</span>
+					<div class="pic-box">
+						<img src="../img/qr-2.png"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="iheader clearfix">
+		<a class="ilogo" href="../index.html"><img src="../img/logo-blue.png"/></a>
+		<div class="iheader-nav">
+			<a href="../index.html">首页</a>
+			<a href="javascript:;" onclick="goLoan()">快速借款</a>
+			<a class="vl" href="javascript:;"></a>
+			<a class="status-login on" href="user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
+		</div>
+	</div>
+</header>
+
+<section class="user-container clearfix">
+	<div class="left">
+		<div class="avatar"></div>
+		<ul class="icon-panel clearfix">
+			<li class="active" title="已绑定手机"><i class="iconfont icon-shoujirenzheng"></i></li>
+			<li id="bindCardIcon" title="未绑卡"><i class="iconfont icon-yinhangqia"></i></li>
+			<li id="bindEmailIcon" title="未绑定邮箱"><i class="iconfont icon-youxiangrenzheng"></i></li>
+			<li id="realNameIcon" title="未实名认证"><i class="iconfont icon-shimingrenzheng"></i></li>
+		</ul>
+		<div class="menu">
+			<a data-url="account" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>账户总览</span></a>
+			<a data-url="apply" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的借款</span></a>
+			<a data-url="repayment" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>还款管理</span></a>
+			<a data-url="settings" href="javascript:;"><i class="iconfont icon-shezhi"></i><span>基本信息</span></a>
+		</div>
+	</div>
+	<div class="right" id="content"></div>
+</section>
+
+<div class="mask"></div>
+<div class="pop-open">
+	<img src="../img/open-depository.png"/>
+	<p class="p1">实名认证</p>
+	<p class="p2">为了保障您的资金安全，请先进行实名认证</p>
+	<a class="ibtn" href="javascript:;" onclick="jumpToOpenAccount()">去实名认证</a>
+	<span class="pop-close" onclick="closeOpenAccountTips()"><i class="iconfont icon-guanbi1"></i></span>
+</div>
+
+<footer class="footer">
+	<div class="footer-wrap">
+		<div class="qr-row clearfix">
+			<dl>
+				<dt><img src="../img/qr-1.png"/></dt>
+				<dd>车聚宝微信公众号</dd>
+			</dl>
+			<dl>
+				<dt><img src="../img/qr-2.png"/></dt>
+				<dd>车聚宝APP</dd>
+			</dl>
+		</div>
+		<p class="tel-row">
+			<i class="iconfont icon-guanjiaowangtubiao11"></i>
+			客服电话&nbsp; 400-684-8856 &nbsp;<span>(0:00~24:00)</span>
+		</p>
+		<p class="p1"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" target="_blank">沪公网安备 31011802001554号</a> &emsp; ICP备案号：沪ICP备15034281号</p>
+		<p class="p2">Copyright © 上海开颜金融信息服务有限公司(2015-2019)</p>
+	</div>
+</footer>
+	
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../plugins/layui/layui.all.js"></script>
+<script src="../plugins/validate/jquery.validate.min.js"></script>
+<script src="../plugins/validate/jquery.validate.extends.js"></script>
+<script src="../plugins/validate/messages_zh.min.js"></script>
+<script src="../properties/host-config.properties.js"></script>
+<script src="../js/api-config.js"></script>
+<script src="../js/base-utils.js"></script>
+<script src="../js/base-utils.api.js"></script>
+<script src="../js/common.js"></script>
+<script src="../iconfont/iconfont.js"></script>
+
+<script src="../js/vue.min.js"></script>
+<script src="../js/axios.min.js"></script>
+
+<script>
+	var userType, userInfo;
+	
+	$(document).ready(function(){
+        userInfo = commonAPIUtil.initUserInfo();
+        if(userInfo){
+            userType = userInfo.userType.code;
+            var realnameStatus = userInfo.openDepositStatus.code;
+            var bindcardStatus = userInfo.bindCardStatus.code;
+            var showEmail = userInfo.safeEmail;
+			$("#userName").text(userInfo.safeLoginAccount);
+            if(realnameStatus == $_GLOBAL.realnameStatus.HAS_REALNAME){
+                $("#realNameIcon").addClass("active").attr("title", "已实名认证");
+            }
+            if(bindcardStatus == $_GLOBAL.bindCardStatus.HAS_BIND){
+                $("#bindCardIcon").addClass("active").attr("title", "已绑卡");
+            }
+            if(showEmail){
+                $("#bindEmailIcon").addClass("active").attr("title", "已绑定邮箱");
+            }
+
+            // 这里用于刷新页面
+            hashFn();
+        }
+
+
+		// TODO：调试
+//		loadTemplate("open_account_company");
+
+		// 左侧菜单点击事件
+		$(".menu a").click(function(){
+			var loadUrl = $(this).attr("data-url");
+			$(this).addClass("active").siblings().removeClass("active");
+			loadTemplate(loadUrl);
+		});
+		
+	});
+	
+	// 加载右边模块
+	function loadTemplate(url){
+		if(url){
+            var searchIndex = url.indexOf("?");
+            var hashUrl = searchIndex > 0 ? url.substring(0, searchIndex) : url;
+            var searchUrl = searchIndex > 0 ?  url.substring(searchIndex) : "";
+
+            window.history.pushState(null, null, "user.html#" + url);
+			$("#content").load("template/" + hashUrl + ".html" + searchUrl);
+		}
+	}
+	
+	// hash监听：只用于页面刷新、浏览器前进后退
+	function hashFn(){
+	    var hash = window.location.hash;
+	    var searchIndex = hash.indexOf("?");
+		var hashUrl = searchIndex > 0 ? hash.substring(1, searchIndex) : hash.substring(1);
+		var searchUrl = searchIndex > 0 ?  hash.substring(searchIndex) : "";
+		
+		// 存管回调
+		var hashFlag = hashUrl.indexOf("#");
+		
+		if(hashUrl && hashFlag == -1){
+			// 左侧菜单聚焦
+			$(".menu a").each(function(){
+				if(hashUrl == $(this).attr("data-url")){
+					$(this).addClass("active").siblings().removeClass("active");
+				}
+			});
+			
+			$("#content").load("template/" + hashUrl + ".html" + searchUrl);
+		}else if(hashUrl && hashFlag != -1){
+			hashUrl = hashUrl.substring(0, hashFlag);
+			$("#content").load("template/deposit_callback_result.html");
+			
+		}else{
+			
+			// 默认是账户总览
+			$(".menu a").eq(0).addClass("active").siblings().removeClass("active");
+			$("#content").load("template/account.html");
+		}
+	}
+	
+	// 绑定浏览器前进后退事件
+	window.onpopstate = function(){
+		hashFn();
+	}
+
+	function showOpenAccountTips(){
+        $(".mask,.pop-open").show();
+	}
+
+	function closeOpenAccountTips(){
+        $(".mask,.pop-open").hide();
+	}
+
+    function jumpToOpenAccount(){
+        closeOpenAccountTips();
+        if(userType == $_GLOBAL.userType.GR){
+            loadTemplate('open_account_personal');
+        } else if (userType == $_GLOBAL.userType.JG){
+            loadTemplate('open_account_company');
+        }
+    }
+
+    function goLoan(){
+        var userInfo = commonAPIUtil.initUserInfo();
+        if(userInfo) {
+            if(validateAPIUtil.checkRight()){
+                $_GLOBAL.jumpToLoan();
+            }
+        }
+    }
+
+</script>
+
+</body>
+</html>

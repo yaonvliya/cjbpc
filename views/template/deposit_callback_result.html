@@ -1,0 +1,122 @@
+<div>
+	<h5 class="title-row" id="title"></h5>
+	<p class="result-row"><i class="iconfont" id="icon-result"></i><span id="result-msg"></span></p>
+	<a class="result-link" href="javascript:;"></a>
+</div>
+<div id="goRepayList" style="display: none;">
+	<p style="margin: 0 auto;color:#929CA5;width: 351px;"><span id="investSuccessTimer">5</span>秒 后自动跳入“还款列表”</p>
+	<div>
+		<a id="jump" style="margin: 40px 0 0 311px;width: 285px;display: block;text-align: center;line-height: 50px;font-size: 16px;height:50px;background:rgba(45,152,239,1);border-radius:8px;color: #FFFFFF;">返回还款管理</a>
+	</div>
+</div>
+<script type="text/javascript">
+
+	var interval, bizType;
+	var investSuccessTimer, investMsgTimer; // 投资成功后定时器    获取验证码定时器
+    $(document).ready(function () {
+        var hash = location.hash;
+        var params = hash.substring(1, hash.length).split('#')[1];
+
+        if(params){
+            var data = params.split(',');
+            bizType = data[1];
+
+            setTitle(bizType);
+
+            var param = {requestNo:data[0]};
+            interval = window.setInterval(loadResult(param), 500);
+        } else {
+            //$_GLOBAL.jumpToIndex();
+		}
+
+	});
+		//跳转还款管理
+	$("#jump").click(function(){
+ 			clearInterval(investSuccessTimer);
+			window.location.href = $_GLOBAL.basePath() + "/views/user.html#repayment";
+	});
+	//跳转还款管理
+	function successfulServiceCharge(result) {
+		if(bizType == $_GLOBAL.bizType.PAY_FEE && sessionStorage.getItem("serviceFeeType") == "post"){
+			$("#goRepayList").show();
+			var num = 5;
+			investSuccessTimer = setInterval(function () {
+				$('#investSuccessTimer').text(num);
+				num--;
+				if($('#investSuccessTimer').text() == ""){
+					clearInterval(investSuccessTimer);
+				}else if (num < 0) {
+					clearInterval(investSuccessTimer);
+					window.location.href = $_GLOBAL.basePath() + "/views/user.html#repayment";
+				}
+			}, 1000);
+		}
+}
+
+    function setTitle(bizType){
+        switch (bizType){
+            case $_GLOBAL.bizType.PERSONAL_REALNAME:
+                $("#title").text("个人实名认证");
+                break;
+            case $_GLOBAL.bizType.ENTERPRISE_REALNAME:
+                $("#title").text("企业实名认证");
+                break;
+            case $_GLOBAL.bizType.BIND_CARD:
+                $("#title").text("绑定银行卡");
+                break;
+            case $_GLOBAL.bizType.UNBIND_CARD:
+                $("#title").text("解绑银行卡");
+                break;
+            case $_GLOBAL.bizType.MODIFY_TRADE_PASS:
+                $("#title").text("修改交易密码");
+                break;
+						case $_GLOBAL.bizType.RESET_TRADE_PASS:
+                $("#title").text("重置交易密码");
+            	break;
+            case $_GLOBAL.bizType.MODIFY_BANK_MOBILE:
+                $("#title").text("修改银行卡预留手机");
+                break;
+						case $_GLOBAL.bizType.QUICK_RECHARGE:
+						case $_GLOBAL.bizType.NET_SLIVER_RECHARGE:
+                $("#title").text("账户充值");
+                break;
+            case $_GLOBAL.bizType.WITHDRAW:
+                $("#title").text("账户提现");
+                break;
+            case $_GLOBAL.bizType.AUTHORIZATION:
+                $("#title").text("用户授权");
+                break;
+            case $_GLOBAL.bizType.PAY_FEE:
+                $("#title").text("缴纳服务费");
+                break;
+        }
+	}
+
+    function loadResult(data) {
+        var result = AjaxUtil.ajaxPost(depositApiUrl.depositResult, JSON.stringify(data));
+        if ('20000' == result.code) {
+            if(result.data) {
+        				successfulServiceCharge(result);            	
+                window.clearInterval(interval);
+                $("#result-msg").text(result.data.res_desc);
+                if(result.data.res_flag){
+                    $("#icon-result").addClass("icon-chenggong");
+                } else {
+                    $("#icon-result").addClass("icon-shibai");
+                }
+            }
+        } else if ('40404' == result.code || '40405' == result.code) {
+            layer.msg('由于您长时间未操作，请重新登录。', {time:1000}, function () {
+                CookieUtil.clearAllCookie();
+                $_GLOBAL.jumpToLogin();
+            });
+        } else {
+            $("#result-msg").text(result.message);
+            $("#icon-result").addClass("icon-shibai");
+        }
+    }
+</script>
+
+
+
+

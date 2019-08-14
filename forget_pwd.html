@@ -1,117 +1,269 @@
 <!DOCTYPE html>
-<html class="full-screen">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="format-detection" content="telephone=no,email=no,address=no"/>
-    <meta name="renderer" content="webkit">
-    <title>找回密码 - 车聚宝</title>
-    <link rel="shortcut icon" href="img/favicon.ico"/>
-    <script src="js/ismobile.js"></script>
-    <link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css?v=2.1.5"/>
-    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
-    <link rel="stylesheet" type="text/css" href="css/base.css"/>
-    <link rel="stylesheet" type="text/css" href="css/index.css"/>
-
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="format-detection" content="telephone=no,email=no,address=no"/>
+	<title>忘记密码-车聚宝借款</title>
+	<link rel="shortcut icon" href="img/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+	<link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css"/>
+	<link rel="stylesheet" type="text/css" href="css/base.css"/>
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
 </head>
-<body class="full-body">
+<body>
 
-<header class="simple-header">
-    <div class="simple-header-container">
-        <a href="index.html"><img src="img/logo.png"/></a>
-        <ul class="simple-header-right clearfix">
-            <li>
-                <a href="index.html">返回首页</a>
-            </li>
-            <li class="vline"></li>
-            <li>
-                <a href="login.html">登录</a>
-            </li>
-            <li class="ml20">
-                <a href="register.html">注册</a>
-            </li>
-        </ul>
-    </div>
+<header class="header">
+	<div class="hbar">
+		<div class="hbar-container">
+			<span>客服电话：400-684-8856（0:00~24:00 )</span>
+			<div class="hbar-right">
+				<!--<div class="qr-item">
+					<i class="iconfont icon-phone"></i>
+					<span class="va-m">车聚宝APP</span>
+					<div class="pic-box">
+						<img src="img/qr-1.png"/>
+					</div>
+				</div>-->
+				<div class="qr-item">
+					<i class="iconfont icon-wechat"></i>
+					<span class="va-m">微信公众号</span>
+					<div class="pic-box">
+						<img src="img/qr-2.png"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="iheader clearfix">
+		<a class="ilogo" href="index.html"><img src="img/logo-blue.png"/></a>
+		<div class="iheader-nav">
+			<a href="index.html">首页</a>
+			<!--<a href="#">快速借款</a>-->
+			<!--<a class="vl" href="javascript:;"></a>
+			<a class="status-logout" href="register.html">注册</a>-->
+		</div>
+	</div>
 </header>
 
-<div class="cjb-container">
-	<section class="content-box pwd">
-		<h3 class="reg">找回密码</h3>
-	    <ul class="pwd-step clearfix">
+<section class="banner-wrap">
+	<div class="r-box f">
+		<h3 class="mt-30">找回密码</h3>
+		
+		<ul class="pwd-step clearfix">
 	        <li class="active">
 	        	<i class="iconfont icon-step1"></i>
 	        	<span>身份验证</span>
 	        </li>
-	        <li>--------------</li>
+	        <li>-----------</li>
 	        <li>
 	        	<i class="iconfont icon-step2"></i>
 	        	<span>重置密码</span>
 	        </li>
 	    </ul>
+		
+		<div class="step1">
+			<form id="authForm">
+				<div class="input-row"><input type="number" id="mobile" name="mobile" placeholder="手机号" /></div>
+				<div class="input-row"><input type="text" id="imgCaptcha" name="imgCaptcha" placeholder="图片验证码" />
+					<img onclick="getImgCaptcha()" class="img-code" title="看不清？点击换一张"/>
+				</div>
+				<div class="input-row"><input type="number" id="smsCaptcha" name="smsCaptcha" placeholder="短信验证码" />
+					<button id="getSmsCodeBtn" onclick="getSmsCaptcha(this)" type="button">获取验证码</button>
+				</div>
+				<input id="authBtn" class="ibtn" type="button" name="" value="下一步" />
+			</form>
+		</div>
+		<div class="step2">
+			<form id="resetPwdForm">
+				<input type="hidden" id="identityCheckToken" name="identityCheckToken" />
+				<div class="input-row"><input type="password" id="password" name="password" placeholder="输入新密码" /></div>
+				<div class="input-row"><input type="password" name="confirmPassword" placeholder="确认新密码" /></div>
+				<input id="resetPwdBtn" class="ibtn" type="button" name="" value="确定" />
+			</form>
+		</div>
+		
+	</div>
+</section>
 
-	    <!--第一步-->
-	    <div class="tab-content">
-	        <form id="validateUserForm">
-	            <div class="input-row">
-	                <input class="beauty-input" type="text" id="userName" name="loginAccount" placeholder="手机号码"/>
-	            </div>
-	            <div class="input-row">
-	                <input class="beauty-input" type="text" id="captchaCode" name="captchaCode" placeholder="输入图形验证码" maxlength="6"/>
-	                <a href="javascript:getCaptchaImg();" title="看不清？点击换一张"><img class="captcha-img" src=""/></a>
-	            </div>
-	            <div class="input-row">
-	                <input class="beauty-input" type="text" id="msgCode" name="smsCaptcha" placeholder="输入动态验证码" maxlength="6"/>
-	                <button type="button" id="getMsgCodeBtn">获取验证码</button>
-	            </div>
-	            <button type="button" class="btn-row" href="javascript:void(0);" id="nextStepBtn">下一步</button>
-	        </form>
-	    </div>
-	
-	    <!--第二步-->
-	    <div class="tab-content hide">
-	        <form id="resetPwdForm">
-	            <div class="input-row">
-	                <input class="beauty-input" type="password" name="newPassword" id="newPassword" placeholder="输入新密码"/>
-	            </div>
-	            <div class="input-row">
-	                <input class="beauty-input" type="password" name="newPwdRev" id="newPwdRev" placeholder="确认新密码"/>
-	            </div>
-	            <button type="button" class="btn-row" id="submitBtn">确认</button>
-	        </form>
-	    </div>
-	</section>
-</div>
+<footer class="footer-bar">
+	<p><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" target="_blank">沪公网安备 31011802001554号</a> &emsp; ICP备案号：沪ICP备15034281号</p>
+	<p>Copyright © 上海开颜金融信息服务有限公司(2015-2019)</p>
+</footer>
 
-<div class="cjb-foot">
-	<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" class="c-999" target="_blank">沪公网安备  31011802001554号</a>
-	<span>ICP备案号：沪ICP备15034281号</span>
-	<span>Copyright © 上海开颜金融信息服务有限公司(2014-2019)</span>
-	<span>网贷有风险，出借需谨慎</span>
-</div>
 
-<!--蒙版-->
-<div class="mask"></div>
-
-<!--重置密码成功-->
-<div class="suc-box">
-    <div class="suc-top">
-        <i class="iconfont icon-zhengque icon-jiantouxian"></i>
-        <span>重置密码成功！</span>
-        <i class="iconfont icon-quxiao suc-close"></i>
-    </div>
-    <a href="javascript:void(0);" class="suc-b">立即登录</a>
-</div>
-
-<script src="js/jquery.min.js?v=2.1.4"></script>
-<script src="plugins/layui/layui.js?v=2.1.5"></script>
-<script src="plugins/validate/jquery.validate.min.js?v=1.14.0"></script>
-<script src="plugins/validate/jquery.validate.extends.js"></script>
+<script src="js/jquery.min.js"></script>
 <script src="js/jquery.cookie.js"></script>
+<script src="plugins/layui/layui.all.js"></script>
+<script src="plugins/validate/jquery.validate.min.js"></script>
+<script src="plugins/validate/jquery.validate.extends.js"></script>
+<script src="plugins/validate/messages_zh.min.js"></script>
 <script src="properties/host-config.properties.js"></script>
 <script src="js/api-config.js"></script>
 <script src="js/base-utils.js"></script>
 <script src="js/base-utils.api.js"></script>
-<script src="js/register/forget_pwd.js"></script>
+<script src="js/common.js"></script>
+<script>
 
+	var imgCaptchaId,InterValObj,msgFlag;
+
+    $(document).ready(function(){
+        //表单校验
+		validateForm();
+
+        getImgCaptcha();
+
+        // 身份验证
+        $("#authBtn").click(function(){
+            if($("#authForm").valid()){
+                if (!msgFlag) {
+                    layer.msg("请先获取验证码！");
+                    return;
+                }
+
+                var data = DataDeal.formToJson($("#authForm").serialize());
+                AjaxUtil.ajaxPostCallBack(userProfileApiUrl.smsWithOutLogAuthUser, data, function(result){
+					var operateToken = result.data;
+					$("#identityCheckToken").val(operateToken);
+
+					$(".pwd-step li").eq(0).addClass("pass");
+					$(".pwd-step li:eq(1), .pwd-step li:eq(2)").addClass("active");
+
+					$(".step1").hide();
+					$(".step2").show();
+				});
+
+			}
+        })
+
+        // 重置密码
+        $("#resetPwdBtn").click(function(){
+            if($("#resetPwdForm").valid()){
+                var data = DataDeal.formToJson($("#resetPwdForm").serialize());
+                var result = AjaxUtil.ajaxPost(userProfileApiUrl.resetLoginPwd, data);
+                if(result){
+                    if (result.code == '20000') {
+                        clearInterval(InterValObj);
+                        // 显示重置密码成功提示
+                        layer.msg("登录密码重置成功", {time:1000}, function () {
+                            $_GLOBAL.jumpToLogin();
+                        })
+                    } else if( result.code == '101007' || result.code == '101008'){
+                        layer.msg(result.message, {time:1000}, function () {
+                            location.reload();
+                        })
+                    } else {
+                        layer.msg(result.message);
+                    }
+                }
+
+            }
+        })
+	});
+
+    function validateForm(){
+        $("#authForm").validate({
+            rules:{
+                mobile:{
+                    required: true,
+                    mobile: true
+                },
+                smsCaptcha:{
+                    required: true,
+                },
+            },
+            messages:{
+                mobile:{
+                    required: "手机号不能为空",
+                    mobile: "请输入有效的手机号"
+                },
+                smsCaptcha:{
+                    required: "短信验证码不能为空",
+                },
+            },
+            errorClass: "form-error-msg",
+            errorElement: "span",
+            errorPlacement: function(error, element) {
+                error.appendTo(element.parent());
+            },
+
+        });
+
+        $("#resetPwdForm").validate({
+            rules:{
+                password:{
+                    required: true,
+                    pwd: true
+                },
+                confirmPassword:{
+                    required: true,
+                    pwd: true,
+                    equalTo: "#password"
+                },
+            },
+            messages:{
+                password:{
+                    required: "新密码不能为空",
+                    pwd: "密码为数字、字母、字符2种及以上组合的8-20位字符"
+                },
+                confirmPassword:{
+                    required: "确认新密码不能为空",
+                    equalTo: "两次密码输入不一致"
+                },
+            },
+            errorClass: "form-error-msg",
+            errorElement: "span",
+            errorPlacement: function(error, element) {
+                error.appendTo(element.parent());
+            },
+
+        });
+    }
+
+    function getImgCaptcha(){
+        imgCaptchaId = commonAPIUtil.getCaptchaImg();
+    }
+
+    function getSmsCaptcha(obj){
+        if(!VerificationUtil.isMobile($('#mobile').val())){
+            layer.msg("请输入有效的手机号");
+            return;
+        }
+        if(StringUtil.isEmpty($('#imgCaptcha').val())){
+            layer.msg("请输入图片验证码");
+            return;
+        }
+
+        // 验证用户是否存在
+		var userFlag = validateAPIUtil.validateUserName($('#mobile').val());
+        if(!userFlag){
+            layer.msg("用户名不存在，请重新输入！");
+            $("#mobile").focus();
+            return;
+		}
+
+        var data = {
+            imgCaptchaId: imgCaptchaId,
+            imgCode: $('#imgCaptcha').val(),
+            mobile: $('#mobile').val(),
+            captchaBizType: $_GLOBAL.msgType.CHECK_IDENTITY_WITH_MOBILE
+        };
+        var result = AjaxUtil.ajaxPost(captchaApiUrl.getSmsCode, JSON.stringify(data));
+        if(result){
+            if(result.code == "20000"){
+                layer.msg('发送成功');
+                msgFlag = true;
+                InterValObj = TimerUtil.setRemainTime(obj);
+                $("#smsCaptcha").focus();
+            } else {
+                layer.msg(result.message);
+                getImgCaptcha();
+            }
+        }
+    }
+
+</script>
+	
 </body>
 </html>

@@ -1,0 +1,124 @@
+<h5 class="title-row">我的还款<a href="javascript:loadTemplate('repayment_history');" class="fr">还款记录&nbsp;<i class="iconfont icon-xiangxia"></i></a></h5>
+<div class="table-wrap">
+	<table class="layui-table" id="repayTable" lay-filter="repayTable">
+	</table>
+	<div class="ta-c" id="repayListLaypageBox"></div>
+</div>
+
+<script type="text/html" id="repayToolBar">
+	<a class="c-blue cs-p" lay-event="detail">详情</a>
+	{{# if((d.loanApplyDTO.serviceFeeType == "post" && !d.loanApplyDTO.serviceFeeStatus && !d.loanApplyDTO.applyCompensatoryStatus) || (d.loanApplyDTO.serviceFeeType == "pre" && !d.loanApplyDTO.applyCompensatoryStatus)){ }}
+		<a class="c-blue cs-p" lay-event="applyCompensatory">&nbsp;&nbsp;申请代偿</a>
+	{{# } }}
+	{{# if((d.loanApplyDTO.serviceFeeType == "post" && !d.loanApplyDTO.serviceFeeStatus && d.loanApplyDTO.applyCompensatoryStatus) || (d.loanApplyDTO.serviceFeeType == "pre" && d.loanApplyDTO.applyCompensatoryStatus)){ }}
+		<a class="c-blue cs-p" lay-event="cancelCompensatory">&nbsp;&nbsp;撤销代偿</a>
+	{{# } }}
+	{{# if(!d.loanApplyDTO.serviceFeeStatus && !d.loanApplyDTO.applyCompensatoryStatus){ }}
+		<a class="service-charge c-blue cs-p" lay-event="payServiceFee">&nbsp;&nbsp;缴服务费</a>
+	{{# } else if (d.daysFromRepayDate <= 7) { }}
+		<a class="repayment c-blue cs-p" lay-event="repay">&nbsp;&nbsp;<span>立即还款</span></a>
+	{{# } else if(!d.loanApplyDTO.applyCompensatoryStatus) { }}
+		<a class="repayment1 c-blue cs-p" lay-event="repay">&nbsp;&nbsp;提前还款</a>
+	{{# } }}
+
+</script>
+<script type="text/html" id="moneyTpl">
+	{{ MoneyUtil.formatMoney(d.toRepayAmount, 2) }}
+</script>
+<script type="text/javascript">
+    var pageSize = 10;
+    var currPageNum = 1;
+    $(document).ready(function () {
+        layui.table.render({
+            elem: '#repayTable'
+            ,cols: [[
+								 {field:'tradeName', title: '交易产品'}
+                ,{field:'productName', title: '借款产品', width: 140}
+                ,{field:'toRepayAmount', title: '本期还款金额(元)', width: 140, templet: '#moneyTpl', align: 'right', style: "text-align: right"}
+                ,{field:'repayPeriod', title: '还款期次', width: 90}
+                ,{field:'repayDate', title: '还款日期',width: 200, align: 'left', style: "text-align: left", templet: function(d){
+                	if(d.overdueDays > 0){
+										return d.repayDate +' (已逾期' + d.overdueDays + '天)';
+                		
+                	}else{
+										return d.repayDate;
+								
+							}
+
+				}} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{title: '操作', width: 220, align: 'center', style: "text-align: right", toolbar: '#repayToolBar'}
+            ]]
+            
+            ,text: {
+                none: '<div class="none-data pt-100 pb-50"><img src="../img/no_data.png"/><p class="ta-c">没有数据</p></div>' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+            }
+        });
+
+        //监听工具条
+        layui.table.on('tool(repayTable)', function(obj){
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if(layEvent === 'detail'){ //查看
+                loadTemplate("repayment_detail?repayPlanId=" + data.repayPlanId);
+            } else if(layEvent === 'repay'){
+                loadTemplate("repayment_order?repayPlanId=" + data.repayPlanId);
+			} else if(layEvent === 'payServiceFee'){ //缴纳服务费
+                loadTemplate("pay_fee_order?applyId=" + data.loanApplyId);
+            } else if(layEvent === 'applyCompensatory') {
+				var applyResult = AjaxUtil.ajaxPost(loanApiUrl.applyCompensatory, JSON.stringify({repayPlanId: data.loanApplyId, tradeName: data.tradeName}));
+				if(applyResult){
+					layer.msg('申请代偿成功！', {time:1000}, function () {
+						getRepayList(currPageNum);
+					});
+				}
+			} else if (layEvent === 'cancelCompensatory'){
+				var cancelResult = AjaxUtil.ajaxPost(loanApiUrl.cancelCompensatory, JSON.stringify({repayPlanId: data.loanApplyId}));
+				if(cancelResult){
+					layer.msg('撤销代偿成功！', {time:1000}, function () {
+						getRepayList(currPageNum);
+					});
+				}
+			}
+        });
+
+        getRepayList(1);
+
+    });
+
+    function getRepayList(pageNum){
+        var data = {
+            pageNum: pageNum,
+            pageSize: pageSize
+        };
+        var result = AjaxUtil.ajaxPostWithLoading(loanApiUrl.getRepayList, JSON.stringify(data));
+        if(result){
+            layui.table.reload("repayTable", {
+                data: result.rows
+            });
+            if(result.total > 0){
+                initPaging(pageNum, result.total);
+            }
+        }
+    }
+
+    // 加载分页插件
+    function initPaging(index, total) {
+        layui.laypage.render({
+            elem: 'repayListLaypageBox' //指向存放分页的容器，值可以是容器ID、DOM对象，不用加 # 号
+            , count: total //数据总数，从服务端得到
+            , limit: pageSize //每页显示的条数
+            , layout: ['prev', 'page', 'next', 'count']
+            , theme: '#3fabf7'
+            , curr: index
+            , jump: function (obj, first) {
+                //首次不执行
+                if (!first) {
+                    $(document).scrollTop(120);
+										currPageNum = obj.curr;
+                    getRepayList(obj.curr);
+                }
+            }
+        });
+    }
+</script>

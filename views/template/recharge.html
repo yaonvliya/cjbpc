@@ -1,0 +1,107 @@
+<h5 class="title-row">账户充值</h5>
+
+<form>
+	<div class="user-row">
+		<label>绑定银行卡：</label>
+		<div class="bank-card">
+			<svg class="icon">
+				<use xlink:href="" id="bankCode"></use>
+			</svg>
+			<span id="bankInfo"></span>
+		</div>
+	</div>
+	
+	<div class="user-row">
+		<label>充值金额：</label>
+		<div class="input-div">
+			<input class="" type="number" id="rechargeAmount" name="amount" autocomplete="off" placeholder="请输入10元以上的充值金额"/>
+		</div>
+	</div>
+	
+	<div class="user-row">
+		<label>充值方式：</label>
+		<div class="recharge-mode">
+			<span class="active" id="quickRecharge" onclick="quickRecharge()">快捷充值</span>
+			<span class="ml-15" id="netSilverRecharge" onclick="netSliverRecharge()">网银充值</span>
+		</div>
+	</div>
+	
+	<input class="row-btn" type="button" id="confirmRechargeBtn" value="确定"/>
+	
+</form>
+
+<div class="depository-row">
+	<div class="depository">
+		<img src="../img/kcb-bank.png" alt="" /><span></span>
+	</div>
+</div>
+
+<script>
+    var rechargeUrl = userAccountApiUrl.quickRecharge;
+
+    $(document).ready(function () {
+        var userInfo = commonAPIUtil.initUserInfo();
+        if(userInfo) {
+            var userType = userInfo.userType.code;
+            var bindcardStatus = userInfo.bindCardStatus.code;
+            var bankType = userInfo.bankCode;
+            var bankCardNo = userInfo.bankCardNo;
+
+            if(userType == $_GLOBAL.userType.JG){
+                $("#netSilverRecharge").addClass("active").removeClass('ml-15').prev().remove();
+                rechargeUrl = userAccountApiUrl.netSliverRecharge;
+            }
+
+            if(bindcardStatus == $_GLOBAL.bindCardStatus.HAS_BIND){
+                $("#bankCode").attr("xlink:href","#icon-" + bankType);
+                if(userType == $_GLOBAL.userType.GR){
+                    $("#bankInfo").text($_GLOBAL.formatBankCode(bankType) + " 尾号（" + bankCardNo.substring(bankCardNo.length-4,bankCardNo.length) + "）");
+                } else {
+                    //企业对公账户不显示银行卡尾号
+                    $("#bankInfo").text($_GLOBAL.formatBankCode(bankType));
+				}
+            } else {
+                $("#bankInfo").text("未绑定银行卡，仅支持网银充值");
+                $("#netSilverRecharge").addClass("active").removeClass('ml-15').prev().remove();
+                rechargeUrl = userAccountApiUrl.netSliverRecharge;
+            }
+        }
+
+
+		$(".recharge-mode span").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+        });
+        
+        $("#confirmRechargeBtn").click(function () {
+			var rechargeAmount = $("#rechargeAmount").val();
+			if(StringUtil.isEmpty(rechargeAmount)){
+				layer.msg("充值金额不能为空");
+				return;
+			}
+            if(!VerificationUtil.isMoney(rechargeAmount)){
+                layer.msg("请输入合法的金额");
+                return;
+            }
+            if(rechargeAmount < 10){
+                layer.msg("充值金额不能小于10元");
+                return;
+            }
+
+            var data = {amount: rechargeAmount};
+            var result = AjaxUtil.ajaxPostWithLoading(rechargeUrl, JSON.stringify(data));
+            if(result){
+				$_GLOBAL.jumpToDeposit(result.data);
+			}
+        });
+
+    });
+
+	function quickRecharge(){
+        rechargeUrl = userAccountApiUrl.quickRecharge;
+	}
+
+    function netSliverRecharge(){
+        rechargeUrl = userAccountApiUrl.netSliverRecharge;
+    }
+
+</script>

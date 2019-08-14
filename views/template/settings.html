@@ -1,0 +1,283 @@
+<h5 class="title-row">基本信息<a href="javascript:loadTemplate('belong_merchant');"><span>所属商户&nbsp;</span><i class="iconfont icon-xiangxia"></i></a></h5>
+
+<ul class="settings-list">
+	<li>
+		<i class="iconfont icon-shoujirenzheng"></i>
+		<div class="remark">
+			<p class="p1">手机认证</p>
+			<p class="p2">保障资金安全，获取资金变动通知</p>
+		</div>
+		<div class="operation">
+			<span class="txt" id="loginMobile"></span>
+			<span class="vl"></span>
+			<a href="javascript:loadTemplate('modify_mobile');">修改</a>
+		</div>
+	</li>
+	<li>
+		<i class="iconfont icon-youxiangrenzheng"></i>
+		<div class="remark">
+			<p class="p1">邮箱认证</p>
+			<p class="p2">用于发送邮件</p>
+		</div>
+		<div class="operation notBindEmail hide">
+			<a href="javascript:loadTemplate('bind_email');">绑定</a>
+		</div>
+		<div class="operation hasBindEmail hide">
+			<span class="txt" id="showEmail"></span>
+			<span class="vl"></span>
+			<a href="javascript:loadTemplate('modify_email');">修改</a>
+		</div>
+	</li>
+	<li>
+		<i class="iconfont icon-shimingrenzheng"></i>
+		<div class="remark">
+			<p class="p1">实名认证</p>
+			<p class="p2">保障账户安全，确认借款身份</p>
+		</div>
+		<div class="operation notRealName hide">
+			<a href="javascript:openAccount();">去实名</a>
+		</div>
+		<div class="operation hasRealName hide">
+			<span class="txt" id="realname"></span>
+		</div>
+		<div class="operation auditing hide">
+			<span class="txt">实名认证审核中</span>
+		</div>
+		<div class="operation failed hide">
+			<span class="txt">实名认证审核不通过</span>
+			<span class="vl"></span>
+			<a href="javascript:openAccount();">重新实名</a>
+			<!--TODO 审核不通过操作-->
+		</div>
+		<div class="operation notUploadPic hide">
+			<a href="javascript:loadTemplate('upload_company_deposit');">上传证件</a>
+		</div>
+	</li>
+	<li>
+		<i class="iconfont icon-shangchuan"></i>
+		<div class="remark">
+			<p class="p1">上传资料</p>
+			<p class="p2">资料审核成功后，可申请借款</p>
+		</div>
+		<div class="operation certNotUpload hide">
+			<a href="javascript:uploadInfo();">点击上传</a>
+		</div>
+		<div class="operation certAuditing hide">
+			<span class="txt">审核中</span>
+		</div>
+		<div class="operation certPass hide">
+			<span class="txt">已完善</span>
+		</div>
+		<div class="operation certNotPass hide">
+			<span class="txt">审核不通过</span>
+			<span class="vl"></span>
+			<a href="javascript:uploadInfo();">重新上传</a>
+		</div>
+		<div class="operation certExpired hide">
+			<span class="txt">证件已到期</span>
+			<span class="vl"></span>
+			<a href="javascript:uploadInfo();">重新上传</a>
+		</div>
+	</li>
+	<li class="hasRealName hide">
+		<i class="iconfont icon-yinhangqia"></i>
+		<div class="remark">
+			<p class="p1">银行卡</p>
+			<p class="p2">可管理本账户关联银行卡的绑定、更换</p>
+		</div>
+		<div class="operation notBindCard hide">
+			<a href="javascript:;" onclick="bindCard()">绑定</a>
+		</div>
+		<div class="operation hasBindCard hide">
+			<span class="txt" id="showBankCard"></span>
+			<span class="vl"></span>
+			<a class="personal-unbind" href="javascript:;" onclick="unBindCard();">解绑</a>
+		</div>
+	</li>
+	<li class="hasRealName hide">
+		<i class="iconfont icon-yinhangkayuliushouji"></i>
+		<div class="remark">
+			<p class="p1">银行卡预留手机</p>
+			<p class="p2">用户登录，保障资金安全，获取资金变动通知</p>
+		</div>
+		<div class="operation">
+			<a href="javascript:;" onclick="modifyBankMobile()">修改</a>
+		</div>
+	</li>
+	<li>
+		<i class="iconfont icon-denglumima"></i>
+		<div class="remark">
+			<p class="p1">登录密码</p>
+			<p class="p2">登录账户时需要输入密码</p>
+		</div>
+		<div class="operation">
+			<a href="javascript:loadTemplate('modify_pwd');">修改</a>
+		</div>
+	</li>
+	<li class="hasRealName hide">
+		<i class="iconfont icon-jiaoyimima"></i>
+		<div class="remark">
+			<p class="p1">交易密码</p>
+			<p class="p2">保障资金安全</p>
+		</div>
+		<div class="operation">
+			<a href="javascript:;" onclick="modifyTradePwd()">修改</a>
+			<span class="vl"></span>
+			<a href="javascript:;" onclick="resetTradePwd()">重置</a>
+		</div>
+	</li>
+		<p class="account-cancellation">
+		如要变更用户角色，请先   <a class="c-gray xh" id="closeAccount" href="javascript:void(0);">销户</a>
+	 (进行销户操作前，“帐户余额”、“待还金额”、“冻结金额” 必须为空，如有疑问，可联系客服:400-684-8856，根据客服引导进行销户)
+		</p>
+	<a class="fr mr70 mt-10 mr-40 c-gray hide" id="payFree" href="javascript:void(0);">缴费</a>
+</ul>
+
+<script type="text/javascript">
+	var userType;
+	$(document).ready(function(){
+        var userInfo = commonAPIUtil.initUserInfo();
+        if(userInfo){
+            userType = userInfo.userType.code;
+            var realnameStatus = userInfo.openDepositStatus.code;
+            var bindcardStatus = userInfo.bindCardStatus.code;
+
+            $("#loginMobile").text(userInfo.safeLoginAccount);
+            if(userInfo.safeEmail){
+				$("#showEmail").text(userInfo.safeEmail);
+
+                $(".hasBindEmail").show();
+            } else {
+                $(".notBindEmail").show();
+			}
+			if(realnameStatus == $_GLOBAL.realnameStatus.HAS_REALNAME){
+				$("#realname").text(userInfo.realName);
+                $(".hasRealName").show();
+
+                if(bindcardStatus == $_GLOBAL.bindCardStatus.HAS_BIND){
+                    $("#showBankCard").text(userInfo.bankCardNo);
+
+                    $(".hasBindCard").show();
+                    if(userType == $_GLOBAL.userType.JG){
+
+                        $(".personal-unbind").hide().prev().remove();
+                    }
+                } else {
+                    $(".notBindCard").show();
+				}
+            } else if(realnameStatus == $_GLOBAL.realnameStatus.NOT_REALNAME){
+                $(".notRealName").show();
+            } else if(realnameStatus == $_GLOBAL.realnameStatus.AUDITING){
+                $(".auditing").show();
+            } else if(realnameStatus == $_GLOBAL.realnameStatus.FAILED){
+                $(".failed").show();
+            } else if(realnameStatus == $_GLOBAL.realnameStatus.WAIT_UPLOAD_IMG){
+                //TODO 上传证件
+                $(".notUploadPic").show();
+            }
+
+            if(userInfo.hasUploadCerts){
+                if(userInfo.certStatus.code == "auditing"){
+                    $(".certAuditing").show()
+                } else if(userInfo.certStatus.code == "pass"){
+                    $(".certPass").show()
+                } else if(userInfo.certStatus.code == "reject"){
+                    $(".certNotPass").show()
+                } else if(userInfo.certStatus.code == "expire"){
+                    $(".certExpired").show()
+                }
+            } else {
+                $(".certNotUpload").show()
+			}
+
+        }
+
+		$('#closeAccount').click(function () {
+			var res = AjaxUtil.ajaxGet(userProfileApiUrl.closeAccount);
+			if (res.data){
+				$_GLOBAL.jumpToDeposit(res.data);
+			} else if (res.code == '20000') {
+				layer.msg("销户成功!", {time:500}, function () {
+					CookieUtil.clearAllCookie();
+					$_GLOBAL.jumpToIndex();
+				});
+			} else if (res.code == "40404" || res.code == "40405") {
+				CookieUtil.setSessionCookie('loginStatus', false);
+			} else if (res.code == "101120") {
+				$('#payFree').show();
+				layer.msg(res.message);
+			} else {
+				layer.msg(res.message);
+			}
+		});
+
+		$('#payFree').click(function () {
+			AjaxUtil.ajaxGetCallBack(userProfileApiUrl.payFreeForClose, function (result) {
+				if(result.data){
+					$_GLOBAL.jumpToDeposit(result.data);
+				} else if(result.code == '20000'){
+					layer.msg("销户成功!", {time:500}, function () {
+						CookieUtil.clearAllCookie();
+						$_GLOBAL.jumpToIndex();
+					});
+				} else {
+					layer.msg("服务器错误")
+				}
+			})
+		});
+
+
+	});
+
+	function uploadInfo(){
+       if(userType == $_GLOBAL.userType.GR){
+           loadTemplate('upload_personal_pic');
+	   } else if (userType == $_GLOBAL.userType.JG){
+           loadTemplate('upload_company_pic');
+	   }
+	}
+
+	function openAccount(){
+        if(userType == $_GLOBAL.userType.GR){
+            loadTemplate('open_account_personal');
+        } else if (userType == $_GLOBAL.userType.JG){
+            loadTemplate('open_account_company');
+        }
+	}
+
+	function bindCard(){
+        var result = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.bindCard);
+        if(result){
+            $_GLOBAL.jumpToDeposit(result.data);
+        }
+	}
+
+    function unBindCard(){
+        var result = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.unbindCard);
+        if(result){
+            $_GLOBAL.jumpToDeposit(result.data);
+        }
+    }
+
+    function modifyBankMobile(){
+        var result = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.modifyBankMobile);
+        if(result){
+            $_GLOBAL.jumpToDeposit(result.data);
+        }
+    }
+
+    function modifyTradePwd(){
+        var result = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.modifyTradePass);
+        if(result){
+            $_GLOBAL.jumpToDeposit(result.data);
+        }
+    }
+
+    function resetTradePwd(){
+        var result = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.resetTradePass);
+        if(result){
+            $_GLOBAL.jumpToDeposit(result.data);
+        }
+    }
+
+</script>

@@ -1,0 +1,185 @@
+<div class="user-panel">
+	<span class="warm-tips"></span>
+	<a class="upload-pic-btn hide" href="javascript:;" onclick="uploadPic()">完善审核资料</a>
+</div>
+
+<div class="account clearfix">
+	<div class="account-left">
+		<div>
+			<p class="p1"><span id="totalRepayAmount"></span></p>
+			<p class="p2">待还金额(元)</p>
+		</div>
+		<div>
+			<p class="p1"><span id="totalRepayCount"></span></p>
+			<p class="p2">待还笔数(笔)</p>
+		</div>
+	</div>
+	<div class="account-right">
+		<p class="p1"><span id="totalBalance"></span></p>
+		<p class="p2">账户余额(元)</p>
+		<p class="p3">冻结金额(元)：<span id="frozenBalance"></span></p>
+		<p class="p4">
+			<a class="ubtn" href="javascript:;" onclick="withdraw()">提现</a>
+			<a class="ubtn" href="javascript:;"onclick="recharge()">充值</a>
+		</p>
+	</div>
+</div>
+<div class="space"></div>
+<h5 class="title-row mt-10">交易明细<a href="javascript:loadTemplate('account_detail');">更多&nbsp;<i class="iconfont icon-xiangxia"></i></a></h5>
+<div class="table-wrap">
+	<table class="layui-table" id="txnTable">
+		<!--<thead>
+			<tr>
+				<th>交易时间</th>
+				<th>交易类型</th>
+				<th>交易金额(元)</th>
+				<th>状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>2017-08-05 15:00:20</td>
+				<td>提现</td>
+				<td>100.00</td>
+				<td>成功</td>
+			</tr>
+		</tbody>-->
+	</table>
+</div>
+
+<script type="text/javascript">
+    var userType,realnameStatus,bindCardStatus;
+    var expireType = [];
+    var userInfo = commonAPIUtil.initUserInfo();
+    $(document).ready(function(){
+        getAccountInfo();
+    });
+
+    function uploadPic() {
+        if(userType == $_GLOBAL.userType.GR){
+            loadTemplate('upload_personal_pic');
+        } else if(userType == $_GLOBAL.userType.JG){
+            loadTemplate('upload_company_pic');
+        }
+    }
+
+    function recharge(){
+		if(checkIsOpenAccount()){
+            loadTemplate('recharge');
+		}
+	}
+
+    function withdraw(){
+        if(checkIsOpenAccount() && checkIsBindCard()){
+            loadTemplate('withdraw');
+        }
+    }
+
+    function checkIsOpenAccount(){
+        var isOpenAccount = false;
+        if (realnameStatus == $_GLOBAL.realnameStatus.NOT_REALNAME) {
+            showOpenAccountTips();
+            isOpenAccount = false;
+        } else if(realnameStatus == $_GLOBAL.realnameStatus.AUDITING){
+            layer.msg("实名认证审核中，请等待审核结果");
+            isOpenAccount = false;
+        } else if(realnameStatus == $_GLOBAL.realnameStatus.FAILED){
+            layer.msg("实名认证审核不通过，请重新实名");
+            isOpenAccount = false;
+        } else if(realnameStatus == $_GLOBAL.realnameStatus.HAS_REALNAME){
+            isOpenAccount = true;
+		} else if(realnameStatus == $_GLOBAL.realnameStatus.WAIT_UPLOAD_IMG){
+            isOpenAccount = false;
+        }
+		return isOpenAccount;
+	}
+
+	function checkIsBindCard(){
+         var isBindCard = false;
+        if (bindCardStatus == $_GLOBAL.bindCardStatus.NOT_BIND) {
+            layer.msg("您还没有绑定银行卡，请到账户设置绑定银行卡");
+            isBindCard = false;
+        } else if(bindCardStatus == $_GLOBAL.bindCardStatus.HAS_BIND){
+            isBindCard = true;
+        }
+        return isBindCard;
+	}
+
+	function getAccountInfo(){
+    	var expireInfo = "";
+	    AjaxUtil.ajaxPostCallBack(loanUserApiUrl.getUserAccountInfo, null, function (result) {
+			var userAccountInfo = result.data;
+            $("#totalBalance").text(MoneyUtil.formatMoney(userAccountInfo.totalBalance, 2));
+			$("#frozenBalance").text(MoneyUtil.formatMoney(userAccountInfo.frozenBalance, 2));
+            $("#totalRepayAmount").text(MoneyUtil.formatMoney(userAccountInfo.totalRepayAmount, 2));
+            $("#totalRepayCount").text(userAccountInfo.totalRepayCount);
+
+            userType = userAccountInfo.userType.code;
+            realnameStatus = userAccountInfo.depositStatus.code;
+			bindCardStatus = userAccountInfo.bindCardStatus.code;
+            if (realnameStatus == $_GLOBAL.realnameStatus.NOT_REALNAME) {
+                showOpenAccountTips();
+            }
+
+            layui.each(userInfo.loanUserInfoDTO, function (k,v) {
+            	if (userType == "JG" && k == "identityCertFlag") {
+					return false;
+				} else if (userType == "GR" && k == "legalPersonIdentityFlag"){
+            		return false;
+				}
+				if (StringUtil.isContains(k, "Flag") && !v){
+					expireInfo += $_GLOBAL.credentials(k) + "、";
+				} else if (StringUtil.isContains(k, "Flag") && v){
+					expireType.push(k.substring(0, k.length-4));
+				}
+			});
+
+            CookieUtil.setCookie("expireType", expireType);
+
+            if (userAccountInfo.hasUploadCerts) {
+                if(userAccountInfo.certStatus.code == "auditing"){
+                    $(".warm-tips").text("温馨提示：您上传的资料正在审核中。");
+                } else if(userAccountInfo.certStatus.code == "pass"){
+                    $(".warm-tips").text("温馨提示：您上传的资料已审核通过");
+                } else if(userAccountInfo.certStatus.code == "reject"){
+                    $(".warm-tips").text("温馨提示：您上传的资料审核不通过，请重新上传。  不通过原因如下：" + userAccountInfo.rejectReason);
+                    $(".upload-pic-btn").show();
+                } else if(userAccountInfo.certStatus.code == "expire"){
+                    $(".warm-tips").text("温馨提示：您上传的" + expireInfo + "资料已过期，请上传最新的资料");
+                    $(".upload-pic-btn").show();
+                }
+
+			} else {
+                $(".warm-tips").text("温馨提示：为了您的账户安全，请点击完善审核资料。");
+                $(".upload-pic-btn").show();
+			}
+			
+			layui.table.render({
+	            elem: '#txnTable'
+	            ,cols: [[
+	                {field: 'txnTime', title: '交易时间', width: 300}
+	                ,{field: 'txnType', title: '交易类型', width: 220}
+	                ,{field: 'txnAmount', title: '交易金额(元)', width: 200, align: 'right', style: "text-align: right"
+                        ,templet: function(d){
+                            return MoneyUtil.formatMoney(d.txnAmount)
+                        }
+					}
+	                ,{field: 'txnStatus', title: '状态', width: 200}
+	            ]]
+	            ,text: {
+	                none: '<div class="none-data pt-100 pb-50"><img src="../img/no_data.png"/><p class="ta-c">没有数据</p></div>' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+	            }
+	        });
+	        
+		    if(userAccountInfo.txnList){
+	            layui.table.reload("txnTable", {
+	                data: userAccountInfo.txnList
+	            });
+	        }
+	        
+			
+        });
+
+	}
+
+</script>

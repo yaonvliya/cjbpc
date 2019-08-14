@@ -1,34 +1,34 @@
 @charset "utf-8";
-@import url("//at.alicdn.com/t/font_410282_oobse4hcm2.css");  /*TODO：开发环境，线上删除*/
+@import url("//at.alicdn.com/t/font_667952_2idm1pmena.css");
 
-/**清除内外边距**/
-body, p, h1, h2, h3, h4, h5, h6,  /*结构元素*/
-ul, ol, li, dl, dt, dd,  /*列表元素*/
-form, fieldset, legend, button, input, textarea,  /*表单元素*/
-table, tr, th, td  /*表格元素*/{
+*{
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
 }
-body{
-	font-family: "Microsoft Yahei", Arial, Verdana, Helvetica, sans-serif;
-	font-size: 16px;
-	min-width: 1200px;
-	background-color: #f5f5f5;
-	position: relative;
-	color: #2b2b2b;
-}
-	
-*{margin: 0;padding: 0;}
-img{border: 0;}
-li{list-style: none;}
-textarea{resize: none;}
-a{color: #666;text-decoration: none;}
-a:focus{outline: none}
-input, button{outline: none;}
-h1, h2, h3, h4, h5, h6{font-size: inherit;font-weight: normal;}
-input, textarea, select, button{font-size: inherit;color: inherit;}
 
-/**清除浮动**/
+body{
+	min-width: 1200px;
+	font-family: "Microsoft YaHei", "Helvetica Neue", "Helvetica", Arial, sans-serif, "宋体";
+	color: #75818b;
+	font-size: 14px;
+	background-color: #f3f5f7;
+	position: relative;
+}
+
+img{border: 0}
+li{list-style: none}
+textarea{resize: none}
+input, button{outline: none}
+a{text-decoration: none; color: #000; outline: none}
+h1, h2, h3, h4, h5, h6{font-size: inherit; font-weight: normal}
+input, textarea, select, button{font-size: inherit;}
+
+/*浮动*/
+.fl{float:left}
+.fr{float:right}
+
+/*清除浮动*/
 .clearfix:after{
     content: "";
     display: block;
@@ -37,376 +37,128 @@ input, textarea, select, button{font-size: inherit;color: inherit;}
     visibility: hidden;
 }
 
-/*自定义字体*/
-@font-face {
-	font-family: myfont;
-	src: url("../iconfont/myfont/DIN Medium.ttf");
-}
-
-/*美化输入框*/
-.beauty-input{
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-	
-	-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-	-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-}
-.beauty-input:focus {
-	border-color: #66afe9 !important;
-	outline: 0;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 4px rgba(102, 175, 233, .6);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 4px rgba(102, 175, 233, .6);
-}
-/*占位符样式*/
-.beauty-input::-moz-placeholder {
-  color: #999;
-  opacity: 1;
-}
-.beauty-input:-ms-input-placeholder {
-  color: #999;
-}
-.beauty-input::-webkit-input-placeholder {
-  color: #999;
-}
-
-/*蒙版：点击可消失*/
+/*蒙版*/
 .mask{
 	display: none;
-    width: 100%;
-    min-width: 1200px;
-    height: 100%;
     position: fixed;
-    left: 0;
     top: 0;
-    background-color: rgba(0,0,0,0.5);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 99;
 }
+.layui-table-cell {
+    height: 30px;
+    line-height: 30px;
+}
+/*显示隐藏*/
+.show{display: block}
+.hide{display: none}
 
-/*蒙版：点击不消失*/
-.not-hide-mask{
-	display: none;
-    width: 100%;
-    min-width: 1200px;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 99;
-}
+/*设置元素的垂直对齐方式*/
+.va-m{vertical-align: middle}
 
 /*鼠标手势*/
-.cr-pr{cursor: pointer;}
+.cs-p{cursor: pointer}
 
-/*字体*/
-.fs-12{font-size:12px}
-.fs-14{font-size:14px}
-.fs-16{font-size:16px}
-.fs-18{font-size:18px}
-.fs-20{font-size:20px}
-.fs-24{font-size:24px}
-.fs-25{font-size:25px}
-.fs-26{font-size:26px}
-.fs-28{font-size:28px}
-.fs-30{font-size:30px}
-.fs-32{font-size:32px}
-.fs-36{font-size:36px}
-.fs-36Imp{font-size:36px !important;}
-.fs-40{font-size:40px}
-.fs-44{font-size:44px}
+/*文字居中*/
+.ta-c{text-align: center}
 
-.fw-b{font-weight:bold}
-.fw-n{font-weight:normal}
+/*白色背景*/
+.bg-white{background-color: #fff}
 
-/*文本缩进*/
-.t2{text-indent:2em}
-/* 自动滚动条 */
-.oa{overflow:auto}
-/* 内容对齐 */
-.ta-l{text-align:left}
-.ta-c{text-align:center}
-.ta-r{text-align:right}
-/* 浮动 */
-.fl{float:left;display:inline}
-.fr{float:right;display:inline}
-.di{display: inline}
+/*字体颜色*/
+.c-blue{color: #2d98ef}
+.c-white{color: #fff}
+.c-gray {color: #75818b}
 
-/* 设置元素的垂直对齐方式 */
-.va-t{vertical-align:text-top}
-.va-m{vertical-align:middle}
-.va-b{vertical-align:text-bottom}
-
-/* 绝对定位 */
-.pr{position:relative}
-/* 相对定位 */
-.pa{position:absolute}
-
-/*---width、height、margin、padding---*/
-.w10{width:10px}
-.w20{width:20px}
-.w25{width:25px}
-.w30{width:30px}
-.w40{width:40px}
-.w50{width:50px}
-.w60{width:60px}
-.w70{width:70px}
-.w80{width:80px}
-.w90{width:90px}
-.w100{width:100px}
-.w110{width:110px}
-.w120{width:120px}
-.w130{width:130px}
-.w140{width:140px}
-.w140Imp{width:140px !important;}
-.w150{width:150px}
-.w160{width:160px}
-.w170{width:170px}
-.w180{width:180px}
-.w190{width:190px}
-.w200{width:200px}
-.w210{width:210px}
-.w220{width:220px}
-.w230{width:230px}
-.w240{width:240px}
-.w250{width:250px}
-.w280{width:280px}
-.w300{width:300px}
-.w350{width:350px}
-.w380{width:380px}
-.w400{width:400px}
-.w450{width:450px}
-.w500{width:500px}
-.w550{width:550px}
-.w600{width:600px}
-.w650{width:650px}
-.w700{width:700px}
-.w750{width:750px}
-.w800{width:800px}
-.w850{width:850px}
-.w900{width:900px}
-.w950{width:950px}
-.w1000{width:1000px}
-.minw100{min-width:100px}
-.minw140{min-width:140px}
-.maxw150{max-width:150px}
-.maxw200{max-width:200px}
-.maxw400{max-width:400px}
-
-.h10{height:10px}
-.h15{height:15px}
-.h20{height:20px}
-.h25{height:25px}
-.h30{height:30px}
-.h40{height:40px}
-.h40I{height: 40px !important;}
-.h50{height:50px}
-.h60{height:60px}
-.h70{height:70px}
-.h80{height:80px}
-.h90{height:90px}
-.h100{height:100px}
-.h120{height:120px}
-.h150{height:150px}
-.h200{height:200px}
-.h280{height:280px}
-.h300{height:300px}
-.h400{height:400px}
-.h500{height:500px}
-.h600{height:600px}
-.h700{height:700px}
-.h800{height:800px}
-.h{height:100%}
-.minh100{min-height:100px}
-.minh200{min-height:200px}
-.maxh100{max-height:100px}
-.maxh200{max-height:200px}
-.maxh500{max-height:500px}
-
-.m5{margin:5px}
-.m10{margin:10px}
-.m15{margin:15px}
-.m20{margin:20px}
-.m25{margin:25px}
-.m30{margin:30px}
-.mt0Imp{margin-top:0px !important;}
-.mt5{margin-top:5px}
-.mt10{margin-top:10px}
-.mt15{margin-top:15px}
-.mt20{margin-top:20px}
-.mt25{margin-top:25px}
-.mt30{margin-top:30px}
-.mt40{margin-top:40px}
-.mt50{margin-top:50px}
-.mt80{margin-top:80px}
-.mt100{margin-top:100px}
-.mt180{margin-top:180px}
-.mb5{margin-bottom:5px}
-.mb10{margin-bottom:10px}
-.mb15{margin-bottom:15px}
-.mb20{margin-bottom:20px}
-.mb30{margin-bottom:30px}
-.mb50{margin-bottom:50px}
-.mb80{margin-bottom:80px}
-.mb100{margin-bottom:100px}
-.ml5{margin-left:5px}
-.ml10{margin-left:10px}
-.ml15{margin-left:15px}
-.ml20{margin-left:20px}
-.ml30{margin-left:30px}
-.ml50{margin-left:50px}
-.ml80{margin-left:80px}
-.ml100{margin-left:100px}
-.ml120{margin-left:120px}
-.ml130{margin-left:130px}
-.ml140{margin-left:140px}
-.ml150{margin-left:150px}
-.ml160{margin-left:160px}
-.ml260{margin-left:260px}
-.mr5{margin-right:5px}
-.mr10{margin-right:10px}
-.mr15{margin-right:15px}
-.mr20{margin-right:20px}
-.mr30{margin-right:30px}
-.mr40{margin-right:40px}
-.mr50{margin-right:50px}
-.mr60{margin-right:60px}
-.mr70{margin-right:70px}
-.mr80{margin-right:80px}
-.mr100{margin-right:100px}
-
-.p4{padding:4px}
-.p5{padding:5px}
-.p6{padding:6px}
-.p8{padding:8px}
-.p10{padding:10px}
-.p15{padding:15px}
-.p20{padding:20px}
-.p30{padding:30px}
-.pt5{padding-top:5px}
-.pt10{padding-top:10px}
-.pt15{padding-top:15px}
-.pt20{padding-top:20px}
-.pt30{padding-top:30px}
-.pt50{padding-top:50px}
-.pt100{padding-top:100px}
-.pb5{padding-bottom:5px}
-.pb10{padding-bottom:10px}
-.pb15{padding-bottom:15px}
-.pb20{padding-bottom:20px}
-.pb30{padding-bottom:30px}
-.pb50{padding-bottom:50px}
-.pb100{padding-bottom:100px}
-.pl5{padding-left:5px}
-.pl10{padding-left:10px}
-.pl15{padding-left:15px}
-.pl20{padding-left:20px}
-.pl30{padding-left:30px}
-.pl50{padding-left:50px}
-.pl100{padding-left:100px}
-.pr5{padding-right:5px}
-.pr10{padding-right:10px}
-.pr15{padding-right:15px}
-.pr20{padding-right:20px}
-.pr30{padding-right:30px}
-.pr50{padding-right:50px}
-.pr100{padding-right:100px}
-
-.ml185{margin-left:185px}
-.pl115{padding-left:115px}
-
-.lh25{line-height:25px}
-.lh40{line-height:40px}
-
-.mt12-i{
-	margin-top: 12px !important;
+/*字体加粗*/
+.fw-b{font-weight: bold}
+/*立即还款*/
+.repayment{
+	  width: 72px;
+    height: 29px;
+    background: rgba(247,136,27,1);
+    border-radius: 4px;
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    text-align: left;
+    margin-left: 10px;
 }
+.repayment1{
+	  width: 72px;
+    height: 29px;
+    background: rgba(247, 136, 27, 0.26);
+    border-radius: 4px;
+    display: inline-block;
+    color: #f7881b;
+    font-size: 14px;
+    text-align: left;
+    margin-left: 10px;
+}
+/*缴纳服务费*/
+.service-charge{
+	  width: 72px;
+    height: 29px;
+    background: #2D98EF;
+    border-radius: 4px;
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    text-align: left;
+    margin-left: 10px;
+}
+/*margin*/
+.mt-10{margin-top: 10px}
+.mt-20{margin-top: 20px}
+.mt-30{margin-top: 30px}
+.mt-40{margin-top: 40px}
+.mt-180{margin-top: 180px}
+
+.ml-0I{margin-left: 0px !important;}
+.ml-10{margin-left: 10px}
+.ml-15{margin-left: 15px}
+.ml-20{margin-left: 20px}
+.ml-30{margin-left: 30px}
+
+.mr-75{margin-right: 75px;}
+.mr-40{margin-right: 40px;}
+
 .mt30-i{
-	margin-top: 30px !important;
-}
-.mb20-i{
-	margin-bottom: 20px !important;
-}
-.p-lr-50{
-	padding: 0 50px;
+    margin-top: 30px !important;
 }
 
-.bg-white{background-color:#fff}
-/*-----------字体颜色------------*/
-.c-white{color:#FFFFFF}
-.c-black{color:#000000}
-.c-yellow{color:#FFFF00}
-.c-red{color:#FF0000}
-.c-grey{color:#808080}
-.c-blue{color:#0000FF}
-.c-green{color:#00FF00}
+/*padding*/
+.pt-50{padding-top: 50px}
+.pt-100{padding-top: 100px}
+.pb-50{padding-bottom: 50px}
 
-.c-666{color:#666}
-.c-999{color:#999}
-.c-border{color:#f1f1f1}
-.c-2b{color:#2b2b2b}
+/*去除input["number"]的上下默认箭头*/
+input[type="number"]::-webkit-outer-spin-button,       
+input[type="number"]::-webkit-inner-spin-button{-webkit-appearance: none}
+input[type="number"]{-moz-appearance:textfield}
 
-/* 主体红 */
-.c-main-red{color: #ff5b52;}
 
-/* 主体蓝 */
-.c-main-blue{color: #078eee;}
 
-/*icon图标蓝*/
-.c-icon-blue{color:#078eee}
-.c-icon-gray{color:#f1f1f1}
+/*
+ * layui源码中需要去除无法覆盖的样式
+ * a:hover
+ */
 
-/*无边框*/
-.bn{border: none !important;}
-
-/* 元素显示、隐藏  */
-.show{display:block}
-.hide{display:none}
-.showI{display:block !important;}
-.hideI{display:none !important;}
-
-/*  元素可见、不可见  */
-.vs-show{visibility: visible}
-.vs-hide{visibility: hidden}
-
-/*  底部文字对齐   */
-.vt-bottom{
-    display: table-cell;
-    vertical-align: bottom;
+/*layui复选框*/
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #2d98ef;
+    background-color: #2d98ef;
+    color: #fff;
 }
 
-/*  去除number输入框的上下箭头   */
-input[type="number"]::-webkit-outer-spin-button,           
-input[type="number"]::-webkit-inner-spin-button{                
- 	-webkit-appearance: none;
-}
-input[type="number"]{-moz-appearance:textfield;}
-
-
-/*覆盖layui样式*/
-.layui-btn-disabled, .layui-btn-disabled:active, .layui-btn-disabled:hover {
-    border: none;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #078eee;
-    cursor: not-allowed;
-    opacity: 1;
-}
-/*layui表格禁止悬浮变灰*/
-.layui-table tbody tr:hover {
-    background-color: #ffffff !important;
+.layui-table-view{
+	border: none;
 }
 
-.layui-table thead tr, 
-.layui-table-fixed-l tr, 
-.layui-table-header, 
-.layui-table-mend, .layui-table-patch, .layui-table-tool {
-    background-color: #f6f7f8;
-}
 
-.laydate-selected {
-    background-color: #cae8ff !important;
+[v-cloak] {
+	display: none;
 }
-.layui-laydate-footer span:hover {
-    color: #2d98ef !important;
-}
-

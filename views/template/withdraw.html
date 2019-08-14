@@ -1,0 +1,81 @@
+<h5 class="title-row">余额提现</h5>
+
+<form>
+	<div class="user-row">
+		<label>绑定银行卡：</label>
+		<div class="bank-card">
+			<svg class="icon">
+				<use xlink:href="" id="bankCode"></use>
+			</svg>
+			<span id="bankInfo"></span>
+		</div>
+	</div>
+	
+	<div class="user-row">
+		<label>提现金额：</label>
+		<div class="input-div">
+			<input class="" type="number" id="withdrawAmount" name="amount" autocomplete="off" placeholder="请输入10元以上的提现金额"/>
+		</div>
+	</div>
+	
+	<input class="row-btn" type="button" id="confirmWithdrawBtn" value="确认提现"/>
+</form>
+
+<p class="user-tips">温馨提示：到账时效 T+1 （节假日顺延）单笔2元（100万封顶），由用户承担，直接从提现金额中扣除，第三方收取的费用。</p>
+
+
+<div class="depository-row">
+	<div class="depository">
+		<img src="../img/kcb-bank.png" alt="" /><span></span>
+	</div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        var userInfo = commonAPIUtil.initUserInfo();
+        if(userInfo) {
+            var userType = userInfo.userType.code;
+            var bankType = userInfo.bankCode;
+            var bankCardNo = userInfo.bankCardNo;
+
+            $("#bankCode").attr("xlink:href","#icon-" + bankType);
+            if(userType == $_GLOBAL.userType.GR){
+                $("#bankInfo").text($_GLOBAL.formatBankCode(bankType) + " 尾号（" + bankCardNo.substring(bankCardNo.length-4,bankCardNo.length) + "）");
+            } else {
+                //企业对公账户不显示银行卡尾号
+                $("#bankInfo").text($_GLOBAL.formatBankCode(bankType));
+            }
+        }
+
+
+        $(".recharge-mode span").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+        });
+
+        $("#confirmWithdrawBtn").click(function () {
+            var withdrawAmount = $("#withdrawAmount").val();
+            if(StringUtil.isEmpty(withdrawAmount)){
+                layer.msg("提现金额不能为空");
+                return;
+            }
+            if(!VerificationUtil.isMoney(withdrawAmount)){
+                layer.msg("请输入合法的金额");
+                return;
+            }
+            if(withdrawAmount < 10){
+                layer.msg("提现金额不能小于10元");
+                return;
+            }
+
+            var data = {amount: withdrawAmount};
+            var result = AjaxUtil.ajaxPostWithLoading(userAccountApiUrl.withdraw, JSON.stringify(data));
+            if(result){
+                $_GLOBAL.jumpToDeposit(result.data);
+            }
+        });
+
+    });
+
+
+</script>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="format-detection" content="telephone=no,email=no,address=no"/>
+	<title>快速借款-车聚宝借款</title>
+	<link rel="shortcut icon" href="../img/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css"/>
+	<link rel="stylesheet" type="text/css" href="../iconfont/iconfont.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/base.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+</head>
+<body>
+
+<header class="header">
+	<div class="hbar">
+		<div class="hbar-container">
+			<span>客服电话：400-684-8856（0:00~24:00 )</span>
+			<div class="hbar-right">
+				<a href="javascript:$_GLOBAL.doLogout();">退出</a>
+				<a href="javascript:;"><span id="userName"></span></a>
+				<span class="vl"></span>
+				<!--<div class="qr-item">
+					<i class="iconfont icon-phone"></i>
+					<span class="va-m">车聚宝APP</span>
+					<div class="pic-box">
+						<img src="../img/qr-1.png"/>
+					</div>
+				</div>-->
+				<div class="qr-item">
+					<i class="iconfont icon-wechat"></i>
+					<span class="va-m">微信公众号</span>
+					<div class="pic-box">
+						<img src="../img/qr-2.png"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="iheader clearfix">
+		<a class="ilogo" href="../index.html"><img src="../img/logo-blue.png"/></a>
+		<div class="iheader-nav">
+			<a href="../index.html">首页</a>
+			<a class="on" href="loan.html">快速借款</a>
+			<a class="vl" href="javascript:;"></a>
+			<!--<a class="status-logout" href="#">登录</a>
+			<a class="status-logout" href="#">注册</a>-->
+			<a class="status-login" href="user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
+		</div>
+	</div>
+</header>
+
+<section class="loan-container">
+	<form class="layui-form">
+		<div class="reminder">温馨提示：请仔细阅读并确认借款信息，并保证提交的信息真实无误</div>
+		<div class="loan-row mt-40">
+			<label id="nameLabel">真实姓名：</label>
+			<span id="realname"></span>
+		</div>
+		<div class="loan-row">
+			<label id="certLabel">身份证号码：</label>
+			<span id="certNo"></span>
+		</div>
+		<div class="loan-row mt-10">
+			<label>所属商户：</label>
+			<div class="select-inline">
+				<select id="merchantSelect" lay-filter="merchantSelect" name="merchantId" lay-verify="required">
+
+				</select>
+			</div>
+		</div>
+		<div class="loan-row mt-20">
+			<label>产品类型：</label>
+			<div class="select-inline">
+				<select id="productSelect" lay-filter="productSelect" name="productId" lay-verify="required">
+
+				</select>
+			</div>
+		</div>
+		<div class="loan-row mt-10">
+			<label>子项目名称：</label>
+			<div class="select-inline">
+				<select id="loanTermSelect" lay-filter="loanTermSelect" lay-verify="required">
+
+				</select>
+			</div>
+		</div>
+		<div class="loan-row mt-10">
+			<label>还款方式：</label>
+			<div class="select-inline">
+				<select id="productItemSelect" lay-filter="productItemSelect" name="productItemId" lay-verify="required">
+
+				</select>
+			</div>
+		</div>
+		<div class="loan-row mt-10">
+			<label>借款期限：</label>
+			<span id="loanTerm">- -</span>
+		</div>
+		<div class="loan-row">
+			<label>借款年化利率：</label>
+			<span id="loanInterestRate">- -</span>
+		</div>
+		<div class="loan-row">
+			<label>服务费率：</label>
+			<span id="serviceFeeRate">- -</span>
+		</div>
+		<div class="loan-row">
+			<label>借款综合年化利率：</label>
+			<span id="combinedInterestRate">- -</span>
+			<!--<span>&emsp;&emsp;&emsp;(年化利率 + 服务费率 x (12 ÷ 借款期限(月)))</span>-->
+		</div>
+		<div class="loan-row">
+			<label>可借余额：</label>
+			<span id="creditBalance">- -</span>
+		</div>
+		<div class="loan-row mt-10">
+			<label>借款金额：</label>
+			<input type="text" value="" name="loanApplyAmount" lay-verify="required" />
+			<span class="right-txt">元</span>
+		</div>
+
+		<!--<div class="loan-row mt-20">
+			<label>融资用途：</label>
+			<textarea placeholder="用于车运费" name="loanPurpose" lay-verify="required"></textarea>
+		</div>-->
+		
+		<div class="loan-row mt-20">
+			<label>融资用途：</label>
+			<div class="select-inline">
+				<select name="loanPurpose" lay-verify="required">
+					<option></option>
+					<option>用于支付路桥费、油费的资金周转</option>
+					<option>用于公司拓展运输业务的资金周转</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="loan-row mt-20">
+			<label>发票或账单：</label>
+			<div class="layui-upload-list ml-0I imgList" id="billImgList">
+				<img class="layui-upload-img pic" id="billImg" src="../img/upload-default.png">
+				<input type="hidden" id="bill" name="billImgUrl">
+			</div>
+		</div>
+
+
+		<div class="loan-row mt-20">
+			<label class="layui-form-label">代偿方式：</label>
+			<div class="layui-input-block">
+				<input type="text" hidden name="applyCompensatoryStatus" id="applyCompensatoryStatus" >
+				<input type="radio" name="applyCompensatoryStatusTemp" lay-filter="applyCompensatoryStatusFilter" value=false title="自偿">
+				<input type="radio" name="applyCompensatoryStatusTemp" lay-filter="applyCompensatoryStatusFilter" value=true title="代偿">
+			</div>
+		</div>
+
+		<div class="loan-agr">
+			<input type="checkbox" id="agrChecked" lay-filter="agrChecked" title="我已阅读并同意" lay-skin="primary" lay-verify="agrChecked">
+			<a href="https://oss.chejubao.cn/agreement/PC/html/loan_consult.html" target="_blank">《网贷借贷咨询服务协议》</a>
+			<a href="https://oss.chejubao.cn/agreement/PC/html/user_service.html" target="_blank">《用户服务协议》</a>
+			<a href="https://oss.chejubao.cn/agreement/PC/html/CA_certificate.html" target="_blank">《CA数字证书使用协议》</a>
+			<a href="https://oss.chejubao.cn/agreement/PC/html/debt_compensatory.html" target="_blank" id="compensationAgreement" class="hide">《代偿协议》</a>
+		</div>
+
+		<input class="ibtn mt-20" lay-submit lay-filter="loanApply" type="button" value="提交" />
+	</form>
+</section>
+
+<footer class="footer">
+	<div class="footer-wrap">
+		<div class="qr-row clearfix">
+			<dl>
+				<dt><img src="../img/qr-1.png"/></dt>
+				<dd>车聚宝微信公众号</dd>
+			</dl>
+			<dl>
+				<dt><img src="../img/qr-2.png"/></dt>
+				<dd>车聚宝APP</dd>
+			</dl>
+		</div>
+		<p class="tel-row">
+			<i class="iconfont icon-guanjiaowangtubiao11"></i>
+			客服电话&nbsp; 400-684-8856 &nbsp;<span>(0:00~24:00)</span>
+		</p>
+		<p class="p1"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" target="_blank">沪公网安备 31011802001554号</a> &emsp; ICP备案号：沪ICP备15034281号</p>
+		<p class="p2">Copyright © 上海开颜金融信息服务有限公司(2015-2019)</p>
+	</div>
+</footer>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.cookie.js"></script>
+<script src="../plugins/layui/layui.all.js"></script>
+<script src="../properties/host-config.properties.js"></script>
+<script src="../js/api-config.js"></script>
+<script src="../js/base-utils.js"></script>
+<script src="../js/base-utils.api.js"></script>
+<script src="../js/common.js"></script>
+<script src="../plugins/plupload-2.3.6/js/plupload.full.min.js"></script>
+
+<script>
+	var merchantId,productId;
+	var productItems;
+    $(document).ready(function () {
+        var userInfo = commonAPIUtil.initUserInfo();
+        if(userInfo){
+            $("#userName").text(userInfo.safeLoginAccount);
+			$("#realname").text(userInfo.realName);
+            $("#creditBalance").text(MoneyUtil.formatMoney(userInfo.canBorrowAmt.amount, 2) + "元");
+			if(userInfo.userType.code == "GR"){
+			    $("#nameLabel").text("真实姓名：");
+                $("#certLabel").text("身份证号码：");
+				$("#certNo").text(userInfo.safeCert);
+			} else {
+                $("#nameLabel").text("公司名称：");
+                $("#certLabel").text("法人身份证：");
+                $("#certNo").text(userInfo.safeLegalCert);
+			}
+        } else {
+            return;
+        }
+
+        getUserMerchantList();
+
+        layui.form.on('select(merchantSelect)', function(data){
+            $("#loanInterestRate").text("- -");
+            $("#serviceFeeRate").text("- -");
+            SelectUtil.clearSelectOpt('productSelect');
+            SelectUtil.clearSelectOpt('loanTermSelect');
+            SelectUtil.clearSelectOpt('productItemSelect');
+            layui.form.render('select');
+            merchantId = data.value;
+            if(merchantId){
+                getMerchantProductList(merchantId);
+            }
+        });
+
+        layui.form.on('select(productSelect)', function(data){
+            $("#loanInterestRate").text("- -");
+            $("#serviceFeeRate").text("- -");
+            SelectUtil.clearSelectOpt('loanTermSelect');
+            SelectUtil.clearSelectOpt('productItemSelect');
+            layui.form.render('select');
+            productId = data.value;
+            if(productId){
+                getLoanTermList(productId);
+            }
+        });
+
+        layui.form.on('select(loanTermSelect)', function(data){
+            $("#loanInterestRate").text("- -");
+            $("#serviceFeeRate").text("- -");
+            SelectUtil.clearSelectOpt('productItemSelect');
+            layui.form.render('select');
+            var loanTerm = data.value;
+            if(loanTerm){
+                var loanTermArr = loanTerm.split("|");
+                getProductItemList(loanTermArr[0], loanTermArr[1]);
+            }
+        });
+
+        layui.form.on('select(productItemSelect)', function(data){
+            var productItemId = data.value;
+			if(productItemId){
+                $.each(productItems, function (index, item) {
+                    if(item.value == productItemId){
+                        $("#loanInterestRate").text(NumberUtil.mul(item.loanInterestRate, 100) + "%");
+                        $("#serviceFeeRate").text(NumberUtil.mul(item.serviceFeeRate, 100) + "%");
+                        return false;
+					}
+                });
+			} else {
+                $("#loanInterestRate").text("- -");
+                $("#serviceFeeRate").text("- -");
+			}
+        });
+
+        layui.form.on('submit(loanApply)', function(data){
+            if(validateAPIUtil.checkRight()){
+                AjaxUtil.ajaxPostCallBack(loanApiUrl.loanApply, JSON.stringify(data.field), function (result) {
+                    layer.msg('借款申请成功！', {
+                        time: 1000 //1秒关闭
+                    }, function () {
+                        // 跳转至我的申请列表
+                        $_GLOBAL.jumpToUserApply();
+                    });
+                });
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			}
+        });
+
+		layui.form.on('radio(applyCompensatoryStatusFilter)', function(data){
+			$("#applyCompensatoryStatus").val(data.value);
+			if(data.value == "true"){
+				$("#compensationAgreement").show();
+			} else {
+				$("#compensationAgreement").hide();
+			}
+		});
+
+        layui.form.verify({
+            agrChecked : function(){
+                if (!$("#agrChecked").is(":checked")) {
+                    return "请勾选同意相关协议";
+                }
+			}
+		});
+
+		var uploader = new plupload.Uploader({
+			runtimes: 'html5,flash,silverlight,html4',
+			browse_button: "billImg",
+			multi_selection: true,
+			flash_swf_url: '../../resources/plugins/plupload-2.1.2/js/Moxie.swf',
+			silverlight_xap_url: '../../resources/plugins/plupload-2.1.2/js/Moxie.xap',
+			filters: {
+				mime_types: [ //只允许上传图片和zip文件
+					{title: "Image files", extensions: "jpg,jpeg,png"},
+				],
+				max_file_size: '10M', //最大只能上传400kb的文件
+				prevent_duplicates: false //不允许选取重复文件
+			},
+			url: 'https://oss.aliyuncs.com',
+
+			init: {
+				PostInit: function () {
+
+				},
+
+				FilesAdded: function (up, files) {
+					$.each(files, function (i, file) {
+						PluploadUtil.set_upload_param(up, "loan_apply", file, "bill");
+					});
+				},
+
+				BeforeUpload: function (up, file) {
+
+				},
+
+				UploadProgress: function (up, file) {
+
+				},
+
+				FileUploaded: function (up, file, info) {
+					if (info.status == 200) {
+						var message = file.name;
+						if(up.settings.multi_selection) {
+							message = ($("#bill").val() ? $("#bill").val() + ";" : $("#bill").val()) + file.name;
+						}
+						$("#bill").val(message);
+
+						PluploadUtil.previewImg("billImg", file, up.settings.multi_selection);
+					} else {
+						layer.msg(info.response);
+					}
+				},
+
+				Error: function (up, err) {
+					errorHandler(err);
+				}
+			}
+		});
+
+		uploader.init();
+    });
+    
+    function getUserMerchantList() {
+		AjaxUtil.ajaxPostCallBack(loanApiUrl.getMerchantList, null, function (result) {
+            SelectUtil.setSelectOpts(result.data, "merchantSelect", "value", "text");
+            if(result.data.length == 1){
+                $("#merchantSelect").val(result.data[0].value);
+                //执行商户选中后事件
+                merchantId = result.data[0].value;
+				getMerchantProductList(merchantId);
+            }
+            layui.form.render('select');
+        });
+    }
+
+    function getMerchantProductList(merchantId) {
+        var data = {
+            merchantId: merchantId
+		};
+        AjaxUtil.ajaxPostCallBack(loanApiUrl.getProductList, JSON.stringify(data), function (result) {
+            SelectUtil.setSelectOpts(result.data, "productSelect", "value", "text");
+            if(result.data.length == 1){
+                $("#productSelect").val(result.data[0].value);
+                //执行产品选中后事件
+                productId = result.data[0].value;
+                getLoanTermList(productId);
+            }
+            layui.form.render('select');
+        });
+    }
+
+    function getLoanTermList(productId) {
+        var data = {
+            merchantId: merchantId,
+            productId: productId
+        };
+        AjaxUtil.ajaxPostCallBack(loanApiUrl.getLoanTermList, JSON.stringify(data), function (result) {
+            SelectUtil.setSelectOpts(result.data, "loanTermSelect", "value", "text");
+            if(result.data.length == 1){
+                $("#loanTermSelect").val(result.data[0].value);
+                //执行借款期限选中后事件
+				var loanTermArr = result.data[0].value.split("|");
+                getProductItemList(loanTermArr[0], loanTermArr[1]);
+            }
+            layui.form.render('select');
+        });
+    }
+
+    function getProductItemList(loanTermValue, loanTermUnit) {
+        var data = {
+            productId: productId,
+            loanTermValue: loanTermValue,
+            loanTermUnit: loanTermUnit
+        };
+        AjaxUtil.ajaxPostCallBack(loanApiUrl.getProductItemList, JSON.stringify(data), function (result) {
+            productItems = result.data;
+            SelectUtil.setSelectOpts(result.data, "productItemSelect", "value", "text");
+            if(result.data.length == 1){
+                var item = result.data[0];
+                $("#productItemSelect").val(item.value);
+                //执行子产品选中后事件
+				$('#loanTerm').text(item.term);
+                $("#loanInterestRate").text(NumberUtil.mul(item.loanInterestRate, 100) + "%");
+                $("#serviceFeeRate").text(NumberUtil.mul(item.serviceFeeRate, 100) + "%");
+
+				var combinedInterestRate;
+				if(loanTermUnit == "Y"){
+					combinedInterestRate = NumberUtil.add(item.loanInterestRate, NumberUtil.div(item.serviceFeeRate, loanTermValue));
+				} else if(loanTermUnit == "M"){
+					combinedInterestRate = NumberUtil.add(item.loanInterestRate, NumberUtil.div(NumberUtil.mul(12, item.serviceFeeRate), loanTermValue));
+				} else if(loanTermUnit == "D"){
+					combinedInterestRate = NumberUtil.add(item.loanInterestRate, NumberUtil.div(NumberUtil.mul(360, item.serviceFeeRate), loanTermValue));
+				}
+				$('#combinedInterestRate').text(NumberUtil.mul(combinedInterestRate, 100) + '%');
+            }
+            layui.form.render('select');
+        });
+    }
+
+	function errorHandler(err) {
+		if (err.code == plupload.FILE_EXTENSION_ERROR) {
+			layer.msg("图片仅支持JPG、PNG格式");
+		} else if (err.code == plupload.FILE_SIZE_ERROR) {
+			layer.msg("图片大小不能超过3M");
+		} else {
+			layer.msg(err.message);
+		}
+	}
+
+
+</script>
+</body>
+</html>

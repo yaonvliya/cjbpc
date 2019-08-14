@@ -1,0 +1,94 @@
+<h5 class="title-row">解绑银行卡</h5>
+
+<form>
+	<div class="user-row">
+		<label>绑定银行卡：</label>
+		<div class="bank-card">
+			<svg class="icon">
+				<use xlink:href="" id="bankCode"></use>
+			</svg>
+			<span id="bankInfo"></span>
+		</div>
+	</div>
+
+	<div class="user-row">
+		<label>短信验证码：</label>
+		<div class="input-div">
+			<input type="number" id="smsCaptcha" placeholder="请输入短信验证码"/>
+			<button type="button" id="getSmsCodeBtn" onclick="getSmsCaptcha(this)">获取验证码</button>
+		</div>
+	</div>
+
+	<div class="mobile-row">
+		<label></label>
+		<span>发送至<span id="showMobile"></span></span>
+	</div>
+
+	<input class="row-btn" type="button" id="confirmBtn" value="确定"/>
+	
+</form>
+
+<div class="depository-row">
+	<div class="depository">
+		<img src="../img/kcb-bank.png" alt="" /><span></span>
+	</div>
+</div>
+
+<script>
+    var SmsInterValObj,smsMsgFlag;
+
+    $(document).ready(function () {
+        var userInfo = commonAPIUtil.initUserInfo();
+        if(userInfo) {
+            $("#showMobile").text(userInfo.safeLoginAccount);
+
+            var userType = userInfo.userType.code;
+            var bindcardStatus = userInfo.bindCardStatus.code;
+            var bankType = userInfo.bankCode;
+            var bankCardNo = userInfo.bankCardNo;
+
+            $("#bankCode").attr("xlink:href","#icon-" + bankType);
+            $("#bankInfo").text($_GLOBAL.formatBankCode(bankType) + " 尾号（" + bankCardNo.substring(bankCardNo.length-4,bankCardNo.length) + "）");
+
+        }
+
+
+        $("#confirmBtn").click(function () {
+            if (!smsMsgFlag) {
+                layer.msg("请先获取验证码！");
+                return;
+            }
+
+            var smsCaptcha = $("#smsCaptcha").val();
+            if (StringUtil.isEmpty(smsCaptcha)) {
+                layer.msg("请输入短信验证码！");
+                return;
+            }
+
+            var data = {smsCaptcha: smsCaptcha};
+            var result = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.unbindCard, JSON.stringify(data));
+            if(result){
+                layer.msg('解绑银行卡成功！', {
+                    time: 1000 //1秒关闭
+                }, function () {
+                    // 跳转至个人信息页面
+                    $_GLOBAL.jumpToUserSettings();
+                });
+			}
+        });
+
+    });
+
+    function getSmsCaptcha(obj){
+        var data = {
+            captchaBizType: $_GLOBAL.msgType.UNBIND_CARD
+        };
+        AjaxUtil.ajaxPostCallBack(captchaApiUrl.getSmsCodeBindMobile, JSON.stringify(data), function () {
+            layer.msg('发送成功');
+            smsMsgFlag = true;
+            SmsInterValObj = TimerUtil.setRemainTime(obj);
+            $("#smsCaptcha").focus();
+        });
+    }
+
+</script>

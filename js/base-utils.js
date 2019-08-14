@@ -6,27 +6,12 @@ layui.use(['layer'], function () {
 /**
  * ajax请求工具类
  */
-var is_first_open_get = true;
-var is_first_open_post = true;
-var curr_url = '';
 var AjaxUtil = {
 	/** ajax post 请求后台，获取数据
 	 * @param url(请求地址)
 	 * @param data(请求参数-json对象)
 	 */
 	ajaxPost: function (url, data) {
-		// 防止重复点击
-		if (is_first_open_post || curr_url != url || StringUtil.isContains(url, "/trade/cal_expect_proceeds")) {
-			is_first_open_post = false;
-			setTimeout(function () {
-				is_first_open_post = true;
-			}, 1000);
-			curr_url = url;
-		} else {
-			curr_url = url;
-			return;
-		}
-
 		var json = null;
 		$.ajax({
 			url: url,
@@ -56,18 +41,6 @@ var AjaxUtil = {
 	},
 	/*ajax get 请求后台，获取数据*/
 	ajaxGet: function (url) {
-		// 防止重复点击（查询用户信息可以重复访问）
-		if (is_first_open_get || curr_url != url || StringUtil.isContains(url, "/internal/user/account/userInfo")) {
-			is_first_open_get = false;
-			setTimeout(function () {
-				is_first_open_get = true;
-			}, 1000);
-			curr_url = url;
-		} else {
-			curr_url = url;
-			return;
-		}
-
 		var json = null;
 		$.ajax({
 			url: url,
@@ -93,20 +66,18 @@ var AjaxUtil = {
 	 */
 	ajaxPostWithLoading: function (url, data) {
 		var json = null;
-		layer.load(1);
+		layer.load(1, {shade: [0.3, '#333'] /*透明度，背景色*/});
 		var result = AjaxUtil.ajaxPost(url, data);
 		layer.closeAll('loading');
-		if(result != null){
-			if (result.code == '20000') {
-				json = result;
-			} else if (result.code == "40404" || result.code == "40405") {
-				layer.msg('由于您长时间未操作，请重新登录。', {time:2000}, function () {
-					CookieUtil.clearAllCookie();
-					$_GLOBAL.jumpToLogin();
-				});
-			} else {
-				layer.msg(result.message);
-			}
+		if (result.code == '20000') {
+			json = result;
+		} else if (result.code == "40404" || result.code == "40405") {
+			layer.msg('由于您长时间未操作，请重新登录。', {time:1000}, function () {
+				CookieUtil.clearAllCookie();
+				$_GLOBAL.jumpToLogin();
+			});
+		} else {
+			layer.msg(result.message);
 		}
 		return json;
 	},
@@ -122,7 +93,7 @@ var AjaxUtil = {
 		if (result.code == '20000') {
 			json = result;
 		} else if (result.code == "40404" || result.code == "40405") {
-			layer.msg('由于您长时间未操作，请重新登录。', {time:2000}, function () {
+			layer.msg('由于您长时间未操作，请重新登录。', {time:1000}, function () {
 				CookieUtil.clearAllCookie();
 				$_GLOBAL.jumpToLogin();
 			});
@@ -138,33 +109,28 @@ var AjaxUtil = {
 	 */
 	ajaxGetCallBack: function (url, doSomething) {
 		var result = AjaxUtil.ajaxGet(url);
-		if(result != null){
-			if (result.code == '20000') {
-				doSomething(result);
-			} else if (result.code == "40404" || result.code == "40405") {
-				layer.msg('由于您长时间未操作，请重新登录。', {time:2000}, function () {
-					CookieUtil.clearAllCookie();
-					$_GLOBAL.jumpToLogin();
-				});
-			} else {
-				layer.msg(result.message);
-			}
+		if (result.code == '20000') {
+			doSomething(result);
+		} else if (result.code == "40404" || result.code == "40405") {
+			layer.msg('由于您长时间未操作，请重新登录。', {time:1000}, function () {
+				CookieUtil.clearAllCookie();
+				$_GLOBAL.jumpToLogin();
+			});
+		} else {
+			layer.msg(result.message);
 		}
-
 	},
 	ajaxPostCallBack: function (url, data, doSomething) {
 		var result = AjaxUtil.ajaxPost(url, data);
-		if(result != null){
-			if (result.code == '20000') {
-				doSomething(result);
-			} else if (result.code == "40404" || result.code == "40405") {
-				layer.msg('由于您长时间未操作，请重新登录。', {time:2000}, function () {
-					CookieUtil.clearAllCookie();
-					$_GLOBAL.jumpToLogin();
-				});
-			} else {
-				layer.msg(result.message);
-			}
+		if (result.code == '20000') {
+			doSomething(result);
+		} else if (result.code == "40404" || result.code == "40405") {
+			layer.msg('由于您长时间未操作，请重新登录。', {time:1000}, function () {
+				CookieUtil.clearAllCookie();
+				$_GLOBAL.jumpToLogin();
+			});
+		} else {
+			layer.msg(result.message);
 		}
 	},
 	/**
@@ -243,54 +209,41 @@ var $_GLOBAL = {
 	basePath: function () {
 		return sysContext;
 	},
-	jumpToIndex: function () {
+	jumpToIndex:function () {
 		window.location.href = $_GLOBAL.basePath() + "/index.html";
 	},
-	jumpToUserIndex: function () {
-		window.location.href = $_GLOBAL.basePath() + "/views/user/user_index.html";
-	},
-	jumpToLogin: function () {
+	jumpToUserIndex:function () {
+        window.location.href = $_GLOBAL.basePath() + "/views/user.html";
+    },
+    jumpToUserApply:function () {
+        window.location.href = $_GLOBAL.basePath() + "/views/user.html#apply";
+    },
+    jumpToUserSettings:function () {
+        window.location.href = $_GLOBAL.basePath() + "/views/user.html#settings";
+    },
+	jumpToLogin:function () {
 		window.location.href = $_GLOBAL.basePath() + "/login.html";
 	},
-	// 跳转借款系统
-	jumpToLoan: function () {
-		window.open(loanHost + loanContext + "/index.html");
-	},
-	// 跳转借款系统
-	jumpToMerchant: function () {
-		window.open(merchantHost + merchantContext + "/login.html");
-	},
-
-	jumpToWithdraw:function (userInfo) {
-		if(validateAPIUtil.validateCanWithDraw(userInfo.openDepositStatus, userInfo.bindCardStatus)){
-			window.location.href = $_GLOBAL.basePath() + "/views/user/user_index.html#withdraw";
-		} else {
-			layer.msg("您还没有绑定银行卡，请到个人中心页面操作", {
-				time:1000
-			}, function () {
-				if(userInfo.userType.code == "GR"){
-					window.location.href = $_GLOBAL.basePath() + "/views/user/user_index.html#personal_info";
-				} else {
-					window.location.href = $_GLOBAL.basePath() + "/views/user/user_index.html#company_info";
-				}
-			});
-		}
-	},
-	jumpToRecharge:function (userInfo) {
-		if(validateAPIUtil.validateCanRecharge(userInfo.openDepositStatus, userInfo.bindCardStatus)){
-			window.location.href = $_GLOBAL.basePath() + "/views/user/user_index.html#recharge";
-		} else {
-			layer.msg("您还没有实名认证，请到个人中心进行实名认证", {
-				time:1000
-			}, function () {
-				if(userInfo.userType.code == "GR"){
-					window.location.href = $_GLOBAL.basePath() + "/views/user/user_index.html#personal_info";
-				} else {
-					window.location.href = $_GLOBAL.basePath() + "/views/user/user_index.html#company_info";
-				}
-			});
-		}
-	},
+    jumpToDeposit:function (token) {
+        window.location.href = $_GLOBAL.basePath() + "/deposit_loading.html?" + token;
+    },
+    jumpToLoan:function () {
+        window.location.href = $_GLOBAL.basePath() + "/views/loan.html";
+    },
+    jumpToOpenAccount:function (userType) {
+       	if(userType == $_GLOBAL.userType.GR){
+            window.location.href = $_GLOBAL.basePath() + "/views/user.html#open_account_personal";
+		} else if(userType == $_GLOBAL.userType.JG){
+            window.location.href = $_GLOBAL.basePath() + "/views/user.html#open_account_company_info";
+        }
+    },
+    jumpToUploadInfo:function (userType) {
+        if(userType == $_GLOBAL.userType.GR){
+            window.location.href = $_GLOBAL.basePath() + "/views/user.html#upload_personal_pic";
+        } else if (userType == $_GLOBAL.userType.JG){
+            window.location.href = $_GLOBAL.basePath() + "/views/user.html#upload_company_pic";
+        }
+    },
 	doLogout:function () {
 		AjaxUtil.ajaxGetCallBack(userProfileApiUrl.logout, function () {
 			//清除所有cookie
@@ -302,59 +255,32 @@ var $_GLOBAL = {
 
 	//获取短信验证码类型
 	msgType: {
-		// 注册
+		//注册
 		REGISTER: "register",
-		// 修改登录手机号
+		//修改登录手机号
 		MODIFY_LOGIN_MOBILE: "modifyLoginMobile",
-		// 绑定邮箱
+		//绑定邮箱
 		BIND_EMAIL: "bindEmail",
-		// 修改绑定邮箱
+		//修改绑定邮箱
 		MODIFY_BIND_EMAIL: "modifyBindEmail",
-		// 重置登录密码
+		//重置登录密码
 		RESET_LOGIN_PASSWORD: "resetLoginPassword",
-		// 手机身份验证
+		//手机身份验证
 		CHECK_IDENTITY_WITH_MOBILE: "checkIdentityWithMobile",
-		// 邮箱身份验证
+		//邮箱身份验证
 		CHECK_IDENTITY_WITH_EMAIL: "checkIdentityWithEmail",
-		// 发布转让
-		SUBMIT_TRANSFER: "submitTransfer",
-		// 投资
-		INVEST: "tradeInvest",
-		// 购买债权转让
-		PURCHASE_TRANSFER: "purchaseTransfer",
-		// 解绑银行卡
-		UNBIND_CARD: "unbindCard"
+        //借款
+        LOAN_APPLY: "loanApply",
+        //还款
+        REPAY: "repay",
+        //缴纳服务费
+        PAY_FEE: "payFee",
+		UNBIND_CARD: "unbindCard",
 
 	},
 
-	// 实名状态
-	openDepositStatus: {
-		// 未实名认证
-		NON: "--",
-		// 已实名认证
-		SUCCESS: "00",
-		// 待上传资料
-		WAIT_UPLOAD_IMG: "01",
-		// 资料审核中
-		AUDITING: "02",
-		// 审核未通过
-		FAILED: "03"
-	},
-
-	// 绑卡状态
-	bindCardStatus: {
-		NOT_BIND: "0",
-		HAS_BIND: "1"
-	},
-
-	// 用户类型
-	userType: {
-		GR: "GR",
-		JG: "JG"
-	},
-
-	// 富友业务类型
-	fyType: {
+	// 业务类型
+	bizType: {
 		// 个人开户
 		PERSONAL_REALNAME :"PERSONAL_REGISTER",
 
@@ -362,16 +288,16 @@ var $_GLOBAL = {
 		ENTERPRISE_REALNAME :"ENTERPRISE_REGISTER",
 
 		// 解绑银行卡
-		 UNBIND_CARD :"PERSONAL_UNBIND_BANKCARD",
+		UNBIND_CARD :"PERSONAL_UNBIND_BANKCARD",
 
 		// 绑定银行卡
 		BIND_CARD :"PERSONAL_BIND_BANKCARD",
 
 		// 修改交易密码
-		MODIFY_TRADE_PASS :"RESET_PASSWORD",
+		MODIFY_TRADE_PASS :"MODIFY_TRADE_PASS",
 
 		// 重置交易密码
-		// RESET_TRADE_PASS :"reset_trade_pass",
+		RESET_TRADE_PASS :"RESET_PASSWORD",
 
 		// 更换银行预留手机
 		MODIFY_BANK_MOBILE :"MODIFY_MOBILE",
@@ -388,8 +314,8 @@ var $_GLOBAL = {
 		//授权
 		AUTHORIZATION : "USER_AUTHORIZE_NEW",
 
-		//  注销用户
-		CLOSE_USER : "CLOSE_USER"
+        //缴纳服务费
+        PAY_FEE : "PAY_FEE"
 	},
 
 	banner: {
@@ -415,40 +341,93 @@ var $_GLOBAL = {
 		APP_POINTMALL: "APP||Pointmall",
 	},
 
+	//实名状态
+	realnameStatus: {
+        //未实名
+        NOT_REALNAME: "--",
+        //已实名
+        HAS_REALNAME: "00",
+        //待上传证件
+        WAIT_UPLOAD_IMG: "01",
+        //实名审核中
+        AUDITING: "02",
+        //实名审核不通过
+        FAILED: "03",
+	},
+
+    //绑卡状态
+    bindCardStatus: {
+        NOT_BIND: "0",
+        HAS_BIND: "1",
+    },
+
+    //用户类型
+    userType: {
+        GR: "GR",
+        JG: "JG",
+    },
+
 	formatBankCode: function (code) {
 		switch (code){
-			case 'ICBC': return "中国工商银行";break;
-			case 'ABC': return "中国农业银行";break;
-			case 'CCB': return "中国建设银行";break;
-			case 'BOC': return "中国银行";break;
-			case 'BCOM': return "中国交通银行";break;
-			case 'CIB': return "兴业银行";break;
-			case 'CITIC': return "中信银行";break;
-			case 'CEB': return "中国光大银行";break;
-			case 'PAB': return "平安银行";break;
-			case 'PSBC': return "中国邮政储蓄银行";break;
-			case 'SHB': return "上海银行";break;
-			case 'SPDB': return "浦东发展银行";break;
-			case 'CMBC': return "中国民生银行";break;
-			case 'CMB': return "招商银行";break;
-			case 'GDB': return "广发银行";break;
-			case 'HXB': return "华夏银行";break;
-			case 'HZB': return "杭州银行";break;
-			case 'BOB': return "北京银行";break;
-			case 'NBCB': return "宁波银行";break;
-			case 'JSB': return "江苏银行";break;
-			case 'ZSB': return "浙商银行";break;
-			default : return "其他银行";break;
+            case 'ICBC': return "中国工商银行";break;
+            case 'ABC': return "中国农业银行";break;
+            case 'CCB': return "中国建设银行";break;
+            case 'BOC': return "中国银行";break;
+            case 'BCOM': return "中国交通银行";break;
+            case 'CIB': return "兴业银行";break;
+            case 'CITIC': return "中信银行";break;
+            case 'CEB': return "中国光大银行";break;
+            case 'PAB': return "平安银行";break;
+            case 'PSBC': return "中国邮政储蓄银行";break;
+            case 'SHB': return "上海银行";break;
+            case 'SPDB': return "浦东发展银行";break;
+            case 'CMBC': return "中国民生银行";break;
+            case 'CMB': return "招商银行";break;
+            case 'GDB': return "广发银行";break;
+            case 'HXB': return "华夏银行";break;
+            case 'HZB': return "杭州银行";break;
+            case 'BOB': return "北京银行";break;
+            case 'NBCB': return  "宁波银行";break;
+            case 'JSB': return "江苏银行";break;
+            case 'ZSB': return "浙商银行";break;
+            case 'IT': return "其他银行";break;
 		}
 	},
 
-	riskLevelLimitAmount: function (code) {
-		switch (code){
-			case '保守型': return 500000;break;
-			case '稳健型': return 3000000;break;
-			case '成长型': return 8000000;break;
-			case '进取型': return -1;break;
-			default : return 500000;break;
+	credentials: function(code) {
+		switch (code) {
+			case "identityCertFlag" : return "身份证";break;
+			case "legalPersonIdentityFlag" : return "法人身份证";break;
+			case "legalPersonCreditReportingFlag" : return "法人征信报告";break;
+			case "enterpriseCreditReportingFlag" : return "企业征信报告";break;
+			case "businessLicenseFlag" : return "企业营业执照";break;
+			case "drivingLicenseFlag" : return "行驶证";break;
+			case "driverLicenseFlag" : return "驾驶证/挂靠协议";break;
+			case "roadTransportLicenseFlag" : return "道路运输经营许可证";break;
+			case "thirdContractFlag" : return "运输合同";break;
+
+			case "certCardFront" : return "身份证正面";break;
+			case "certCardBack" : return "身份证反面";break;
+			case "certCardExpireTime" : return "身份证到期日期";break;
+			case "certCardWithSelf" : return "身份证与本人合照";break;
+			case "businessLicense" : return "营业执照";break;
+			case "businessLicenseExpireTime" : return "营业执照到期日期";break;
+			case "drivingLicense" : return "行驶证";break;
+			case "driverLicense" : return "驾驶证/挂靠协议";break;
+			case "driverLicenseExpireTime" : return "驾驶证/挂靠协议到期日期";break;
+			case "roadTransportLicense" : return "道路运输经营许可证";break;
+			case "roadTransportLicenseExpireTime" : return "道路运输经营许可证到期日期";break;
+			case "transportContract" : return "运输合同";break;
+			case "transportContractExpireTime" : return "运输合同到期日期";break;
+		}
+	},
+
+	/** 添加渠道时也要在此添加，并在user服务中添加RegisterFromEnum */
+	channel: function(channel){
+		switch (channel) {
+			case "cjb": return "cjb"; break;
+			case "whlchain": return "whlchain"; break;
+			default: return "cjb"; break;
 		}
 	},
 
@@ -488,199 +467,20 @@ var TimerUtil = {
 	 * @param btnId(按钮id)
 	 * @returns {number|*}
 	 */
-	setRemainTime: function (btnId) {
+	setRemainTime: function (obj) {
 		var curCount = this.originalSecond;
-		$("#" + btnId).attr("disabled", "true").removeClass("layui-btn-primary").addClass("layui-btn-disabled").text("重新获取（" + curCount + "）");
+		$(obj).attr("disabled", "true").removeClass("layui-btn-primary").addClass("layui-btn-disabled").text("重新获取（" + curCount + "）");
 		var InterValObj = window.setInterval(function () {
 			curCount--;
 			if (curCount == 0) {
 				window.clearInterval(InterValObj);
 				curCount = this.originalSecond;
-				$("#" + btnId).removeAttr("disabled").removeClass("layui-btn-disabled").addClass("layui-btn-primary").text("重新获取");
+				$(obj).removeAttr("disabled").removeClass("layui-btn-disabled").addClass("layui-btn-primary").text("重新获取");
 			} else {
-				$("#" + btnId).text("重新获取（" + curCount + "）");
+				$(obj).text("重新获取(" + curCount + ")");
 			}
 		}, 1000);
 		return InterValObj;
-	}
-};
-
-/**
- * select控件处理工具
- */
-var SelectUtil = {
-	/**
-	 * 动态添加select控件的选项（直接添加）
-	 * @param jsonobj(json对象)
-	 * @param elemId(select控件ID)
-	 * @param value(设置option的value对应的key的名称，可不传，默认为value)
-	 * @param text(设置option的text对应的key的名称，可不传，默认为text)
-	 */
-	addSelectOpts: function (jsonobj, elemId, value, text) {
-		value = value ? value : 'value';
-		text = text ? text : 'text';
-		$.each(jsonobj, function (index, item) {
-			var opt = '<option value="' + item[value] + '">' + item[text] + '</option>';
-			$('#' + elemId).append(opt);
-		});
-	},
-	/**
-	 * 动态添加select控件的选项（先删除旧的选项，再添加）
-	 */
-	setSelectOpts: function (jsonobj, elemId, value, text, defaultValue) {
-		defaultValue = defaultValue || "";
-		SelectUtil.clearSelectOpt(elemId);
-		SelectUtil.appendSelectOpt(elemId, '', defaultValue);
-		SelectUtil.addSelectOpts(jsonobj, elemId, value, text);
-	},
-	/**
-	 * 清除select控件的所有选项
-	 * @param elemId(select控件ID)
-	 */
-	clearSelectOpt: function (elemId) {
-		$("#" + elemId).empty();
-	},
-	/**
-	 * 为Select追加一个Option
-	 * @param elemId(select控件ID)
-	 * @param elemId(要设置的值)
-	 * @param elemId(要显示的内容)
-	 */
-	appendSelectOpt: function (elemId, value, text) {
-		$('#' + elemId).append('<option value="' + value + '">' + text + '</option>');
-	},
-	/**
-	 * 为Select插入一个Option(第一个位置)
-	 * @param elemId(select控件ID)
-	 * @param elemId(要设置的值)
-	 * @param elemId(要显示的内容)
-	 */
-	prependSelectOpt: function (elemId, value, text) {
-		$('#' + elemId).prepend('<option value="' + value + '">' + text + '</option>');
-	},
-	/**
-	 * 获取选中的选项的值
-	 * @param elemId(select控件ID)
-	 */
-	getSelectedValue:function (elemId) {
-		return $('#' + elemId).find("option:selected").val();
-	},
-	/**
-	 * 获取选中的选项的内容
-	 * @param elemId(select控件ID)
-	 */
-	getSelectedText:function (elemId) {
-		return $('#' + elemId).find("option:selected").text();
-	}
-};
-
-/**
- * plupload上传文件工具类
- */
-var PluploadUtil = {
-	upload: function (elm, CallBack) {
-		var uploader = new plupload.Uploader({
-			runtimes: 'html5,flash,silverlight,html4',
-			browse_button: elm,
-			multi_selection: false,
-			flash_swf_url: '../../plugins/plupload-2.3.6/js/Moxie.swf',
-			silverlight_xap_url: '../../plugins/plupload-2.3.6/js/Moxie.xap',
-			filters: {
-				mime_types: [ //只允许上传图片和zip文件
-					{title: "Image files", extensions: "jpg,jpeg,png"}
-				],
-				max_file_size: '2M', //最大只能上传400kb的文件
-				prevent_duplicates: false //不允许选取重复文件
-			},
-			url: 'https://oss.aliyuncs.com',
-
-			init: {
-				PostInit: function () {},
-
-				FilesAdded: function (up, files) {
-					set_upload_param(up, files[0], elm);
-				},
-
-				BeforeUpload: function (up, file) {},
-
-				UploadProgress: function (up, file) {},
-
-				FileUploaded: function (up, file, info) {
-					if (info.status == 200) {
-						CallBack(file.name);
-						previewImg(elm, file);
-					} else {
-						layer.msg(info.response);
-					}
-				},
-
-				Error: function (up, err) {
-					errorHandler(err);
-				}
-			}
-		});
-
-		uploader.init();
-
-		function set_upload_param(up, file, type) {
-			var data = {
-				fileName: file.name,
-				fileType: type,
-				belongSystem: "deposit"
-			};
-			var result = AjaxUtil.ajaxPost(userProfileApiUrl.getUploadParam, JSON.stringify(data));
-			if(result){
-				var param = result.data;
-				accessid = param.accessid;
-				policy = param.policy;
-				signature = param.signature;
-				key = param.key;
-				host = param.host;
-				expire = param.expire;
-
-				new_multipart_params = {
-					'key': key,
-					'policy': policy,
-					'OSSAccessKeyId': accessid,
-					'success_action_status': '200', //让服务端返回200,不然，默认会返回204
-					'signature': signature,
-				};
-
-				up.setOption({
-					'url': host,
-					'multipart_params': new_multipart_params
-				});
-
-				//使用后台生成文件名
-				file.name = key;
-
-				up.start();
-			}
-
-		}
-
-		function previewImg(showImgId, file){
-			var preloader = new moxie.image.Image();
-			preloader.onload = function () {
-				//preloader.downsize(180, 120);//先压缩一下要预览的图片
-				var imgsrc = preloader.type == 'image/jpeg' ? preloader.getAsDataURL('image/jpeg', 80) : preloader.getAsDataURL(); //得到图片src,实质为一个base64编码的数据
-				$("#" + showImgId).attr('src', imgsrc);
-				preloader.destroy();
-				preloader = null;
-			};
-
-			preloader.load(file.getSource());
-		}
-
-		function errorHandler(err){
-			if(err.code == plupload.FILE_EXTENSION_ERROR) {
-				layer.msg("图片仅支持JPG、PNG格式");
-			} else if(err.code == plupload.FILE_SIZE_ERROR) {
-				layer.msg("图片大小不能超过2M");
-			} else {
-				layer.msg(err.message);
-			}
-		}
 	}
 };
 
@@ -878,10 +678,6 @@ var NumberUtil = {
 		var regex = /^\d+(?:\.\d{1,2})?$/;
 		return regex.test(source);
 	},
-	checkPlusNum: function (source) {
-		var regex = /(^[1-9]\d*$)/;
-		return regex.test(source);
-	},
 	checkBankCardNum: function (source) {
 		// source = source.replace(/\s/g, "");//去除空格
 		var regex = /^([1-9]{1})(\d{14,18})$/;
@@ -963,7 +759,7 @@ var NumberUtil = {
 		try {
 			f = b.toString().split(".")[1].length;
 		} catch (g) {}
-		return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), NumberUtil.mul(c / d, Math.pow(10, f - e)).toFixed(2);
+		return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), NumberUtil.mul(c / d, Math.pow(10, f - e)).toFixed(4);
 	},
 	/**两个数值求余运算*/
 	mod: function (a, b) {
@@ -1009,7 +805,6 @@ var MoneyUtil = {
 	 * @returns {String} 反格式化后的金额
 	 */
 	parseMoney: function (money, digit) {
-		money = String(money);
 		digit = digit > 0 && digit <= 20 ? digit : 2;
 		return parseFloat((money + "").replace(/[^\d\.-]/g, "")).toFixed(digit) + "";
 	},
@@ -1136,11 +931,6 @@ var VerificationUtil = {
 		var regex = /^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/;
 		return regex.test(source);
 	},
-	/**验证登录密码*/
-	pwd: function (source) {
-		var regex = /^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*_]+$)[a-zA-Z\d!@#$%^&*_]{8,20}$/;
-		return regex.test(source);
-	},
 	/** 验证是否为手机号码 */
 	isMobile: function (source) {
 		// source = source.replace(/\s/g, "");//去除空格
@@ -1171,7 +961,13 @@ var VerificationUtil = {
 			return false;
 		}
 		return res;
-	}
+	},
+    /** 验证是否为金额 */
+    isMoney: function (source) {
+        var regex = /^\d+(?:\.\d{1,2})?$/;
+        return regex.test(source);
+    },
+
 };
 
 /**
@@ -1346,9 +1142,6 @@ var DateUtils = {
 	 * 毫秒转换为日期格式字符串(年月日时分秒)
 	 */
 	longToDateString: function (dateVal, str) {
-		if(!dateVal){
-			return "";
-		}
 		str = str || "-";
 		var date = new Date(dateVal);
 		var Y = date.getFullYear();
@@ -1366,12 +1159,9 @@ var DateUtils = {
 	},
 
 	/**
-	 * 毫秒转换为日期格式字符串(年月日时分)
+	 * 毫秒转换为日期格式字符串(年月日时分秒)
 	 */
 	longToDateYMDHM: function (dateVal, str) {
-		if(!dateVal){
-			return "";
-		}
 		str = str || "-";
 		var date = new Date(dateVal);
 		var Y = date.getFullYear();
@@ -1396,32 +1186,6 @@ var DateUtils = {
 		var D = date.getDate();
 		return Y +
 			str + (M < 10 ? ('0' + M) : M) +
-			str + (D < 10 ? ('0' + D) : D);
-	},
-	/**
-	 * 毫秒转换为日期格式字符串(年月日)
-	 */
-	longToDateStringYMDPoint: function (dateVal, str) {
-		str = str || ".";
-		var date = new Date(dateVal);
-		var Y = date.getFullYear();
-		var M = date.getMonth() + 1;
-		var D = date.getDate();
-		return Y +
-			str + (M < 10 ? ('0' + M) : M) +
-			str + (D < 10 ? ('0' + D) : D);
-	},
-	/**
-	 * 毫秒转换为日期格式字符串(月日)
-	 */
-	longToDateStringMDPoint: function (dateVal, str) {
-		str = str || ".";
-		var date = new Date(dateVal);
-		var Y = date.getFullYear();
-		var M = date.getMonth() + 1;
-		var D = date.getDate();
-		return '' +
-			(M < 10 ? ('0' + M) : M) +
 			str + (D < 10 ? ('0' + D) : D);
 	},
 	/**
@@ -1672,4 +1436,128 @@ var StartsUtil = {
 			return starsContent;
 		}
 	}
+};
+
+/**
+ * select控件处理工具
+ */
+var SelectUtil = {
+    /**
+     * 动态添加select控件的选项（直接添加）
+     * @param jsonobj(json对象)
+     * @param elemId(select控件ID)
+     * @param value(设置option的value对应的key的名称，可不传，默认为value)
+     * @param text(设置option的text对应的key的名称，可不传，默认为text)
+     */
+    addSelectOpts: function (jsonobj, elemId, value, text) {
+        value = value ? value : 'value';
+        text = text ? text : 'text';
+        $.each(jsonobj, function (index, item) {
+            var opt = '<option value="' + item[value] + '">' + item[text] + '</option>';
+            $('#' + elemId).append(opt);
+        });
+    },
+    /**
+     * 动态添加select控件的选项（先删除旧的选项，再添加）
+     */
+    setSelectOpts: function (jsonobj, elemId, value, text) {
+        SelectUtil.clearSelectOpt(elemId);
+        SelectUtil.appendSelectOpt(elemId, '', '');
+        SelectUtil.addSelectOpts(jsonobj, elemId, value, text);
+    },
+    /**
+     * 清除select控件的所有选项
+     * @param elemId(select控件ID)
+     */
+    clearSelectOpt: function (elemId) {
+        $("#" + elemId).empty();
+    },
+    /**
+     * 为Select追加一个Option
+     * @param elemId(select控件ID)
+     * @param elemId(要设置的值)
+     * @param elemId(要显示的内容)
+     */
+    appendSelectOpt: function (elemId, value, text) {
+        $('#' + elemId).append('<option value="' + value + '">' + text + '</option>');
+    },
+    /**
+     * 为Select插入一个Option(第一个位置)
+     * @param elemId(select控件ID)
+     * @param elemId(要设置的值)
+     * @param elemId(要显示的内容)
+     */
+    prependSelectOpt: function (elemId, value, text) {
+        $('#' + elemId).prepend('<option value="' + value + '">' + text + '</option>');
+    },
+    /**
+     * 获取选中的选项的值
+     * @param elemId(select控件ID)
+     */
+    getSelectedValue:function (elemId) {
+        return $('#' + elemId).find("option:selected").val();
+    },
+    /**
+     * 获取选中的选项的内容
+     * @param elemId(select控件ID)
+     */
+    getSelectedText:function (elemId) {
+        return $('#' + elemId).find("option:selected").text();
+    }
+};
+
+var PluploadUtil = {
+    set_upload_param: function (up, belongSystem, file, type) {
+        var data = {
+            belongSystem: belongSystem,
+            fileName: file.name,
+            fileType: type
+        };
+        AjaxUtil.ajaxPostCallBack(commonApiUrl.getUploadParam, JSON.stringify(data), function (result) {
+            var param = result.data;
+            accessid = param.accessid;
+            policy = param.policy;
+            signature = param.signature;
+            key = param.key;
+            host = param.host;
+            expire = param.expire;
+
+            new_multipart_params = {
+                'key': key,
+                'policy': policy,
+                'OSSAccessKeyId': accessid,
+                'success_action_status': '200', //让服务端返回200,不然，默认会返回204
+                'signature': signature,
+            };
+
+            up.setOption({
+                'url': host,
+                'multipart_params': new_multipart_params
+            });
+
+            //使用后台生成文件名
+            file.name = key;
+
+            up.start();
+        });
+    },
+
+    previewImg: function (showImgId, file, multiSelect) {
+        var preloader = new moxie.image.Image();
+        preloader.onload = function () {
+            //preloader.downsize(180, 120);//先压缩一下要预览的图片
+            var imgsrc = preloader.type == 'image/jpeg' ? preloader.getAsDataURL('image/jpeg', 80) : preloader.getAsDataURL(); //得到图片src,实质为一个base64编码的数据
+
+			if(multiSelect){
+				$("#" + showImgId + "List").append('<img class="layui-upload-img pic"  src="' + imgsrc + '">');
+			} else
+				$("#" + showImgId).attr('src', imgsrc);
+            
+            preloader.destroy();
+            preloader = null;
+        };
+
+        preloader.load(file.getSource());
+    },
+
 };

@@ -1,136 +1,228 @@
 <!DOCTYPE html>
-<html class="full-screen">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="format-detection" content="telephone=no,email=no,address=no"/>
-    <meta name="renderer" content="webkit">
-    <title>注册 - 车聚宝</title>
-    <link rel="shortcut icon" href="img/favicon.ico"/>
-    <script src="js/ismobile.js"></script>
-    <link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css?v=2.1.5"/>
-    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
-    <link rel="stylesheet" type="text/css" href="css/base.css"/>
-    <link rel="stylesheet" type="text/css" href="css/index.css"/>
-
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="format-detection" content="telephone=no,email=no,address=no"/>
+	<title>注册-车聚宝借款</title>
+	<link rel="shortcut icon" href="img/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+	<link rel="stylesheet" type="text/css" href="plugins/layui/css/layui.css"/>
+	<link rel="stylesheet" type="text/css" href="css/base.css"/>
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
 </head>
-<body class="full-body">
-	
-<header class="simple-header">
-    <div class="simple-header-container">
-        <a href="index.html"><img src="img/logo.png"/></a>
-        <ul class="simple-header-right clearfix">
-            <li>
-                <a href="index.html">返回首页</a>
-            </li>
-            <li class="vline"></li>
-            <li>
-                <a href="login.html">登录</a>
-            </li>
-        </ul>
-    </div>
+<body>
+
+<header class="header">
+	<div class="hbar">
+		<div class="hbar-container">
+			<span>客服电话：400-684-8856（0:00~24:00 )</span>
+			<div class="hbar-right">
+				<!--<div class="qr-item">
+					<i class="iconfont icon-phone"></i>
+					<span class="va-m">车聚宝APP</span>
+					<div class="pic-box">
+						<img src="img/qr-1.png"/>
+					</div>
+				</div>-->
+				<div class="qr-item">
+					<i class="iconfont icon-wechat"></i>
+					<span class="va-m">微信公众号</span>
+					<div class="pic-box">
+						<img src="img/qr-2.png"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="iheader clearfix">
+		<a class="ilogo" href="index.html"><img src="img/logo-blue.png"/></a>
+		<div class="iheader-nav">
+			<a href="index.html">首页</a>
+			<!--<a href="#">快速借款</a>-->
+			<a class="vl" href="javascript:;"></a>
+			<a class="status-logout" href="login.html">登录</a>
+		</div>
+	</div>
 </header>
 
-<div class="cjb-container">
-	<section class="content-box reg">
-		<h3 class="reg">用户注册</h3>
-	    <nav class="tab-nav">
-	        <ul class="clearfix">
-	            <li class="active" data-name="GR">个人注册</li>
-	            <li class="v-line"></li>
-	            <li data-name="JG">企业注册</li>
-	        </ul>
-	    </nav>
-	
-	    <div class="tab-content">
-	        <form id="registerForm">
-	            <input type="hidden" name="userType" value="GR">
-	            <input type="hidden" name="userRole" value="investor">
-	            <!-- 邀请码 -->
-	            <input type="hidden" name="inviteCode" value="">
-	            <input type="hidden" name="registerFrom" value="cjb">
-	            
-	            <div class="input-row">
-	                <input class="beauty-input" type="number" id="mobile" name="mobile" placeholder="请输入手机号码"/>
-	            </div>
-	            <div class="input-row">
-	                <input class="beauty-input" type="password" id="password" name="password" placeholder="请输入登录密码"/>
-	            </div>
-	            
-	            <div class="input-row">
-	                <input class="beauty-input" type="text" id="smsCode" name="smsCaptcha" placeholder="短信验证码" maxlength="6"/>
-	                <button type="button" id="getSmsCodeBtn">获取验证码</button>
-	            </div>
-	            
-	            <div class="input-row agr-row">
-	                <div>
-	                    <label class="fs-14">
-	                        <input class="va-m cr-pr" type="checkbox" name="agree"/>
-	                        <span class="va-m cr-pr">我已阅读并同意</span>
-	                    </label>
-	                    <a class="va-m c-main-blue fs-14" href="https://oss.chejubao.cn/agreement/PC/html/platform_service.html" target="_blank">《车聚宝平台服务条款》</a>
-	                </div>
-	            </div>
-	            
-	            <button type="button" class="btn-row mt10" id="registerFormBtn">注册</button>
-	        </form>
-	    </div>
-	
-	    <p class="link-row">已有账号
-	        <a href="login.html" class="c-main-blue">登录</a>
-	    </p>
-	</section>
-</div>
+<section class="banner-wrap">
+	<div class="r-box r">
+		<h3 class="mt-30">注册</h3>
+		<ul class="type-tab clearfix"><li class="active" user-type="GR">个人注册</li><li user-type="JG">企业注册</li></ul>
+		<form id="registerForm">
+			<input type="hidden" name="userRole" value="loaner" />
+			<input type="hidden" name="registerFrom" value="cjb" />
+			<input type="hidden" id="userType" name="userType" value="GR" />
+			<div class="input-row"><input type="number" id="mobile" name="mobile" placeholder="手机号" /></div>
+			<div class="input-row"><input type="password" name="password" placeholder="登录密码" /></div>
+			<div class="input-row">
+				<input type="text" id="imgCaptcha" name="imgCaptcha" placeholder="图片验证码" />
+				<img onclick="getImgCaptcha()" class="img-code" src="" title="看不清？点击换一张"/>
+			</div>
+			<div class="input-row">
+				<input type="number" id="smsCaptcha" name="smsCaptcha" placeholder="短信验证码" />
+				<button id="getSmsCodeBtn" onclick="getSmsCaptcha(this)" type="button">获取验证码</button>
+			</div>
 
-<div class="cjb-foot">
-	<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" class="c-999" target="_blank">沪公网安备  31011802001554号</a>
-	<span>ICP备案号：沪ICP备15034281号</span>
-	<span>Copyright © 上海开颜金融信息服务有限公司(2014-2019)</span>
-	<span>网贷有风险，出借需谨慎</span>
-</div>
+			<div class="agr-row">
+				<div>
+					<input class="va-m cs-p" type="checkbox" id="agreeCheck" name="agreeCheck" title="我已阅读并同意" lay-skin="primary" />
+					<label class="va-m cs-p" for="agreeCheck">我已阅读并同意</label>
+					<a class="va-m c-blue" href="https://oss.chejubao.cn/agreement/PC/html/platform_service.html" target="_blank">《车聚宝平台服务条款》</a>
+					<a class="va-m c-blue" href="https://oss.chejubao.cn/agreement/PC/html/finance_source.html" target="_blank">《资金合法来源承诺书》</a>
+				</div>
+			</div>
 
-
-<!--蒙版：可点击-->
-<div class="mask"></div>
-
-<!--蒙版：不可点击-->
-<div class="not-hide-mask"></div>
-
-<!--图片验证码-->
-<div class="popup-captcha-box">
-    <i class="iconfont icon-quxiao suc-close"></i>
-    <div class="input-row">
-        <input class="beauty-input" type="text" id="captchaCode" maxlength="6" placeholder="输入图片验证码"/>
-        <a href="javascript:getCaptchaImg();" title="看不清？点击换一张">
-            <img class="captcha-img" src=""/>
-        </a>
-    </div>
-    <button class="btn-row" type="button" id="confirmBtn">确定</button>
-</div>
-
-<!--注册成功-->
-<div class="popup-gift">
-	<p class="p1">注册获得<span class="cashMoney">*</span>元投资红包</p>
-	<img src="img/guide_1.png"/>
-	<div class="reward-card">
-		<p><span class="fs-26 mr10 cashMoney">*</span><span>元投资红包</span></p>
+			<input id="registerBtn" class="ibtn" type="button" name="" value="注册" />
+		</form>
 	</div>
-	<p class="p2">(投资单笔满<span class="leastActivateAmount">*</span>元可用)</p>
-	<a class="popup-btn" href="views/user/user_index.html">我知道了</a>
-	<a class="popup-close" href="views/user/user_index.html"><i class="iconfont icon-quxiao"></i></a>
-</div>
+</section>
 
-<script src="js/jquery.min.js?v=2.1.4"></script>
-<script src="plugins/layui/layui.js?v=2.1.5"></script>
-<script src="plugins/validate/jquery.validate.min.js?v=1.14.0"></script>
-<script src="plugins/validate/jquery.validate.extends.js"></script>
+<footer class="footer-bar">
+	<p><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" target="_blank">沪公网安备 31011802001554号</a> &emsp; ICP备案号：沪ICP备15034281号</p>
+	<p>Copyright © 上海开颜金融信息服务有限公司(2015-2019)</p>
+</footer>
+	
+	
+<script src="js/jquery.min.js"></script>
 <script src="js/jquery.cookie.js"></script>
+<script src="plugins/layui/layui.all.js"></script>
+<script src="plugins/validate/jquery.validate.min.js"></script>
+<script src="plugins/validate/jquery.validate.extends.js"></script>
+<script src="plugins/validate/messages_zh.min.js"></script>
 <script src="properties/host-config.properties.js"></script>
 <script src="js/api-config.js"></script>
 <script src="js/base-utils.js"></script>
 <script src="js/base-utils.api.js"></script>
+<script src="js/common.js"></script>
+<script>
 
-<script src="js/register/register.js"></script>
+	var imgCaptchaId,InterValObj,msgFlag;
 
+	$(document).ready(function(){
+        //表单验证
+        validateForm();
+
+	    getImgCaptcha();
+
+        // 注册类型
+        $(".type-tab li").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            $("#userType").val($(this).attr("user-type"));
+        });
+
+		$('#registerBtn').click(function(){
+            if ($("#registerForm").valid()) {
+                if (!msgFlag) {
+                    layer.msg("请先获取验证码！");
+                    return;
+                }
+				var channel = CookieUtil.getCookie("channel");
+				$('#registerForm input[name="registerFrom"]').val(channel ? channel : "cjb");
+				var data = DataDeal.formToJson($("#registerForm").serialize());
+				AjaxUtil.ajaxPostCallBack(userProfileApiUrl.register, data, function(result){
+                    clearInterval(InterValObj);
+					layer.msg("注册成功！");
+					// 注册成功后，设置全局cookie(用户登录凭证)
+					CookieUtil.setCookie("X-Auth-Token", result.data.token);
+					window.setTimeout(function () {
+						$_GLOBAL.jumpToUserIndex();
+					}, 1000);
+				});
+			}
+		});
+	});
+
+	function validateForm(){
+        $("#registerForm").validate({
+            rules:{
+                mobile:{
+                    required: true,
+                    mobile: true
+                },
+                password:{
+                    required: true,
+                    pwd: true
+                },
+                smsCaptcha:{
+                    required: true,
+                },
+                agreeCheck:{
+                    required: true,
+                }
+            },
+            messages:{
+                mobile:{
+                    required: "手机号不能为空",
+                    mobile: "请输入有效的手机号"
+                },
+                password:{
+                    required: "登录密码不能为空",
+                    pwd: "密码为数字、字母、字符2种及以上组合的8-20位字符"
+                },
+                smsCaptcha:{
+                    required: "短信验证码不能为空",
+                },
+                agreeCheck:{
+                    required: "请勾选并同意相关协议",
+                }
+            },
+            errorClass: "form-error-msg",
+            errorElement: "span",
+            errorPlacement: function(error, element) {
+                if (element.attr("name") == "agreeCheck") {
+                    error.appendTo(element.parent().parent()); //这里的element是录入数据的对象
+                } else {
+                    error.appendTo(element.parent());
+                }
+            },
+
+        });
+	}
+
+	function getImgCaptcha(){
+        imgCaptchaId = commonAPIUtil.getCaptchaImg();
+	}
+
+	function getSmsCaptcha(obj){
+	    if(!VerificationUtil.isMobile($('#mobile').val())){
+            layer.msg("请输入有效的手机号");
+			return;
+		}
+        if(StringUtil.isEmpty($('#imgCaptcha').val())){
+            layer.msg("请输入图片验证码");
+            return;
+        }
+
+        if (validateAPIUtil.validateUserName($('#mobile').val())) {
+            layer.msg("手机号码已注册，请重新输入！");
+            $("#mobile").focus();
+            return;
+        }
+
+        var data = {
+            imgCaptchaId: imgCaptchaId,
+            imgCode: $('#imgCaptcha').val(),
+            mobile: $('#mobile').val(),
+            captchaBizType: $_GLOBAL.msgType.REGISTER
+        };
+        var result = AjaxUtil.ajaxPost(captchaApiUrl.getSmsCode, JSON.stringify(data));
+        if(result){
+            if(result.code == "20000"){
+                layer.msg('发送成功');
+                msgFlag = true;
+                InterValObj = TimerUtil.setRemainTime(obj);
+                $("#smsCaptcha").focus();
+            } else {
+				layer.msg(result.message);
+                getImgCaptcha();
+            }
+        }
+    }
+
+</script>
+	
 </body>
 </html>

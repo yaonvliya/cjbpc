@@ -1,0 +1,68 @@
+<h5 class="title-row">个人实名认证</h5>
+
+<form id="personalRealNameForm">
+	<div class="user-row">
+		<label>姓名：</label>
+		<div class="input-div">
+			<input type="text" name="realName" placeholder="请输入您的姓名"/>
+		</div>
+	</div>
+	<div class="user-row">
+		<label>身份证号：</label>
+		<div class="input-div">
+			<input type="text" name="cert" placeholder="请输入您的身份证号"/>
+		</div>
+	</div>
+	
+	<input class="row-btn" type="button" id="realNameBtn" value="确定"/>
+	
+</form>
+
+
+<script>
+	$(document).ready(function () {
+		validateForm();
+
+        $("#realNameBtn").click(function () {
+            if ($("#personalRealNameForm").valid()) {
+                var data = DataDeal.formToJson($('#personalRealNameForm').serialize());
+                var result = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.personalOpenAccount, data);
+                if(result){
+                    $_GLOBAL.jumpToDeposit(result.data);
+                }
+            }
+
+        });
+    });
+
+	function validateForm(){
+        $("#personalRealNameForm").validate({
+            rules: {
+                realname: {
+                    required: true,
+                    chinese: true
+                },
+                cert: {
+                    required: true,
+                    idCard: true
+                },
+            },
+            messages: {
+                realname: {
+                    required: "请输入您的真实姓名",
+                    chinese: "姓名必须是中文"
+                },
+                cert: {
+                    required: "请输入您的身份证号",
+                    idCard: "请输入正确的身份证号"
+                },
+            },
+            errorClass: "form-error-msg",
+            errorElement: "span",
+            errorPlacement: function (error, element) { //错误信息位置设置方法
+                error.appendTo(element.parent());
+            }
+        });
+	}
+	
+</script>
