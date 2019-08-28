@@ -1,19 +1,22 @@
-<div class="layui-tab-content my-projects">
-	<h5 class="title-row">我的项目</h5>
-		<div class="layui-form-item">
-		<div class="layui-inline">
-			<label class="layui-form-label lab-width">公司名称</label>
-			<div class="layui-input-inline">
-				<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入公司名称" class="layui-input">
+<div class="layui-tab-content my-projects bgc-ri">
+	<div id="account-to-browse"></div>
+	<div class="bgc-white">
+		<h5 class="title-row">我的项目</h5>
+			<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label lab-width">公司名称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入公司名称" class="layui-input">
+				</div>
+				<label class="layui-form-label">联系人</label>
+				<div class="layui-input-inline">
+					<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入联系人" class="layui-input">
+				</div>
 			</div>
-			<label class="layui-form-label">联系人</label>
-			<div class="layui-input-inline">
-				<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入联系人" class="layui-input">
-			</div>
+			<button class="layui-btn btn-bac" lay-submit="" lay-filter="submit">查询</button>
 		</div>
-		<button class="layui-btn btn-bac" lay-submit="" lay-filter="submit">查询</button>
+		<table class="layui-hide" id="demo2" lay-filter="test"></table>
 	</div>
-	<table class="layui-hide" id="demo2" lay-filter="test"></table>
 </div>
 <script type="text/javascript">
 		layui.use([ 'laypage','table'], function(){
@@ -23,7 +26,7 @@
   //执行一个 table 实例
   table.render({
     elem: '#demo2'
-    ,height: 620
+    ,height: 520
     ,url: '/demo/table/user/' //数据接口
     ,title: '用户表'
     ,page: true //开启分页
@@ -98,4 +101,8 @@
   });
  
 });
+//加载公共账户浏览
+	$(document).ready(function(){
+       $("#account-to-browse").load("template/account_to_browse.html");
+    });
 </script>

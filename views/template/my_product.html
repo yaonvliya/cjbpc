@@ -1,6 +1,8 @@
 <!--我的产品列表-->
 <div class="layui-tab-content bgc-ri">
-	<div class="account clearfix bgc-white borrowers">
+	<!--加载公共账户浏览-->
+	<div id="account-to-browse"></div>
+<!--	<div class="account clearfix bgc-white investor">
 		<div class="account-left">
 			<p class="pandect-caption">账户预览</p>
 			<div>
@@ -20,38 +22,9 @@
 			<p class="p1 size-ts"><span id="totalBalance">--</span></p>
 			<p class="p2">借款总额(元)</p>
 			<p class="p3">授信余额(元)：<span id="frozenBalance"> -- </span></p>
-			<!--<p class="p4">
-				<a class="ubtn" href="javascript:;" onclick="withdraw()">提现</a>
-				<a class="ubtn" href="javascript:;"onclick="recharge()">充值</a>
-			</p>-->
+
 		</div>
-	</div>
-	<div class="account clearfix bgc-white investor">
-		<div class="account-left">
-			<p class="pandect-caption">账户预览</p>
-			<div>
-				<p class="p1"><span id="totalRepayAmount">--</span></p>
-				<p class="p2">待还金额(元)</p>
-			</div>
-			<div>
-				<p class="p1"><span id="totalRepayCount">--</span></p>
-				<p class="p2">待还笔数(笔)</p>
-			</div>
-			<div>
-				<p class="p1"><span id="totalRepayCount">--</span></p>
-				<p class="p2">待审核借款(笔)</p>
-			</div>
-		</div>
-		<div class="account-right">
-			<p class="p1 size-ts"><span id="totalBalance">--</span></p>
-			<p class="p2">借款总额(元)</p>
-			<p class="p3">授信余额(元)：<span id="frozenBalance"> -- </span></p>
-			<!--<p class="p4">
-				<a class="ubtn" href="javascript:;" onclick="withdraw()">提现</a>
-				<a class="ubtn" href="javascript:;"onclick="recharge()">充值</a>
-			</p>-->
-		</div>
-	</div>
+	</div>-->
 	<div class="bgc-white">
 		<h5 class="title-row">我的产品</h5>
 		<div class="layui-form-item">
@@ -72,6 +45,9 @@
 	
 </div>
 <script type="text/javascript">
+	
+
+
 	layui.use([ 'laypage','table'], function(){
   var laypage = layui.laypage //分页
   ,table = layui.table //表格
@@ -152,4 +128,8 @@
   });
  
 });
+//加载公共账户浏览
+	$(document).ready(function(){
+       $("#account-to-browse").load("template/account_to_browse.html");
+    });
 </script>

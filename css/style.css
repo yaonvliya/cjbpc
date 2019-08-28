@@ -1017,7 +1017,7 @@
 
 /*---4.1 账户设置---*/
 .settings-list{
-	margin: 0 20px;
+	/*margin: 0 20px;*/
 	border: 1px solid #eef1f6;
 }
 .settings-list li{
