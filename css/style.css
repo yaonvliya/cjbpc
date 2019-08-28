@@ -710,7 +710,7 @@
 	background-color: #fff;
 	border: 1px solid #f0f0f0;
 	position: relative;
-	padding-bottom: 100px;
+	/*padding-bottom: 100px;*/
 }
 
 /*公用标题*/
@@ -786,32 +786,39 @@
 
 .account{
 	height: 215px;
+	margin-bottom: 20px;
 }
 .account-left{
 	float: left;
 	width: 52%;
 	height: 145px;
-	margin: 35px 0;
+	margin: 22px  0;
 	border-right: 1px solid #f0f0f0;
 	text-align: center;
-	padding-left: 70px;
+	padding-left: 15px;
+}
+.pandect-caption{
+	text-align: left;
 }
 .account-left > div{
 	float: left;
-	width: 50%;
+	width: 33%;
 }
 .account-left .p1{
 	font-size: 28px;
 	color: #404350;
 	line-height: 88px;
 }
-
+.account-right .size-ts{
+	margin-bottom: 12px;
+}
 .account-right{
 	float: left;
 	width: 48%;
 	text-align: center;
 	padding-top: 35px;
 	position: relative;
+	margin-top: 28px;
 }
 .account-right .p1{
 	font-size: 28px;
@@ -854,6 +861,15 @@
 	border-left: none;
 	border-right: none;
 }
+/*借款人隐藏*/
+.borrowers{
+	/*display: none;*/
+}
+/*投资人隐藏*/
+.investor{
+	display: none;
+}
+
 
 /*---1.2 账户明细---*/
 .date-filter{
@@ -1453,3 +1469,4 @@ span.form-error-msg{
 .account-cancellation .xh{
 	color: #078eee;
 }
+

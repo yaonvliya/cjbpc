@@ -43,7 +43,7 @@
 		<a class="ilogo" href="../index.html"><img src="../img/logo-blue.png"/></a>
 		<div class="iheader-nav">
 			<a href="../index.html">首页</a>
-			<a href="javascript:;" onclick="goLoan()">快速借款</a>
+			<!--<a href="javascript:;" onclick="goLoan()">快速借款</a>-->
 			<a class="vl" href="javascript:;"></a>
 			<a class="status-login on" href="user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
 		</div>
@@ -60,9 +60,9 @@
 			<li id="realNameIcon" title="未实名认证"><i class="iconfont icon-shimingrenzheng"></i></li>
 		</ul>
 		<div class="menu">
-			<a data-url="account" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>我的产品</span></a>
-			<a data-url="apply" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的项目</span></a>
-			<a data-url="repayment" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>还款计划</span></a>
+			<a data-url="my_product" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>我的产品</span></a>
+			<a data-url="my_projects" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的项目</span></a>
+			<a data-url="repayment_schedule" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>还款计划</span></a>
 			<a data-url="settings" href="javascript:;"><i class="iconfont icon-shezhi"></i><span>基本信息</span></a>
 		</div>
 	</div>
@@ -119,7 +119,7 @@
 	var userType, userInfo;
 	
 	$(document).ready(function(){
-        userInfo = commonAPIUtil.initUserInfo();
+        //userInfo = commonAPIUtil.initUserInfo();
         if(userInfo){
             userType = userInfo.userType.code;
             var realnameStatus = userInfo.openDepositStatus.code;

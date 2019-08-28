@@ -1,0 +1,155 @@
+<!--我的产品列表-->
+<div class="layui-tab-content bgc-ri">
+	<div class="account clearfix bgc-white borrowers">
+		<div class="account-left">
+			<p class="pandect-caption">账户预览</p>
+			<div>
+				<p class="p1"><span id="totalRepayAmount">--</span></p>
+				<p class="p2">待还金额(元)</p>
+			</div>
+			<div>
+				<p class="p1"><span id="totalRepayCount">--</span></p>
+				<p class="p2">待还笔数(笔)</p>
+			</div>
+			<div>
+				<p class="p1"><span id="totalRepayCount">--</span></p>
+				<p class="p2">待审核借款(笔)</p>
+			</div>
+		</div>
+		<div class="account-right">
+			<p class="p1 size-ts"><span id="totalBalance">--</span></p>
+			<p class="p2">借款总额(元)</p>
+			<p class="p3">授信余额(元)：<span id="frozenBalance"> -- </span></p>
+			<!--<p class="p4">
+				<a class="ubtn" href="javascript:;" onclick="withdraw()">提现</a>
+				<a class="ubtn" href="javascript:;"onclick="recharge()">充值</a>
+			</p>-->
+		</div>
+	</div>
+	<div class="account clearfix bgc-white investor">
+		<div class="account-left">
+			<p class="pandect-caption">账户预览</p>
+			<div>
+				<p class="p1"><span id="totalRepayAmount">--</span></p>
+				<p class="p2">待还金额(元)</p>
+			</div>
+			<div>
+				<p class="p1"><span id="totalRepayCount">--</span></p>
+				<p class="p2">待还笔数(笔)</p>
+			</div>
+			<div>
+				<p class="p1"><span id="totalRepayCount">--</span></p>
+				<p class="p2">待审核借款(笔)</p>
+			</div>
+		</div>
+		<div class="account-right">
+			<p class="p1 size-ts"><span id="totalBalance">--</span></p>
+			<p class="p2">借款总额(元)</p>
+			<p class="p3">授信余额(元)：<span id="frozenBalance"> -- </span></p>
+			<!--<p class="p4">
+				<a class="ubtn" href="javascript:;" onclick="withdraw()">提现</a>
+				<a class="ubtn" href="javascript:;"onclick="recharge()">充值</a>
+			</p>-->
+		</div>
+	</div>
+	<div class="bgc-white">
+		<h5 class="title-row">我的产品</h5>
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label lab-width">公司名称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入公司名称" class="layui-input">
+				</div>
+				<label class="layui-form-label">联系人</label>
+				<div class="layui-input-inline">
+					<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入联系人" class="layui-input">
+				</div>
+			</div>
+			<button class="layui-btn btn-bac" lay-submit="" lay-filter="submit">查询</button>
+		</div>
+		<table class="layui-hide " id="demo1" lay-filter="test"></table>
+	</div>
+	
+</div>
+<script type="text/javascript">
+	layui.use([ 'laypage','table'], function(){
+  var laypage = layui.laypage //分页
+  ,table = layui.table //表格
+  
+  //执行一个 table 实例
+  table.render({
+    elem: '#demo1'
+    ,height: 520
+    ,url: '/demo/table/user/' //数据接口
+    ,title: '用户表'
+    ,page: true //开启分页
+    ,totalRow: true //开启合计行
+    	,cols: [[ //表头
+      {field: 'id', title: '产品编号', width:120,  fixed: 'left'}
+      ,{field: 'experience', title: '产品名称', width: 150,totalRow: true}
+      ,{field: 'sex', title: '产品类别', width:150}
+      ,{field: 'score', title: '借贷周期', width: 150, sort: true, totalRow: true}
+      ,{field: 'city', title: '剩余额度', width:150,sort: true} 
+      ,{field: 'sign', title: '还款方式', width: 150}
+    ]]
+  });
+  
+  //监听头工具栏事件
+  table.on('toolbar(test)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id)
+    ,data = checkStatus.data; //获取选中的数据
+    switch(obj.event){
+      case 'add':
+        layer.msg('添加');
+      break;
+      case 'update':
+        if(data.length === 0){
+          layer.msg('请选择一行');
+        } else if(data.length > 1){
+          layer.msg('只能同时编辑一个');
+        } else {
+          layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
+        }
+      break;
+      case 'delete':
+        if(data.length === 0){
+          layer.msg('请选择一行');
+        } else {
+          layer.msg('删除');
+        }
+      break;
+    };
+  });
+  
+  //监听行工具事件
+  table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+    var data = obj.data //获得当前行数据
+    ,layEvent = obj.event; //获得 lay-event 对应的值
+    if(layEvent === 'detail'){
+      layer.msg('查看操作');
+    } else if(layEvent === 'del'){
+      layer.confirm('真的删除行么', function(index){
+        obj.del(); //删除对应行（tr）的DOM结构
+        layer.close(index);
+        //向服务端发送删除指令
+      });
+    } else if(layEvent === 'edit'){
+      layer.msg('编辑操作');
+    }
+  });
+    
+  //分页
+  laypage.render({
+    elem: 'pageDemo' //分页容器的id
+    ,count: 100 //总页数
+    ,skin: '#1E9FFF' //自定义选中色值
+    //,skip: true //开启跳页
+    ,jump: function(obj, first){
+      if(!first){
+        layer.msg('第'+ obj.curr +'页', {offset: 'b'});
+      }
+    }
+  });
+ 
+});
+</script>
