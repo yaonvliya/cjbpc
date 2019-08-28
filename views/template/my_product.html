@@ -1,30 +1,5 @@
 <!--我的产品列表-->
 <div class="layui-tab-content bgc-ri">
-	<!--加载公共账户浏览-->
-	<div id="account-to-browse"></div>
-<!--	<div class="account clearfix bgc-white investor">
-		<div class="account-left">
-			<p class="pandect-caption">账户预览</p>
-			<div>
-				<p class="p1"><span id="totalRepayAmount">--</span></p>
-				<p class="p2">待还金额(元)</p>
-			</div>
-			<div>
-				<p class="p1"><span id="totalRepayCount">--</span></p>
-				<p class="p2">待还笔数(笔)</p>
-			</div>
-			<div>
-				<p class="p1"><span id="totalRepayCount">--</span></p>
-				<p class="p2">待审核借款(笔)</p>
-			</div>
-		</div>
-		<div class="account-right">
-			<p class="p1 size-ts"><span id="totalBalance">--</span></p>
-			<p class="p2">借款总额(元)</p>
-			<p class="p3">授信余额(元)：<span id="frozenBalance"> -- </span></p>
-
-		</div>
-	</div>-->
 	<div class="bgc-white">
 		<h5 class="title-row">我的产品</h5>
 		<div class="layui-form-item">
@@ -55,7 +30,7 @@
   //执行一个 table 实例
   table.render({
     elem: '#demo1'
-    ,height: 520
+    ,height: 720
     ,url: '/demo/table/user/' //数据接口
     ,title: '用户表'
     ,page: true //开启分页
@@ -128,8 +103,5 @@
   });
  
 });
-//加载公共账户浏览
-	$(document).ready(function(){
-       $("#account-to-browse").load("template/account_to_browse.html");
-    });
+
 </script>

@@ -1,5 +1,4 @@
 <div class="layui-tab-content my-projects bgc-ri">
-	<div id="account-to-browse"></div>
 	<div class="bgc-white">
 		<h5 class="title-row">我的项目</h5>
 			<div class="layui-form-item">
@@ -26,7 +25,7 @@
   //执行一个 table 实例
   table.render({
     elem: '#demo2'
-    ,height: 520
+    ,height: 720
     ,url: '/demo/table/user/' //数据接口
     ,title: '用户表'
     ,page: true //开启分页
@@ -101,8 +100,5 @@
   });
  
 });
-//加载公共账户浏览
-	$(document).ready(function(){
-       $("#account-to-browse").load("template/account_to_browse.html");
-    });
+
 </script>
