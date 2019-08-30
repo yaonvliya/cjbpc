@@ -165,6 +165,6 @@ input[type="number"]{-moz-appearance:textfield}
 .bgc-white{background: #FFFFFF !important;width: 100% !important;}
 .bgc-ri{background:#F3F5F7 !important;}
 /*搜索按钮颜色样式调整*/
-.btn-bac{margin: 20px !important;padding: 0 30px !important;background: #60bdff !important;}
+.btn-bac{margin-top: -6px !important;padding: 0 30px !important;background: #60bdff !important;}
 /*搜索标题宽度*/
 .lab-width{width: 110px !important;}    
