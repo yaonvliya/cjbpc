@@ -23,7 +23,7 @@
 				<a class="vl" href="javascript:;"></a>
 				<a class="status-logout hide" href="login.html">登录</a>
 				<!--<a class="status-logout hide" href="register.html">注册</a>-->
-				<a class="status-login hide" href="views/borrower_user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
+				<a class="status-login hide" href="javascript:;" onclick="$_GLOBAL.jumpToUserIndex(userInfo.userRole)"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
 				<!--<a class="status-login hide" href="javascript:;" onclick="$_GLOBAL.doLogout()"><span>退出</span></a>-->
 			</div>
 		</div>
@@ -73,9 +73,10 @@
 <script src="js/base-utils.api.js"></script>
 
 <script>
-	$(document).ready(function () {
+    var userInfo;
+        $(document).ready(function () {
 		CookieUtil.setCookie("channel", $_GLOBAL.channel(BaseUtil.getUrlParams().channel));
-		var userInfo = commonAPIUtil.initUserInfoUnbindJump();
+		userInfo = commonAPIUtil.initUserInfoUnbindJump();
 			if(userInfo){
             $("#userName").text(userInfo.safeLoginAccount);
 //          $(".status-logout").hide();

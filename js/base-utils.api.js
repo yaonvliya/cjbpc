@@ -103,7 +103,7 @@ var commonAPIUtil = {
 	/**获取用户基本信息,token失效不跳转登录页面*/
 	initUserInfoUnbindJump: function () {
 		var userInfo;
-		var res = AjaxUtil.ajaxGet(userProfileApiUrl.getUserInfo);
+		var res = AjaxUtil.ajaxPost(userProfileApiUrl.getUserInfo);
 		if (res.code == "20000") {
 			userInfo = res.data;
 		} else if (res.code == "40404" || res.code == "40405") {
