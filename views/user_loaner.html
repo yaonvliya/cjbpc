@@ -161,10 +161,22 @@
             var hashUrl = searchIndex > 0 ? url.substring(0, searchIndex) : url;
             var searchUrl = searchIndex > 0 ?  url.substring(searchIndex) : "";
 
-            window.history.pushState(null, null, "user.html#" + url);
+            window.history.pushState(null, null, "user_loaner.html#" + url);
 			$("#content").load("loaner/" + hashUrl + ".html" + searchUrl);
 		}
 	}
+
+    // 加载公共模块
+    function loadCommonPage(url){
+        if(url){
+            var searchIndex = url.indexOf("?");
+            var hashUrl = searchIndex > 0 ? url.substring(0, searchIndex) : url;
+            var searchUrl = searchIndex > 0 ?  url.substring(searchIndex) : "";
+
+            window.history.pushState(null, null, "user_loaner.html#" + url);
+            $("#content").load("common/" + hashUrl + ".html" + searchUrl);
+        }
+    }
 	
 	// hash监听：只用于页面刷新、浏览器前进后退
 	function hashFn(){
