@@ -94,7 +94,7 @@ var commonAPIUtil = {
 	/**获取用户基本信息*/
 	initUserInfo: function () {
 		var userInfo;
-		AjaxUtil.ajaxGetCallBack(userProfileApiUrl.getLoanerInfo, function (result) {
+		AjaxUtil.ajaxPostCallBack(userProfileApiUrl.getUserInfo, null, function (result) {
 			userInfo = result.data;
 		});
 		return userInfo;

@@ -45,7 +45,7 @@
 			<a href="../index.html">首页</a>
 			<!--<a href="javascript:;" onclick="goLoan()">快速借款</a>-->
 			<a class="vl" href="javascript:;"></a>
-			<a class="status-login on" href="borrower_user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
+			<a class="status-login on" href="investor_user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
 		</div>
 	</div>
 </header>
@@ -60,11 +60,11 @@
 			<li id="realNameIcon" title="未实名认证"><i class="iconfont icon-shimingrenzheng"></i></li>
 		</ul>-->
 		<div class="menu">
-			<a data-url="borrower_account_to_browse" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>账户预览</span></a>
-			<a data-url="borrower_my_product" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>我的产品</span></a>
-			<a data-url="borrower_my_projects" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的项目</span></a>
-			<a data-url="borrower_repayment_schedule" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>回款计划</span></a>
-			<a data-url="borrower_settings" href="javascript:;"><i class="iconfont icon-shezhi"></i><span>基本信息</span></a>
+			<a data-url="account_overview" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>账户预览</span></a>
+			<a data-url="product" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>我的产品</span></a>
+			<a data-url="project" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的项目</span></a>
+			<a data-url="repay_plan" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>还款计划</span></a>
+			<a data-url="settings" href="javascript:;"><i class="iconfont icon-shezhi"></i><span>基本信息</span></a>
 		</div>
 	</div>
 	<div class="right" id="content"></div>
@@ -120,19 +120,11 @@
 	var userType, userInfo;
 	
 	$(document).ready(function(){
-        //userInfo = commonAPIUtil.initUserInfo();
+        userInfo = commonAPIUtil.initUserInfo();
         if(userInfo){
             userType = userInfo.userType.code;
-            var realnameStatus = userInfo.openDepositStatus.code;
-            var bindcardStatus = userInfo.bindCardStatus.code;
             var showEmail = userInfo.safeEmail;
-			$("#userName").text(userInfo.safeLoginAccount);
-            if(realnameStatus == $_GLOBAL.realnameStatus.HAS_REALNAME){
-                $("#realNameIcon").addClass("active").attr("title", "已实名认证");
-            }
-            if(bindcardStatus == $_GLOBAL.bindCardStatus.HAS_BIND){
-                $("#bindCardIcon").addClass("active").attr("title", "已绑卡");
-            }
+			$("#userName").text(userInfo.userName);
             if(showEmail){
                 $("#bindEmailIcon").addClass("active").attr("title", "已绑定邮箱");
             }
@@ -162,7 +154,7 @@
             var searchUrl = searchIndex > 0 ?  url.substring(searchIndex) : "";
 
             window.history.pushState(null, null, "user.html#" + url);
-			$("#content").load("template/" + hashUrl + ".html" + searchUrl);
+			$("#content").load("investor/" + hashUrl + ".html" + searchUrl);
 		}
 	}
 	

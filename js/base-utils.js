@@ -212,8 +212,16 @@ var $_GLOBAL = {
 	jumpToIndex:function () {
 		window.location.href = $_GLOBAL.basePath() + "/index.html";
 	},
-	jumpToUserIndex:function () {
-        window.location.href = $_GLOBAL.basePath() + "/views/user.html";
+	jumpToUserIndex:function (userRole) {
+		var loaner = "loaner";
+        var investor = "investor";
+		if(StringUtil.isContains(userRole, loaner, true)){
+            window.location.href = $_GLOBAL.basePath() + "/user_loaner.html";
+        } else if(StringUtil.isContains(userRole, investor, true)){
+            window.location.href = $_GLOBAL.basePath() + "/views/user_investor.html";
+        } else {
+            window.location.href = $_GLOBAL.basePath() + "/views/user_loaner.html";
+        }
     },
     jumpToUserApply:function () {
         window.location.href = $_GLOBAL.basePath() + "/views/user.html#apply";
@@ -245,7 +253,7 @@ var $_GLOBAL = {
         }
     },
 	doLogout:function () {
-		AjaxUtil.ajaxGetCallBack(userProfileApiUrl.logout, function () {
+		AjaxUtil.ajaxPostCallBack(userProfileApiUrl.logout, null, function () {
 			//清除所有cookie
 			CookieUtil.clearAllCookie();
 			// 跳转至首页

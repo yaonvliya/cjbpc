@@ -1,7 +1,8 @@
 /** API 请求域名*/
-var apiHost = "http://api.chejubao.whlchain.com";
+var apiHost = "http://api.cjb.whlchain.com";
+//var apiHost = "http://localhost:8080";
 var apiContext = "";
-var sysContext = "/cjb-loan-pc";
+var sysContext = "/cjb-www";
 
 
 /** cookie配置 */
