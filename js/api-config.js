@@ -154,7 +154,10 @@ var userProfileApiUrl = {
     enterpriseUploadParam: apiHost + apiContext + "/front/user/deposit/enterprise_upload_param",
 
     // 企业上传图片
-    enterpriseUploadPic: apiHost + apiContext + "/front/user/deposit/enterprise_upload_pic"
+    enterpriseUploadPic: apiHost + apiContext + "/front/user/deposit/enterprise_upload_pic",
+
+    // 获取账户总览
+    getAccountOverView: apiHost + apiContext +"/front/user/accountOverview",
 };
 
 //账户api

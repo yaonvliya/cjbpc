@@ -1,26 +1,40 @@
 <div class="account clearfix bgc-white borrowers">
-		<div class="account-left">
-			<p class="pandect-caption">账户预览</p>
-			<div>
-				<p class="p1"><span id="totalRepayAmount">--</span></p>
-				<p class="p2">资金包余额(元)</p>
-			</div>
-			<div>
-				<p class="p1"><span id="totalRepayCount">--</span></p>
-				<p class="p2">当前借款笔数(笔)</p>
-			</div>
-			<div>
-				<p class="p1"><span id="totalRepayCount">--</span></p>
-				<p class="p2">待审核借款(笔)</p>
-			</div>
+	<div class="account-left">
+		<p class="pandect-caption">账户预览</p>
+		<div>
+			<p class="p1"><span id="financeBalanceAmount">--</span></p>
+			<p class="p2">资金包余额(元)</p>
 		</div>
-		<div class="account-right">
-			<p class="p1 size-ts"><span id="totalBalance">--</span></p>
-			<p class="p2">资金包总额(元)</p>
-			<p class="p3">资金余额(元)：<span id="frozenBalance"> -- </span></p>
-			<!--<p class="p4">
-				<a class="ubtn" href="javascript:;" onclick="withdraw()">提现</a>
-				<a class="ubtn" href="javascript:;"onclick="recharge()">充值</a>
-			</p>-->
+		<div>
+			<p class="p1"><span id="investCount">--</span></p>
+			<p class="p2">当前借款笔数(笔)</p>
+		</div>
+		<div>
+			<p class="p1"><span id="toAuditCount">--</span></p>
+			<p class="p2">待审核借款(笔)</p>
 		</div>
 	</div>
+	<div class="account-right">
+		<p class="p1 size-ts"><span id="financeAmount">--</span></p>
+		<p class="p2">资金包总额(元)</p>
+		<p class="p3">资金余额(元)：<span id=""> -- </span></p>
+		<!--<p class="p4">
+			<a class="ubtn" href="javascript:;" onclick="withdraw()">提现</a>
+			<a class="ubtn" href="javascript:;"onclick="recharge()">充值</a>
+		</p>-->
+	</div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var res = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.getAccountOverView);
+        if (res) {
+            var data = res.data;
+			$("#financeAmount").text(MoneyUtil.formatMoney(data.financeAmount));
+            $("#financeBalanceAmount").text(MoneyUtil.formatMoney(data.financeBalanceAmount));
+            $("#investCount").text(data.investCount);
+            $("#toAuditCount").text(data.toAuditCount);
+        }
+    });
+</script>
