@@ -45,7 +45,7 @@
 			<a href="../index.html">首页</a>
 			<!--<a href="javascript:;" onclick="goLoan()">快速借款</a>-->
 			<a class="vl" href="javascript:;"></a>
-			<a class="status-login on" href="borrower_user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
+			<a class="status-login on" href="javascript:;" onclick="$_GLOBAL.jumpToUserIndex(userInfo.userRole)"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
 		</div>
 	</div>
 </header>
@@ -60,19 +60,11 @@
 			<li id="realNameIcon" title="未实名认证"><i class="iconfont icon-shimingrenzheng"></i></li>
 		</ul>-->
 		<div class="menu">
-<<<<<<< HEAD:views/user_loaner.html
 			<a data-url="account_overview" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>账户预览</span></a>
 			<a data-url="product" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>我的产品</span></a>
 			<a data-url="project" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的项目</span></a>
 			<a data-url="repay_plan" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>回款计划</span></a>
 			<a data-url="settings" href="javascript:;"><i class="iconfont icon-shezhi"></i><span>基本信息</span></a>
-=======
-			<a data-url="borrower_account_to_browse" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>账户预览</span></a>
-			<a data-url="borrower_my_product" href="javascript:;"><i class="iconfont icon-yonghu"></i><span>我的产品</span></a>
-			<a data-url="borrower_my_projects" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的项目</span></a>
-			<a data-url="borrower_repayment_schedule" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>回款计划</span></a>
-			<a data-url="borrower_settings" href="javascript:;"><i class="iconfont icon-shezhi"></i><span>基本信息</span></a>
->>>>>>> a8acefbf17923e6ed830aefe2e39ffbecd06a1e0:views/borrower_user.html
 		</div>
 	</div>
 	<div class="right" id="content"></div>
@@ -122,7 +114,6 @@
 <script src="../iconfont/iconfont.js"></script>
 
 <script src="../js/vue.min.js"></script>
-<script src="../js/axios.min.js"></script>
 
 <script>
 	var userType, userInfo;
@@ -196,16 +187,16 @@
 				}
 			});
 			
-			$("#content").load("template/" + hashUrl + ".html" + searchUrl);
+			$("#content").load("loaner/" + hashUrl + ".html" + searchUrl);
 		}else if(hashUrl && hashFlag != -1){
 			hashUrl = hashUrl.substring(0, hashFlag);
-			$("#content").load("template/deposit_callback_result.html");
+			$("#content").load("loaner/deposit_callback_result.html");
 			
 		}else{
 			
 			// 默认是账户总览
 			$(".menu a").eq(0).addClass("active").siblings().removeClass("active");
-			$("#content").load("template/account.html");
+			$("#content").load("loaner/account.html");
 		}
 	}
 	

@@ -229,3 +229,25 @@ var contractApiUrl = {
     //获取合同地址
     getContract: apiHost + apiContext + "/front/common/contract/url"
 };
+
+
+var productApiUrl = {
+    //获取产品列表
+    getProductList: apiHost + apiContext + "/front/product/queryList",
+    //获取产品详情
+    getProductDetail: apiHost + apiContext + "/front/product/queryList"
+};
+
+var projectApiUrl = {
+    //获取产品列表
+    getProjectList: apiHost + apiContext + "/front/project/queryList",
+    //获取产品详情
+    getProjectDetail: apiHost + apiContext + "/front/project/get"
+};
+
+var repayPlanApiUrl = {
+    //获取产品列表
+    getRepayPlanList: apiHost + apiContext + "/front/repayPlan/queryList",
+    //获取产品详情
+    getRepayPlanDetail: apiHost + apiContext + "/front/repayPlan/get"
+};

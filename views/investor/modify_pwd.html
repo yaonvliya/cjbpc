@@ -1,0 +1,27 @@
+<h5 class="title-row">修改登录密码</h5>
+
+<form id="modifyPwdForm">
+	<div class="user-row">
+		<label>原始密码：</label>
+		<div class="input-div">
+			<input type="password" name="oldPass" placeholder="请输入原始密码"/>
+		</div>
+	</div>
+	<div class="user-row">
+		<label>新登录密码：</label>
+		<div class="input-div">
+			<input type="password" id="newPass" name="newPass" placeholder="请输入新密码"/>
+		</div>
+	</div>
+	<div class="user-row">
+		<label>确认新密码：</label>
+		<div class="input-div">
+			<input type="password" name="confirmNewPass" placeholder="请确认新密码"/>
+		</div>
+	</div>
+	
+	<input class="row-btn" type="button" onclick="modifyPwd()" value="确定"/>
+	
+</form>
+
+<script type="text/javascript" src="../js/user/modify_pwd.js"></script>

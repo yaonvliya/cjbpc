@@ -1,6 +1,7 @@
-var layer;
+var layer, laytable;
 layui.use(['layer'], function () {
 	layer = layui.layer;
+    laytable = layui.table;
 });
 
 /**
@@ -188,7 +189,21 @@ var DataDeal = {
 		jStr = jStr.substr(0, jStr.length - 1);
 		jStr += '}';
 		return jStr;
-	}
+	},
+    /**
+     * form表单数据转为Json对象
+     */
+    formToJsonObj: function (form) {
+        let obj = {};
+        $.each(form.serializeArray(), function (index) {
+            if (obj[this['name']]) {
+                obj[this['name']] = obj[this['name']] + "," + this['value'];
+            } else {
+                obj[this['name']] = this['value'];
+            }
+        });
+        return obj;
+    }
 };
 
 /**
@@ -1569,3 +1584,161 @@ var PluploadUtil = {
     },
 
 };
+
+const LayTableUtil = {
+    /**
+     * 详细参考：https://www.layui.com/doc/modules/table.html#options
+     *
+     elem		必填	String/DOM	指定原始 table 容器的选择器或 DOM，方法渲染方式必填	"#demo"
+     cols		必填	Array		设置表头。值是一个二维数组。方法渲染方式必填	详见表头参数
+     ---------------------以下为异步接口参数--------------------------
+     url		必填	String		接口地址。默认会自动传递两个参数：?page=1&limit=30（该参数可通过 request 自定义）
+     page 		选填	number		代表当前页码、limit代表当前页码、limit 代表每页数据量
+     method		选填	enum		接口http请求类型，默认：get
+     where		选填	JSON		接口的其它参数。如：where: {token: 'sasasas', id: 123}
+     contentType选填	String		发送到服务端的内容编码类型。如果你要发送 json 内容，可以设置：contentType: 'application/json'
+     headers	选填	JSON		接口的请求头。如：headers: {token: 'sasasas'}
+     parseData	选填	String		数据预解析回调函数，用于将返回的任意数据格式解析成 table 组件规定的数据格式
+     request	选填	JSON		用于对分页请求的参数：page、limit重新设定名称，如：
+     request: {
+					pageName: 'curr' //页码的参数名称，默认：page
+					,limitName: 'nums' //每页数据量的参数名，默认：limit
+				  }
+     response	选填	JSON		table 组件默认规定的数据格式为：
+     默认规定的数据格式layui.code
+     {
+       "code": 0,
+       "msg": "",
+       "count": 1000,
+       "data": [{}, {}]
+     }
+
+     如果你想重新规定返回的数据格式，那么可以借助 response 参数，如：
+     response: {
+					statusName: 'status' //规定数据状态的字段名称，默认：code
+					,statusCode: 200 //规定成功的状态码，默认：0
+					,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+					,countName: 'total' //规定数据总数的字段名称，默认：count
+					,dataName: 'rows' //规定数据列表的字段名称，默认：data
+				  }
+     ---------------------以上为异步接口参数--------------------------
+
+     toolbar	选填	String/DOM/Boolean	开启表格头部工具栏区域，该参数支持四种类型值：
+     toolbar: '#toolbarDemo' //指向自定义工具栏模板选择器
+     toolbar: '<div>xxx</div>' //直接传入工具栏模板字符
+     toolbar: true //仅开启工具栏，不显示左侧模板
+     toolbar: 'default' //让工具栏左侧显示默认的内置模板
+
+     defaultToolbar	选填	Array	自由配置头部工具栏右侧的图标，数组支持以下可选值：
+     filter: 显示筛选图标
+     exports: 显示导出图标
+     print: 显示打印图标
+     可根据值的顺序显示排版图标，如：defaultToolbar: ['filter', 'print', 'exports']
+     width		选填	Number		设定容器宽度。table容器的默认宽度是跟随它的父元素铺满，你也可以设定一个固定值，当容器中的内容超出了该宽度时，会自动出现横向滚动条。
+     height		选填	Number/String	设定容器高度	详见height
+     cellMinWidth	选填	Number	全局定义所有常规单元格的最小宽度（默认：60），一般用于列宽自动分配的情况。其优先级低于表头参数中的 minWidth
+     done		选填	Function	数据渲染完的回调。你可以借此做一些其它的操作	详见done回调
+     data		选填	Array		直接赋值数据。既适用于只展示一页数据，也非常适用于对一段已知数据进行多页展示。
+     totalRow	选填	Boolean		是否开启合计行区域。
+     page		选填	Boolean/Object	开启分页，支持传入一个对象，里面可包含 laypage 组件所有支持的参数（jump、elem除外）	{theme: '#c00'}
+     limit		选填	Number		每页显示的条数（默认：10）。值务必对应 limits 参数的选项。优先级低于 page 参数中的 limit 参数。
+     limits		选填	Array		每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。优先级低于 page 参数中的 limits 参数。
+     loading	选填	Boolean		是否显示加载条（默认：true）。如果设置 false，则在切换分页时，不会出现加载条。该参数只适用于 url 参数开启的方式
+     title		选填	String		定义 table 的大标题（在文件导出等地方会用到）
+     text		选填	Object		自定义文本，如空数据时的异常提示等。
+     autoSort	选填	Boolean		默认 true，即直接由 table 组件在前端自动处理排序。
+     initSort	选填	Object		初始排序状态。用于在数据表格渲染完毕时，默认按某个字段排序。
+     id			选填	String		设定容器唯一 id。该参数也可以自动从 <table id="test"></table> 中的 id 参数中获取。
+     skin		选填	String		用于设定表格风格,line（行边框风格）;row（列边框风格）;nob（无边框风格）)
+     even		选填	Boolean		开启隔行背景,true/false)
+     size		选填	String		设定表格尺寸,sm（小尺寸）;lg（大尺寸）)
+     */
+    render: function (obj) {
+        return laytable.render({
+            elem: obj.elem
+            , id: obj.id ? obj.id : null
+            , height: obj.height ? obj.height : 'full-240'
+            , width: obj.width ? obj.width : null
+            , cellMinWidth: obj.cellMinWidth ? obj.cellMinWidth : 100
+            , cols: obj.cols
+            , url: obj.url
+            , contentType: 'application/json'
+            , method: obj.method ? obj.method : 'post'
+            , page: obj.page ? {theme: '#009688'} : false
+            , done: obj.done ?	obj.done : null
+            , toolbar: obj.toolbar ? obj.toolbar : false
+            , defaultToolbar: obj.defaultToolbar ? obj.defaultToolbar : null
+            , title: obj.title ? obj.title : null
+            , loading: true
+            , totalRow: obj.totalRow ? true : false
+            , limit: obj.limit ? obj.limit : 10
+            , limits: obj.limits ? obj.limits : [10, 30, 50, 100]
+            , text: {none: '未查询到相关数据'}
+            , where: obj.where ? obj.where : null
+            , request: obj.page ? {
+                pageName: 'pageNum'
+                , limitName: 'pageSize'
+            } : null
+            , response: {
+                statusName: 'code'
+                , statusCode: '20000'
+                , msgName: 'message'
+                , countName: 'total'
+                , dataName: obj.page ? 'rows' : 'data'
+            }
+            , skin: obj.skin ? obj.skin : null
+            , even: obj.even ? obj.even : null
+            , size: obj.size ? obj.size : null
+        });
+    },
+    reload: function (tableIns, whereFormId) {
+        layer.load(1, {shade: [0.3, '#333'] /*透明度，背景色*/});
+        tableIns.reload({
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
+            , where: whereFormId ? DataDeal.formToJsonObj($("#" + whereFormId)) : null
+        });
+        layer.closeAll('loading');
+    },
+    refresh: function (tableIns, whereFormId) {
+        layer.load(1, {shade: [0.3, '#333'] /*透明度，背景色*/});
+        tableIns.reload({
+            where: whereFormId ? DataDeal.formToJsonObj($("#" + whereFormId)) : null
+        });
+        layer.closeAll('loading');
+    }
+};
+
+/**
+ * 绑定查询表单回车事件
+ * @param formId
+ */
+function bindSearchFormEnterEvent(formId) {
+    $("#" + formId).bind('keypress', function (event) {
+        let theEvent = event || window.event;
+        let code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if (code === 13) {
+            $(this).find('[data-search-btn="true"]').click();
+        }
+    });
+}
+
+$.ajaxSetup({
+    cache: false, //关闭AJAX缓存
+    async: false, //同步请求
+    beforeSend: function (request) {
+        request.setRequestHeader("X-Auth-Token", $.cookie('X-Auth-Token') || "");
+    },
+    complete: function (xhr, status) {
+        var result = xhr.responseJSON;
+        if(result){
+            if (result.code == "40404" || result.code == "40405") {
+                CookieUtil.clearAllCookie();
+                window.location.href = $_GLOBAL.basePath() + '/login.html';
+            } else if(result.code != "20000"){
+                layer.msg(result.message);
+            }
+        }
+    }
+});

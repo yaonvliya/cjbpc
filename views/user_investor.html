@@ -45,7 +45,7 @@
 			<a href="../index.html">首页</a>
 			<!--<a href="javascript:;" onclick="goLoan()">快速借款</a>-->
 			<a class="vl" href="javascript:;"></a>
-			<a class="status-login on" href="investor_user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
+			<a class="status-login on" href="javascript:;" onclick="$_GLOBAL.jumpToUserIndex(userInfo.userRole)"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
 		</div>
 	</div>
 </header>
@@ -114,7 +114,6 @@
 <script src="../iconfont/iconfont.js"></script>
 
 <script src="../js/vue.min.js"></script>
-<script src="../js/axios.min.js"></script>
 
 <script>
 	var userType, userInfo;
@@ -188,16 +187,16 @@
 				}
 			});
 			
-			$("#content").load("template/" + hashUrl + ".html" + searchUrl);
+			$("#content").load("investor/" + hashUrl + ".html" + searchUrl);
 		}else if(hashUrl && hashFlag != -1){
 			hashUrl = hashUrl.substring(0, hashFlag);
-			$("#content").load("template/deposit_callback_result.html");
+			$("#content").load("investor/deposit_callback_result.html");
 			
 		}else{
 			
 			// 默认是账户总览
 			$(".menu a").eq(0).addClass("active").siblings().removeClass("active");
-			$("#content").load("template/account.html");
+			$("#content").load("investor/account.html");
 		}
 	}
 	
