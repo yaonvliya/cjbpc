@@ -2,7 +2,7 @@
 //var apiHost = "http://api.cjb.whlchain.com";
 var apiHost = "http://localhost:8080";
 var apiContext = "";
-var sysContext = "/";
+var sysContext = "";
 
 
 /** cookie配置 */
