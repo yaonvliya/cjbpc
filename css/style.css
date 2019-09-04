@@ -1481,6 +1481,7 @@ span.form-error-msg{
 	margin-top: 10px;
 	margin-bottom: 20px;
 	display: inline-block;
+	padding-left: 20px;
 }
 
 .detail-context {
