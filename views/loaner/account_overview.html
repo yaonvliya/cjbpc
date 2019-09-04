@@ -1,0 +1,41 @@
+<div class="account clearfix bgc-white borrowers">
+	<div class="account-left">
+		<p class="pandect-caption">账户预览</p>
+		<div>
+			<p class="p1"><span id="toRepayAmount">--</span></p>
+			<p class="p2">待还金额(元)</p>
+		</div>
+		<div>
+			<p class="p1"><span id="toRepayCount">--</span></p>
+			<p class="p2">待还笔数(笔)</p>
+		</div>
+		<div>
+			<p class="p1"><span id="toAuditCount">--</span></p>
+			<p class="p2">待审核借款(笔)</p>
+		</div>
+	</div>
+	<div class="account-right">
+		<p class="p1 size-ts"><span id="loanAmount">--</span></p>
+		<p class="p2">借款总额(元)</p>
+		<p class="p3">授信余额(元)：<span id="creditBalanceAmount"> -- </span></p>
+		<!--<p class="p4">
+			<a class="ubtn" href="javascript:;" onclick="withdraw()">提现</a>
+			<a class="ubtn" href="javascript:;"onclick="recharge()">充值</a>
+		</p>-->
+	</div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var res = AjaxUtil.ajaxPostWithLoading(userProfileApiUrl.getAccountOverView);
+        if (res) {
+            var data = res.data;
+            $("#loanAmount").text(MoneyUtil.formatMoney(data.loanAmount));
+            $("#toRepayAmount").text(MoneyUtil.formatMoney(data.toRepayAmount));
+            $("#creditBalanceAmount").text(MoneyUtil.formatMoney(data.creditBalanceAmount));
+            $("#toRepayCount").text(data.toRepayCount);
+            $("#toAuditCount").text(data.toAuditCount);
+        }
+    });
+</script>

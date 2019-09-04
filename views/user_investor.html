@@ -5,7 +5,7 @@
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="format-detection" content="telephone=no,email=no,address=no"/>
-	<title>个人中心-车聚宝借款</title>
+	<title>个人中心</title>
 	<link rel="shortcut icon" href="../img/favicon.ico"/>
 	<link rel="stylesheet" type="text/css" href="../plugins/layui/css/layui.css"/>
 	<link rel="stylesheet" type="text/css" href="../iconfont/iconfont.css"/>
@@ -43,26 +43,27 @@
 		<a class="ilogo" href="../index.html"><img src="../img/logo-blue.png"/></a>
 		<div class="iheader-nav">
 			<a href="../index.html">首页</a>
-			<a href="javascript:;" onclick="goLoan()">快速借款</a>
+			<!--<a href="javascript:;" onclick="goLoan()">快速借款</a>-->
 			<a class="vl" href="javascript:;"></a>
-			<a class="status-login on" href="user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
+			<a class="status-login on" href="javascript:;" onclick="$_GLOBAL.jumpToUserIndex(userInfo.userRole)"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
 		</div>
 	</div>
 </header>
 
 <section class="user-container clearfix">
 	<div class="left">
-		<div class="avatar"></div>
+		<!--<div class="avatar"></div>
 		<ul class="icon-panel clearfix">
 			<li class="active" title="已绑定手机"><i class="iconfont icon-shoujirenzheng"></i></li>
 			<li id="bindCardIcon" title="未绑卡"><i class="iconfont icon-yinhangqia"></i></li>
 			<li id="bindEmailIcon" title="未绑定邮箱"><i class="iconfont icon-youxiangrenzheng"></i></li>
 			<li id="realNameIcon" title="未实名认证"><i class="iconfont icon-shimingrenzheng"></i></li>
-		</ul>
+		</ul>-->
 		<div class="menu">
-			<a data-url="account" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>账户总览</span></a>
-			<a data-url="apply" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的借款</span></a>
-			<a data-url="repayment" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>还款管理</span></a>
+			<a data-url="account_overview" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>账户预览</span></a>
+			<a data-url="product" href="javascript:;"><i class="iconfont icon-zonglan"></i><span>我的产品</span></a>
+			<a data-url="project" href="javascript:;"><i class="iconfont icon-wodeshenqing"></i><span>我的项目</span></a>
+			<a data-url="repay_plan" href="javascript:;"><i class="iconfont icon-huankuanliebiao"></i><span>还款计划</span></a>
 			<a data-url="settings" href="javascript:;"><i class="iconfont icon-shezhi"></i><span>基本信息</span></a>
 		</div>
 	</div>
@@ -92,10 +93,10 @@
 		</div>
 		<p class="tel-row">
 			<i class="iconfont icon-guanjiaowangtubiao11"></i>
-			客服电话&nbsp; 400-684-8856 &nbsp;<span>(0:00~24:00)</span>
+				客服电话&nbsp; 400-684-8856 &nbsp;<span>(0:00~24:00)</span>
 		</p>
 		<p class="p1"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" target="_blank">沪公网安备 31011802001554号</a> &emsp; ICP备案号：沪ICP备15034281号</p>
-		<p class="p2">Copyright © 上海开颜金融信息服务有限公司(2015-2019)</p>
+		<p class="p2">Copyright © 上海厚沁信息科技有限公司(2015-2019)</p>
 	</div>
 </footer>
 	
@@ -113,7 +114,6 @@
 <script src="../iconfont/iconfont.js"></script>
 
 <script src="../js/vue.min.js"></script>
-<script src="../js/axios.min.js"></script>
 
 <script>
 	var userType, userInfo;
@@ -122,16 +122,8 @@
         userInfo = commonAPIUtil.initUserInfo();
         if(userInfo){
             userType = userInfo.userType.code;
-            var realnameStatus = userInfo.openDepositStatus.code;
-            var bindcardStatus = userInfo.bindCardStatus.code;
             var showEmail = userInfo.safeEmail;
-			$("#userName").text(userInfo.safeLoginAccount);
-            if(realnameStatus == $_GLOBAL.realnameStatus.HAS_REALNAME){
-                $("#realNameIcon").addClass("active").attr("title", "已实名认证");
-            }
-            if(bindcardStatus == $_GLOBAL.bindCardStatus.HAS_BIND){
-                $("#bindCardIcon").addClass("active").attr("title", "已绑卡");
-            }
+			$("#userName").text(userInfo.userName);
             if(showEmail){
                 $("#bindEmailIcon").addClass("active").attr("title", "已绑定邮箱");
             }
@@ -160,10 +152,22 @@
             var hashUrl = searchIndex > 0 ? url.substring(0, searchIndex) : url;
             var searchUrl = searchIndex > 0 ?  url.substring(searchIndex) : "";
 
-            window.history.pushState(null, null, "user.html#" + url);
-			$("#content").load("template/" + hashUrl + ".html" + searchUrl);
+            window.history.pushState(null, null, "user_investor.html#" + url);
+			$("#content").load("investor/" + hashUrl + ".html" + searchUrl);
 		}
 	}
+
+    // 加载公共模块
+    function loadCommonPage(url){
+        if(url){
+            var searchIndex = url.indexOf("?");
+            var hashUrl = searchIndex > 0 ? url.substring(0, searchIndex) : url;
+            var searchUrl = searchIndex > 0 ?  url.substring(searchIndex) : "";
+
+            window.history.pushState(null, null, "user_investor.html#" + url);
+            $("#content").load("common/" + hashUrl + ".html" + searchUrl);
+        }
+    }
 	
 	// hash监听：只用于页面刷新、浏览器前进后退
 	function hashFn(){
@@ -183,16 +187,16 @@
 				}
 			});
 			
-			$("#content").load("template/" + hashUrl + ".html" + searchUrl);
+			$("#content").load("investor/" + hashUrl + ".html" + searchUrl);
 		}else if(hashUrl && hashFlag != -1){
 			hashUrl = hashUrl.substring(0, hashFlag);
-			$("#content").load("template/deposit_callback_result.html");
+			$("#content").load("investor/deposit_callback_result.html");
 			
 		}else{
 			
 			// 默认是账户总览
 			$(".menu a").eq(0).addClass("active").siblings().removeClass("active");
-			$("#content").load("template/account.html");
+			$("#content").load("investor/account.html");
 		}
 	}
 	

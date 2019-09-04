@@ -1,0 +1,64 @@
+<!--我的产品列表-->
+<div class="layui-tab-content bgc-ri">
+	<div class="bgc-white">
+		<h5 class="title-row">我的产品</h5>
+		<form class="layui-form-item" id="investorProductListSearchForm">
+			<div class="layui-inline">
+				<label class="layui-form-label lab-width">公司名称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入公司名称" class="layui-input">
+				</div>
+			</div>
+			<button type="button" class="layui-btn btn-bac" data-search-btn="true">查询</button>
+		</form>
+		<table class="layui-hide " id="investorProductTable" lay-filter="investorProductTable"></table>
+	</div>
+	
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //执行一个 table 实例
+        let investorProductTable = LayTableUtil.render({
+            elem: '#investorProductTable'
+            ,title: '我的产品'
+            ,cols: [[ //表头
+                {field: 'productName', title: '产品名称', width: 150}
+                , {
+                    field: 'allocateAmount', title: '可用额度', align: 'right', width: 150, templet: function (d) {
+                        return MoneyUtil.formatMoney(d.allocateAmount.amount);
+                    }
+                }
+                , {
+                    field: 'productAmount', title: '剩余额度', align: 'right', width: 150, templet: function (d) {
+                        return MoneyUtil.formatMoney(NumberUtil.sub(d.productAmount.amount, d.productUsedAmount.amount));
+                    }
+                }
+                , {
+                    field: 'productTermValue', title: '产品周期', width: 150, templet: function (d) {
+                        return d.productTermValue + d.productTermUnit.message;
+                    }
+                }
+                , {field: 'productEndTime', title: '有效期', width: 200}
+                , {field: 'repayMethod', title: '还款方式', width: 135}
+            ]]
+            ,page: true
+            ,url: productApiUrl.getProductList
+            ,id: 'investorProductTable'
+        });
+
+        //监听行工具事件
+        laytable.on('tool(test)', function(obj){
+            var data = obj.data
+            if(obj.event === 'detail'){
+                layer.msg('查看操作');
+            }
+        });
+
+        $('#investorProductListSearchForm').find('[data-search-btn="true"]').click(function () {
+            LayTableUtil.reload(investorProductTable, 'investorProductListSearchForm');
+        });
+
+    });
+
+
+</script>

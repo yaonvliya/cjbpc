@@ -51,8 +51,8 @@
 		<h3 class="mt-40">登录</h3>
 		<form id="loginForm">
 			<input type="hidden" name="loginRole" value="loaner" />
-			<div class="input-row mt-40"><input type="number" name="mobile" placeholder="手机号" /></div>
-			<div class="input-row"><input type="password" name="password" placeholder="登录密码" /><a class="forget-link" href="forget_pwd.html">忘记密码？</a></div>
+			<div class="input-row mt-40"><input name="loginAccount" placeholder="登录账号" /></div>
+			<div class="input-row"><input type="password" name="loginPassword" placeholder="登录密码" /><a class="forget-link" href="forget_pwd.html">忘记密码？</a></div>
 			<input id="loginBtn" class="ibtn" type="button" name="" value="登录" />
 			<!--<p class="link-row">还没有账号？<a href="register.html">免费注册</a></p>-->
 		</form>
@@ -61,7 +61,7 @@
 
 <footer class="footer-bar">
 	<p><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" target="_blank">沪公网安备 31011802001554号</a> &emsp; ICP备案号：沪ICP备15034281号</p>
-	<p>Copyright © 上海开颜金融信息服务有限公司(2015-2019)</p>
+	<p>Copyright © 上海厚沁信息科技有限公司(2015-2019)</p>
 </footer>
 
 <script src="js/jquery.min.js"></script>
@@ -93,11 +93,11 @@
 				   	// 登录成功后，清除之前的cookie
 				   	CookieUtil.clearAllCookie();
 				   	// 登录成功后，设置全局cookie(用户登录凭证)
-				   	CookieUtil.setCookie('X-Auth-Token', result.data);
+				   	CookieUtil.setCookie('X-Auth-Token', result.data.token);
 				   	layer.msg('登录成功');
 				   	setTimeout(function () {
 					 	// 跳转至个人中心首页
-					   	$_GLOBAL.jumpToUserIndex();
+					   	$_GLOBAL.jumpToUserIndex(result.data.userRole);
 				   	}, 1000);
 				});
 			}
@@ -107,20 +107,18 @@
 	function validateForm(){
         $("#loginForm").validate({
             rules:{
-                mobile:{
+                loginAccount:{
                     required: true,
-                    mobile: true
                 },
-                password:{
+                loginPassword:{
                     required: true,
                 }
             },
             messages:{
-                mobile:{
-                    required: "手机号不能为空",
-                    mobile: "请输入有效的手机号"
+                loginAccount:{
+                    required: "登录账号不能为空",
                 },
-                password:{
+                loginPassword:{
                     required: "登录密码不能为空",
                 },
             },

@@ -1,0 +1,50 @@
+<!--回款计划--列表-->
+<div class="layui-tab-content repayment-schedule  bgc-ri">
+	<div class="bgc-white">
+		<h5 class="title-row">回款计划</h5>
+		<form class="layui-form-item" id="investorRepayPlanListSearchForm">
+			<div class="layui-inline">
+				<label class="layui-form-label lab-width">公司名称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入公司名称" class="layui-input">
+				</div>
+			</div>
+			<button type="button" class="layui-btn btn-bac" data-search-btn="true">查询</button>
+		</form>
+		<table class="layui-hide" id="loanerRepayPlanTable" lay-filter="loanerRepayPlanTable"></table>
+	</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //执行一个 table 实例
+        let loanerRepayPlanTable = LayTableUtil.render({
+            elem: '#loanerRepayPlanTable'
+            ,title: '我的产品'
+            ,cols: [[ //表头
+                {field: 'projectId', title: '项目编号', width:120,  fixed: 'left'}
+                ,{field: 'projectName', title: '项目名称', width: 150,totalRow: true}
+                ,{field: 'productName', title: '产品名称', width: 120, sort: true, totalRow: true}
+                ,{field: 'projectAmount', title: '借款金额(元)', width:130}
+                ,{field: 'repayDate', title: '还款日期', width:130,sort: true}
+            ]]
+            ,page: true
+            ,url: repayPlanApiUrl.getRepayPlanList
+            ,id: 'loanerRepayPlanTable'
+        });
+
+        //监听行工具事件
+        laytable.on('tool(test)', function(obj){
+            var data = obj.data
+            if(obj.event === 'detail'){
+                layer.msg('查看操作');
+            }
+        });
+
+        $('#investorRepayPlanListSearchForm').find('[data-search-btn="true"]').click(function () {
+            LayTableUtil.reload(loanerRepayPlanTable, 'investorRepayPlanListSearchForm');
+        });
+
+    });
+
+
+</script>

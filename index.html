@@ -19,11 +19,11 @@
 			<a class="ilogo" href="index.html"><img src="img/logo-white.png"/></a>
 			<div class="iheader-nav">
 				<a class="on" href="index.html">首页</a>
-				<a href="javascript:;" onclick="goLoan()">快速借款</a>
+				<!--<a href="javascript:;" onclick="goLoan()">快速借款</a>-->
 				<a class="vl" href="javascript:;"></a>
 				<a class="status-logout hide" href="login.html">登录</a>
 				<!--<a class="status-logout hide" href="register.html">注册</a>-->
-				<a class="status-login hide" href="views/user.html"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
+				<a class="status-login hide" href="javascript:;" onclick="$_GLOBAL.jumpToUserIndex(userInfo.userRole)"><i class="iconfont icon-yonghu"></i><span>我的账户</span></a>
 				<!--<a class="status-login hide" href="javascript:;" onclick="$_GLOBAL.doLogout()"><span>退出</span></a>-->
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 			客服电话&nbsp; 400-684-8856 &nbsp;<span>(0:00~24:00)</span>
 		</p>
 		<p class="p1"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011802001554" target="_blank">沪公网安备 31011802001554号</a> &emsp; ICP备案号：沪ICP备15034281号</p>
-		<p class="p2">Copyright © 上海开颜金融信息服务有限公司(2015-2019)</p>
+		<p class="p2">Copyright © 上海厚沁信息科技有限公司(2015-2019)</p>
 	</div>
 </footer>
 <script src="js/jquery.min.js"></script>
@@ -73,9 +73,10 @@
 <script src="js/base-utils.api.js"></script>
 
 <script>
-	$(document).ready(function () {
+    var userInfo;
+        $(document).ready(function () {
 		CookieUtil.setCookie("channel", $_GLOBAL.channel(BaseUtil.getUrlParams().channel));
-		var userInfo = commonAPIUtil.initUserInfoUnbindJump();
+		userInfo = commonAPIUtil.initUserInfoUnbindJump();
 			if(userInfo){
             $("#userName").text(userInfo.safeLoginAccount);
 //          $(".status-logout").hide();
@@ -97,7 +98,7 @@
         }
 	}
 //转型升级公告
-layui.use('layer',function(){
+/*layui.use('layer',function(){
 var layer = layui.layer;
   layer.open({
     	type: 1
@@ -109,7 +110,7 @@ var layer = layui.layer;
       ,moveType: 1 //拖拽模式，0或者1
       ,content: '<div style="font-size:18px;padding: 26px; line-height: 30px; background-color: #fff; color: #393D49; font-weight: 300;">本平台因业务转型升级所需，将于2019年8月1日起不再接受新增借款人，特此公告。</div>'
   });
-});
+});*/
 </script>
 	
 </body>
