@@ -225,6 +225,7 @@ var projectApiUrl = {
     getProjectList: apiHost + "/front/project/queryList",
     //获取产品详情
     getProjectDetail: apiHost + "/front/project/get"
+
 };
 
 var repayPlanApiUrl = {

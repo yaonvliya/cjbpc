@@ -1,0 +1,90 @@
+<!--借款详情-->
+<div>
+    <p class="headline">借款信息</p>
+    <div class="detail-context" id="loanApplication"></div>
+
+    <p class="headline">还款计划</p>
+    <table id="repaymentParticularsTable" class="layui-hide" lay-filter="repaymentParticularsTable"></table>
+</div>
+<script type="text/javascript">
+    // 获取父页面传递的参数
+    const projectId = sessionStorage.getItem("data-projectId") || null;
+    if (projectId) {
+        // sessionStorage.clear("data-projectId");
+    } else {
+        layer.msg("获取参数错误");
+        window.setTimeout(function () {
+            tabAction.tabDel()
+        }, 2000);
+    }
+    $(document).ready(function () {
+        const result = AjaxUtil.ajaxGetWithLoading(projectManagementApi.getProject + projectId);
+        if (result) {
+            const data = result.data;
+            let context =
+                '<ul>'
+                + '<li>客户名称：<span>' + data.loanerName + '</span></li>'
+                + '<li>产品名称：<span>' + data.productName + '</span></li>'
+                + '<li>放款方式：<span>' + data.grantType.message + '</span></li>'
+                + '<li>单据编号：<span>' + data.processId + '</span></li>'
+                + '</ul>'
+                + '<ul>'
+                + '<li>客户编码：<span>' + data.investorId + '</span></li>'
+                + '<li>产品编号：<span>' + data.financeId + '</span></li>'
+                + '<li>借款金额：<span>' + data.projectAmount.amount + '</span></li>'
+                + '<li>借款期限：<span>' + data.projectTermValue +  data.projectTermUnit.message + '</span></li>'
+                + '</ul>'
+                + '<ul>'
+                + '<li>实际放款日：<span>' + data.grantTime + '</span></li>'
+                + '<li>还款模式：<span>' + data.repayMethod.message + '</span></li>'
+                + '<li>年化利率：<span>' + data.projectRate + '</span></li>'
+                + '<li>服务费金额：<span>' + data.projectServiceFee.amount + '</span></li>'
+                + '</ul>'
+                + '<div class="line-feed"><p>借款用途：<span>' + data.loanPurpose + '</span></p></div>'
+                + '<div class="line-feed"><p>备注：<span>' + data.projectRemark + '</span></p></div>';
+
+            $('#loanApplication').html(context);
+        } else {
+            $('#loanApplication').html('');
+        }
+
+        //还款计划
+        let repaymentParticularsTable = LayTableUtil.render({
+            elem: '#repaymentParticularsTable'
+            , height: 300
+            , cols: [[
+                {field: 'projectId', title: '项目编号', minWidth: 120}
+                , {field: 'projectName', title: '项目名称', minWidth: 120}
+                , {field: 'loanerName', title: '客户名称', minWidth: 120}
+                , {field: 'productName', title: '产品名称', minWidth: 120, sort: true}
+
+                , {
+                    field: 'projectAmount', title: '还款金额(元)', width: 120, templet: function (d) {
+                        return MoneyUtil.formatMoney(d.projectAmount.amount)
+                    }
+                }
+                , {
+                    field: 'toRepayAmount', title: '未还金额(元)', width: 120, templet: function (d) {
+                        return MoneyUtil.formatMoney(d.toRepayAmount.amount)
+                    }
+                }
+                , {
+                    field: 'projectTermValue', title: '借款期限', width: 120, templet: function (d) {
+                        return d.projectTermValue + d.projectTermUnit.message;
+                    }
+                }
+
+                , {field: 'currExpectRepayTime', title: '还款日期', width: 120}
+
+            ]]
+
+            , url: repayPlanManagementApi.search
+            , page: true
+            , id: 'repaymentParticularsTable'
+            , where: {
+                projectId: projectId
+            }
+        });
+    });
+
+</script>
