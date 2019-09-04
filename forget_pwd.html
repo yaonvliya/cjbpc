@@ -238,7 +238,7 @@
         // 验证用户是否存在
 		var userFlag = validateAPIUtil.validateUserName($('#mobile').val());
         if(!userFlag){
-            layer.msg("用户名不存在，请重新输入！");
+            layer.msg("手机号不存在，请重新输入！");
             $("#mobile").focus();
             return;
 		}
