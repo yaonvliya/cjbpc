@@ -1729,16 +1729,5 @@ $.ajaxSetup({
     async: false, //同步请求
     beforeSend: function (request) {
         request.setRequestHeader("X-Auth-Token", $.cookie('X-Auth-Token') || "");
-    },
-    complete: function (xhr, status) {
-        var result = xhr.responseJSON;
-        if(result){
-            if (result.code == "40404" || result.code == "40405") {
-                CookieUtil.clearAllCookie();
-                window.location.href = $_GLOBAL.basePath() + '/login.html';
-            } else if(result.code != "20000"){
-                layer.msg(result.message);
-            }
-        }
     }
 });
