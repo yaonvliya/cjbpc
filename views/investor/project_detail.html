@@ -1,0 +1,108 @@
+<!--借款详情-->
+<div>
+    <p class="headline">借款信息</p>
+    <div class="detail-context" id="loanApplication"></div>
+    <div class="table-wrap">
+        <table class="layui-table detail-table">
+            <tr>
+                <td>客户名称</td>
+                <td id="loanerName"></td>
+                <td>产品名称</td>
+                <td id="productName"></td>
+            </tr>
+
+            <tr>
+                <td>放款方式</td>
+                <td id="grantType"></td>
+                <td>单据编号</td>
+                <td id="processId"></td>
+            </tr>
+            <tr>
+                <td>借款金额</td>
+                <td id="projectAmount"></td>
+                <td>借款期限</td>
+                <td id="projectTermUnit"></td>
+            </tr>
+            <tr>
+                <td>实际放款日</td>
+                <td id="grantTime"></td>
+                <td>还款模式</td>
+                <td id="repayMethod"></td>
+            </tr>
+            <tr>
+                <td>年化利率</td>
+                <td id="projectRate"></td>
+                <td>服务费金额</td>
+                <td id="projectServiceFee"></td>
+            </tr>
+            <tr>
+                <td>借款用途</td>
+                <td id="loanPurpose"></td>
+                <td>备注</td>
+                <td id="projectRemark"></td>
+            </tr>
+        </table>
+    </div>
+
+    <p class="headline">还款计划</p>
+    <table id="repaymentParticularsTable" class="layui-hide" lay-filter="repaymentParticularsTable"></table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // 获取父页面传递的参数
+        var projectId = BaseUtil.getUrlParams(location.hash).projectId;
+        if(!projectId){
+            layer.msg("参数错误");
+            return;
+        }
+
+        var param = {"projectId": projectId};
+        const result = AjaxUtil.ajaxPostWithLoading(projectApiUrl.getProjectDetail, JSON.stringify(param));
+        if (result) {
+            const data = result.data;
+            $("#loanerName").text(data.loanerName);
+            $("#productName").text(data.productName);
+            $("#grantType").text(data.grantType.message);
+            $("#processId").text(data.processId);
+            $("#investorId").text(data.investorId);
+            $("#financeId").text(data.financeId);
+            $("#projectAmount").text(data.projectAmount.amount);
+            $("#projectTermUnit").text(data.projectTermValue +  data.projectTermUnit.message);
+
+            $("#grantTime").text(data.grantTime);
+            $("#repayMethod").text(data.repayMethod.message);
+            $("#projectRate").text(NumberUtil.mul(data.projectRate, 100) + "%");
+            $("#projectServiceFee").text(data.projectServiceFee.amount);
+            $("#loanPurpose").text(data.loanPurpose);
+            $("#projectRemark").text(data.projectRemark);
+
+
+            //还款计划
+            let repaymentParticularsTable = laytable.render({
+                elem: '#repaymentParticularsTable'
+                , height: 300
+                , cols: [[
+                    {field: 'projectId', title: '项目编号', minWidth: 160}
+                    , {field: 'currRepayPeriod', title: '本期还款期数', minWidth: 120}
+                    , {
+                        field: 'currRepayAmt', title: '本期还款金额', align: 'right', style: "text-align: right", minWidth: 120, templet: function (d) {
+                            return MoneyUtil.formatMoney(NumberUtil.add(d.currRepayPrincipalAmt.amount, d.currRepayInterestAmt.amount))
+                        }
+                    }
+                    , {field: 'currExpectRepayTime', title: '本期还款日期', minWidth: 120}
+                    , {
+                        field: 'currRepayStatus', title: '本期还款状态', minWidth: 120, templet: function (d) {
+                            return d.currRepayStatus ? "已还款" : "未还款";
+                        }
+                    }
+                ]]
+                , data: data.repayPlanList
+                , page: false
+                , id: 'repaymentParticularsTable'
+            });
+        }
+
+
+    });
+
+</script>

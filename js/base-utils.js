@@ -231,7 +231,7 @@ var $_GLOBAL = {
 		var loaner = "loaner";
         var investor = "investor";
 		if(StringUtil.isContains(userRole, loaner, true)){
-            window.location.href = $_GLOBAL.basePath() + "/user_loaner.html";
+            window.location.href = $_GLOBAL.basePath() + "/views/user_loaner.html";
         } else if(StringUtil.isContains(userRole, investor, true)){
             window.location.href = $_GLOBAL.basePath() + "/views/user_investor.html";
         } else {
