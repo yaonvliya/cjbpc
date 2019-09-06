@@ -1529,61 +1529,6 @@ var SelectUtil = {
     }
 };
 
-var PluploadUtil = {
-    set_upload_param: function (up, belongSystem, file, type) {
-        var data = {
-            belongSystem: belongSystem,
-            fileName: file.name,
-            fileType: type
-        };
-        AjaxUtil.ajaxPostCallBack(commonApiUrl.getUploadParam, JSON.stringify(data), function (result) {
-            var param = result.data;
-            accessid = param.accessid;
-            policy = param.policy;
-            signature = param.signature;
-            key = param.key;
-            host = param.host;
-            expire = param.expire;
-
-            new_multipart_params = {
-                'key': key,
-                'policy': policy,
-                'OSSAccessKeyId': accessid,
-                'success_action_status': '200', //让服务端返回200,不然，默认会返回204
-                'signature': signature,
-            };
-
-            up.setOption({
-                'url': host,
-                'multipart_params': new_multipart_params
-            });
-
-            //使用后台生成文件名
-            file.name = key;
-
-            up.start();
-        });
-    },
-
-    previewImg: function (showImgId, file, multiSelect) {
-        var preloader = new moxie.image.Image();
-        preloader.onload = function () {
-            //preloader.downsize(180, 120);//先压缩一下要预览的图片
-            var imgsrc = preloader.type == 'image/jpeg' ? preloader.getAsDataURL('image/jpeg', 80) : preloader.getAsDataURL(); //得到图片src,实质为一个base64编码的数据
-
-			if(multiSelect){
-				$("#" + showImgId + "List").append('<img class="layui-upload-img pic"  src="' + imgsrc + '">');
-			} else
-				$("#" + showImgId).attr('src', imgsrc);
-            
-            preloader.destroy();
-            preloader = null;
-        };
-
-        preloader.load(file.getSource());
-    },
-
-};
 
 const LayTableUtil = {
     /**
