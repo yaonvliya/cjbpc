@@ -1609,7 +1609,7 @@ const LayTableUtil = {
             , url: obj.url
             , contentType: 'application/json'
             , method: obj.method ? obj.method : 'post'
-            , page: obj.page ? {theme: '#009688'} : false
+            , page: obj.page ? {theme: '#60bdff'} : false
             , done: obj.done ?	obj.done : null
             , toolbar: obj.toolbar ? obj.toolbar : false
             , defaultToolbar: obj.defaultToolbar ? obj.defaultToolbar : null
