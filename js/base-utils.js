@@ -231,7 +231,7 @@ var $_GLOBAL = {
 		var loaner = "loaner";
         var investor = "investor";
 		if(StringUtil.isContains(userRole, loaner, true)){
-            window.location.href = $_GLOBAL.basePath() + "/user_loaner.html";
+            window.location.href = $_GLOBAL.basePath() + "/views/user_loaner.html";
         } else if(StringUtil.isContains(userRole, investor, true)){
             window.location.href = $_GLOBAL.basePath() + "/views/user_investor.html";
         } else {
@@ -1529,61 +1529,6 @@ var SelectUtil = {
     }
 };
 
-var PluploadUtil = {
-    set_upload_param: function (up, belongSystem, file, type) {
-        var data = {
-            belongSystem: belongSystem,
-            fileName: file.name,
-            fileType: type
-        };
-        AjaxUtil.ajaxPostCallBack(commonApiUrl.getUploadParam, JSON.stringify(data), function (result) {
-            var param = result.data;
-            accessid = param.accessid;
-            policy = param.policy;
-            signature = param.signature;
-            key = param.key;
-            host = param.host;
-            expire = param.expire;
-
-            new_multipart_params = {
-                'key': key,
-                'policy': policy,
-                'OSSAccessKeyId': accessid,
-                'success_action_status': '200', //让服务端返回200,不然，默认会返回204
-                'signature': signature,
-            };
-
-            up.setOption({
-                'url': host,
-                'multipart_params': new_multipart_params
-            });
-
-            //使用后台生成文件名
-            file.name = key;
-
-            up.start();
-        });
-    },
-
-    previewImg: function (showImgId, file, multiSelect) {
-        var preloader = new moxie.image.Image();
-        preloader.onload = function () {
-            //preloader.downsize(180, 120);//先压缩一下要预览的图片
-            var imgsrc = preloader.type == 'image/jpeg' ? preloader.getAsDataURL('image/jpeg', 80) : preloader.getAsDataURL(); //得到图片src,实质为一个base64编码的数据
-
-			if(multiSelect){
-				$("#" + showImgId + "List").append('<img class="layui-upload-img pic"  src="' + imgsrc + '">');
-			} else
-				$("#" + showImgId).attr('src', imgsrc);
-            
-            preloader.destroy();
-            preloader = null;
-        };
-
-        preloader.load(file.getSource());
-    },
-
-};
 
 const LayTableUtil = {
     /**
@@ -1664,7 +1609,7 @@ const LayTableUtil = {
             , url: obj.url
             , contentType: 'application/json'
             , method: obj.method ? obj.method : 'post'
-            , page: obj.page ? {theme: '#009688'} : false
+            , page: obj.page ? {theme: '#60bdff'} : false
             , done: obj.done ?	obj.done : null
             , toolbar: obj.toolbar ? obj.toolbar : false
             , defaultToolbar: obj.defaultToolbar ? obj.defaultToolbar : null
@@ -1729,16 +1674,5 @@ $.ajaxSetup({
     async: false, //同步请求
     beforeSend: function (request) {
         request.setRequestHeader("X-Auth-Token", $.cookie('X-Auth-Token') || "");
-    },
-    complete: function (xhr, status) {
-        var result = xhr.responseJSON;
-        if(result){
-            if (result.code == "40404" || result.code == "40405") {
-                CookieUtil.clearAllCookie();
-                window.location.href = $_GLOBAL.basePath() + '/login.html';
-            } else if(result.code != "20000"){
-                layer.msg(result.message);
-            }
-        }
     }
 });
